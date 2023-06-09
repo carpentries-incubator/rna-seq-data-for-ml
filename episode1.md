@@ -1,5 +1,5 @@
 ---
-title: "Data Collection: RNA-Seq Datasets for ML Analysis"
+title: "Data Collection: Platforms for RNA-Seq Data"
 teaching: 10
 exercises: 2
 ---
@@ -33,7 +33,7 @@ The lesson is written in the context of a supervised machine learning classifica
 
 There are two major public repositories for sourcing public functional genomics data sets, in particular microarry and next-generation sequencing data. Here we focus on NGS data, in particular RNA-Seq transcriptomics datasets:
 
-1. The [Array Express](https://www.ebi.ac.uk/biostudies/) collection within the Bio Studies database, maintained by the European Molecular Biology Laboratory - European Bioinformatics Institute (EMBL-EBI).  
+1. The [Array Express](https://www.ebi.ac.uk/biostudies/arrayexpress/studies) collection within the Bio Studies database, maintained by the European Molecular Biology Laboratory - European Bioinformatics Institute (EMBL-EBI).  
 
 2. The [Gene Expression Onmibus (GEO)](https://www.ncbi.nlm.nih.gov/geo/), maintained by the National Center for Biotechnology Information, part of the US National Institues of Health. 
 
@@ -63,9 +63,19 @@ Add instructor notes here
 
 Data sets will contain both raw and processed RNA-Seq data data sets, as well as information about the relationship between the RNA-Seq data and study samples, and the design of the experiment.
 
-* Raw RNA-Seq data consists of the sequences of each read obtained from the sequencer and is stored in FastQ file format. Processed RNA-Seq data is typically stored as a matrix counts, with the names of each sample on one axis, and the unique identifiers of each transcript identified on the other axis. For more information on FastQ file format, and the transformation between FastQ and counts data see [reference previous elixir training/ RDM bites]. Processed RNA-Seq data is stored in a range of formats, typically as csv or txt files.
+* Raw RNA-Seq data consists of the sequences of each read obtained from the sequencing instrument, along with quality scores for each sequence, and is typically stored in FASTQ file format.
 
-* Processed data refers to gene abundance data, which may be interger counts of the number of transcripts mapped to a given gene, or a further processed measure of abundance to normalise for sequence depth and/or gene length such as TPM and FPKM.
+* Processed data refers to abundance data for the feature of interest, which may be genes, transcripts, exons or miRNAs. Processed RNA-Seq data is typically stored as a matrix in .csv or .txt format, with the names of each sample on one axis, and the unique identifiers of each feature of interest on the other. Processed data is often generated at different levels:
+
+1. Raw counts of sequencing reads for each feature of interest (e.g. integer counts of the number of reads mapped to a given gene)
+2. Normalised abundance measurements, further processed to account for sequence depth and/or gene length such as TPM and FPKM (output using DESeq2, edgeR)
+3. Normalised and transformed adundance measurements with normalisation and further transformation applied such as log2 or variance stabilising transformation (vst) applied
+
+The features of interset, say transcripts, may also have been filtered to remove transcripts with read counts below a particular threshold. Transcripts may also be summarised to genes. It is important to carefully read the protocols to understand exactly what the processed data actually is, and if appropriate to your task.
+
+The data may be stored in a matrix transcripts IDs and samples. Alternatively there may be a separate file for each sample that need to be combined to create a matrix for all samples.
+
+The description "processed" therefore means different things in different studies. It is important therefore to read the study protocol to determine how the data has been processed.
 
 A quick summary of raw vs. processed data:
 
@@ -74,8 +84,6 @@ Data Type     | Raw | Processed
 Contains  |  Strings of based pair sequence | Abundance value by gene (integer, float)
 File Format  | fastq | .csv, .txt, .tsv
                 
-
-The description processed means different things in different studies. It is important therefore to read the study protocol to determine how the data has been processed.
 
 For more information on the fastq file format, see [RDMBites | FASTQ Format](https://www.youtube.com/watch?v=tO2H3zuBouw). For further information on the processing of raw fastq to gene abundance data, see [RDMbites | RNAseq expression data](https://www.youtube.com/watch?v=3Pe9xcGF_Wo).
 
@@ -101,5 +109,3 @@ The starting point for a machine learning model is processed RNA-Seq data, in th
 - Processed data, in the form of raw counts, or further processed counts data is the starting point for analysis
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-[r-markdown]: https://rmarkdown.rstudio.com/
