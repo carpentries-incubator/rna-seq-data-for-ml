@@ -177,7 +177,67 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: RNA-Seq Datasets for ML Analysis</a>
+        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush3">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading3">
+        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="episode4.html">4. Data Readiness: Data Format and Integrity</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="episode5.html">5. Data Readiness: Technical Noise</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="episode6.html">6. Data Readiness: Distribution and Scale</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -247,14 +307,56 @@ any links that you are not going to use.
  -->
 
 
-      <section id="aggregate-instructor-notes"><section id="episode1"><h2 class="section-heading"><a href="episode1.html">Data Collection: RNA-Seq Datasets for ML Analysis</a></h2>
+      <section id="aggregate-instructor-notes"><section id="episode1"><h2 class="section-heading"><a href="episode1.html">Data Collection: Platforms for RNA-Seq Data</a></h2>
 <hr class="half-width">
 <h3 id="episode1-headingInstructor1">
 <a href="episode1.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#episode1-headingInstructor1"></a>
 </h3>
 <p>Add instructor notes here</p>
 <hr>
-<br></section></section>
+<br></section><section id="episode2"><h2 class="section-heading"><a href="episode2.html">Data Collection: Searching ArrayExpress</a></h2>
+<hr class="half-width"></section><section id="episode3"><h2 class="section-heading"><a href="episode3.html">Data Collection: Searching GEO</a></h2>
+<hr class="half-width"></section><section id="episode4"><h2 class="section-heading"><a href="episode4.html">Data Readiness: Data Format and Integrity</a></h2>
+<hr class="half-width">
+<h3 id="episode4-headingInstructor1">
+<a href="episode4.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#episode4-headingInstructor1"></a>
+</h3>
+<p>Here are a number of issues that need addressing in the TB
+dataset:</p>
+<ul>
+<li>One important reformatting point in this dataset is that there are
+two lines in the sdrf file per sample, as there is a line for each of
+the read in the paired end reads. The only difference is the file name
+given for the fastq file. To solve this we need to select the distinct
+rows with the variables of interest. Check the issue this line of
+code:</li>
+</ul>
+<p><code>which(duplicated(samp.info.tb$Comment[sample id])))</code></p>
+<ul>
+<li>There are missing values for some variables that may be useful as
+predictor variables, (e.g. <code>Characteristics[sex]</code> missing
+values are represented by double spaces). It would be better to recode
+them as <code>NA</code> as this is universally understood to represent a
+missing value. This is easily seem by running this:</li>
+</ul>
+<p><code>unique(samp.info.tb$</code>Characteristics[sex]<code>)</code></p>
+<ul>
+<li><p>A number of variables need renaming and special characters and
+spaces removed. For example, the variable name
+<code>progressor status</code> and the value <code>TB progressor</code>
+of this variable use a space that could replaced with an
+underscore</p></li>
+<li><p>And perhaps most importantly of all, the dataset is highly
+unbalanced, with 9 TB progressors and 351 non-progressors when you
+account for duplicate data. This dataset is very unlikely to perform
+well as a training dataset for a machine learning classifier!</p></li>
+</ul>
+<p><code>table(samp.info.tb$</code>Factor Value[progressor status
+(median follow-up 1.9 years)]<code>)</code></p>
+<hr>
+<br></section><section id="episode5"><h2 class="section-heading"><a href="episode5.html">Data Readiness: Technical Noise</a></h2>
+<hr class="half-width"></section><section id="episode6"><h2 class="section-heading"><a href="episode6.html">Data Readiness: Distribution and Scale</a></h2>
+<hr class="half-width"></section></section>
 </div>
     </main>
 </div>
@@ -303,8 +405,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/instructor-notes.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/instructor-notes.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-06-06",
-  "datePublished": "2023-06-06"
+  "dateModified": "2023-06-09",
+  "datePublished": "2023-06-09"
 }
 
   </script><script>

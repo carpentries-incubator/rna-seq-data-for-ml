@@ -157,7 +157,52 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: RNA-Seq Datasets for ML Analysis</a>
+        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush3">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading3">
+        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="episode4.html">4. Data Readiness: Data Format and Integrity</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="episode5.html">5. Data Readiness: Technical Noise</a>
+    </div><!--/div.accordion-header-->
+        
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="episode6.html">6. Data Readiness: Distribution and Scale</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -221,72 +266,56 @@ any links that you are not going to use.
  -->
 
 
-      <section id="setup"><p>FIXME: Setup instructions live in this document. Please specify the
-tools and the data sets the Learner needs to have installed.</p>
-<section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
+      <section id="setup"><section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
 </h2>
-<hr class="half-width"><!--
-FIXME: place any data you want learners to use in `episodes/data` and then use
-       a relative link ( [data zip file](data/lesson-data.zip) ) to provide a
-       link to it, replacing the example.com link.
---><p>Download the <a href="https://example.com/FIXME" class="external-link">data zip file</a>
-and unzip it to your Desktop</p>
+<hr class="half-width"><p>This lesson uses a number of RNA-Seq datasets downloaded from public
+functional genomics repositories. The links to the datasets are provided
+in each episode. Create a new RStudio project where you will keep all of
+the files for this lesson. In the project directory (where the .Rproj
+file is), create a subdirectory called data.</p>
+<p>Either download each file as you go along and save to you data
+subdirectory, or alternatively you can download all the files used in
+the lesson in this</p>
+<p>Download the <a href="data/rna-seq-ml-readiness-data.zip">data zip
+file</a> and unzip it to your data subdirectory.</p>
 </section><section id="software-setup"><h2 class="section-heading">Software Setup<a class="anchor" aria-label="anchor" href="#software-setup"></a>
 </h2>
-<hr class="half-width"><div id="details" class="callout discussion">
+<hr class="half-width"><div id="r-and-rstudio" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
 </div>
-<div id="details" class="callout-inner">
-<h3 class="callout-title">Details<a class="anchor" aria-label="anchor" href="#details"></a>
+<div id="r-and-rstudio" class="callout-inner">
+<h3 class="callout-title">R and RStudio<a class="anchor" aria-label="anchor" href="#r-and-rstudio"></a>
 </h3>
 <div class="callout-content">
-<p>Setup for different systems can be presented in dropdown menus via a
-<code>solution</code> tag. They will join to this discussion block, so
-you can give a general overview of the software used in this lesson here
-and fill out the individual operating systems (and potentially add more,
-e.g. online setup) in the solutions blocks.</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1">
-  Windows
-  </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
-<div class="accordion-body">
-<p>Use PuTTY</p>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2">
-  MacOS
-  </h4>
-</button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
-<div class="accordion-body">
-<p>Use Terminal.app</p>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
-  <h4 class="accordion-header" id="headingSolution3">
-  Linux
-  </h4>
-</button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
-<div class="accordion-body">
-<p>Use Terminal</p>
+<p>Learners will need updated versions of R and RStudio installed. There
+are instructions for installing R, RStudio, and additional R packages
+for all the main operating systems in the <a href="https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio" class="external-link">R
+Ecology Lesson</a>.</p>
+<div class="section level3">
+<h3 id="r-packages">R Packages<a class="anchor" aria-label="anchor" href="#r-packages"></a></h3>
+<p>Please install the following R packages. You will need to install the
+package <code>BiocManager</code> to be able to install packages from
+Bioconductor.</p>
+<ul><li><code>tidyverse</code></li>
+<li><code>here</code></li>
+<li><code>BiocManager</code></li>
+<li><code>Biobase</code></li>
+<li><code>GEOquery</code></li>
+<li><code>DESeq2</code></li>
+</ul><p>Executing the following lines of code in the R console will install
+all of these packages</p>
+<pre class="{r}"><code>
+install.packages(c("tidyverse", "here", "BiocManager"))
+
+BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
+</code></pre>
+<p>You can check that all packages have been installed using the
+following command, which will return <code>character(0)</code> if all
+packages have been successfully installed.</p>
+<pre class="{r}"><code><span></span>
+<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"here"</span>, <span class="st">"BiocManager"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
+<span>        <span class="fu">rownames</span><span class="op">(</span><span class="fu">installed.packages</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -345,8 +374,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/index.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/index.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-06-06",
-  "datePublished": "2023-06-06"
+  "dateModified": "2023-06-09",
+  "datePublished": "2023-06-09"
 }
 
   </script><script>

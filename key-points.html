@@ -179,7 +179,67 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: RNA-Seq Datasets for ML Analysis</a>
+        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush3">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading3">
+        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="episode4.html">4. Data Readiness: Data Format and Integrity</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="episode5.html">5. Data Readiness: Technical Noise</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="episode6.html">6. Data Readiness: Distribution and Scale</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -241,7 +301,7 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="episode1"><h2 class="section-heading"><a href="episode1.html">Data Collection: RNA-Seq Datasets for ML Analysis</a></h2>
+<section id="episode1"><h2 class="section-heading"><a href="episode1.html">Data Collection: Platforms for RNA-Seq Data</a></h2>
 <hr class="half-width">
 <ul>
 <li>Consider dataset provenance, dataset size and label quality when
@@ -250,6 +310,72 @@ selecting a RNA-Seq dataset for ML</li>
 GEO</li>
 <li>Processed data, in the form of raw counts, or further processed
 counts data is the starting point for analysis</li>
+</ul></section><section id="episode2"><h2 class="section-heading"><a href="episode2.html">Data Collection: Searching ArrayExpress</a></h2>
+<hr class="half-width">
+<ul>
+<li>ArrayExpress stores two standard files with information about each
+experiment: 1. Sample and Data Relationship Format (SDRF) and 2.
+Investigation Description Format (IDF).</li>
+<li>ArrayExpress provides raw and processed data for RNA-Seq datasets,
+typically stored as csv, tsv, or txt files.</li>
+<li>The basic filers on the ArrayExpress website allow you to select and
+download a dataset that meets your needs</li>
+</ul></section><section id="episode3"><h2 class="section-heading"><a href="episode3.html">Data Collection: Searching GEO</a></h2>
+<hr class="half-width">
+<ul>
+<li>Similar to ArrayExpress, GEO stores samples information and counts
+matrices separately. Sample information is typically stored in
+<code>SOFT</code> format, as well as a <code>.txt</code> file.</li>
+<li>Counts data may be stored as raw counts and some further processed
+form of counts, typically as supplementary files. Always review the
+documentation to determine what “processed data” refers to for a
+particular dataset.</li>
+<li>
+<code>GEOquery</code> provides a convenient way to download files
+directly from GEO into R.</li>
+</ul></section><section id="episode4"><h2 class="section-heading"><a href="episode4.html">Data Readiness: Data Format and Integrity</a></h2>
+<hr class="half-width">
+<ul>
+<li>Machine learning algorithms require specific data input formats, and
+for data to be consistently formatted across variables and samples. A
+classification task for example requires a matrix of the value of each
+input variable for each sample, and the class label for each
+sample.</li>
+<li>Clinical sample information is often messy, with inconsistent
+formatting as a result of how it is collected. This applies to data
+downloaded from public repositories.</li>
+<li>You must carefully check all data for formatting and data integrity
+issues that may negatively impact your downstream ml analysis.</li>
+<li>Document your data reformatting and store the code pipeline used
+along with the raw and reformatted data to ensure your procedure is
+reproducible</li>
+</ul></section><section id="episode5"><h2 class="section-heading"><a href="episode5.html">Data Readiness: Technical Noise</a></h2>
+<hr class="half-width">
+<ul>
+<li>RNA-Seq read counts contain two main sources of technical ‘noise’
+and are unlikely to represent true biological signals from the samples:
+Low count genes/transcripts and influential outlier read counts.</li>
+<li>Filtering out low read count and influential outlier genes /
+transcripts removes potentially biasing variables without negatively
+impacting the performance of downstream machine learning analysis.</li>
+</ul></section><section id="episode6"><h2 class="section-heading"><a href="episode6.html">Data Readiness: Distribution and Scale</a></h2>
+<hr class="half-width">
+<ul>
+<li>RNA-Seq read count data is heavily skewed with a large percentage of
+zero values. The distribution is heteroskedastic, meaning the variance
+depends on the mean.</li>
+<li>Standard transformations such as the variance stabilising
+transformation and rlog transformation are designed to make the
+distribution of RNA-Seq data more Gaussian, and therefore more
+appropriately distributed for many machine learning models. These
+transformations are improvements to a simple log2 transformation in
+particular for low count values.</li>
+<li>Many machine learning algorithms require predictor variables to be
+on the same scale. Standardisation (z-score) and min-max scaling are two
+common techniques to rescale variables to the same scale. Tree based
+models are less sensitive to scaling. Standardisation is appropriate for
+linear models such as logistic regression and svm. min-max scaling is
+most appropirate for neural network based models.</li>
 </ul></section>
 </div>
     </main>
@@ -299,8 +425,8 @@ counts data is the starting point for analysis</li>
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/key-points.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/key-points.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-06-06",
-  "datePublished": "2023-06-06"
+  "dateModified": "2023-06-09",
+  "datePublished": "2023-06-09"
 }
 
   </script><script>
