@@ -146,7 +146,8 @@
         
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
-        <ul><li><a href="#data-sets">Data Sets</a></li>
+        <ul><li><a href="#summary">Summary</a></li>
+<li><a href="#data-sets">Data Sets</a></li>
 <li><a href="#software-setup">Software Setup</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -157,7 +158,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+        <a href="episode1.html">1. Introduction: Machine Learning Ready RNA-Seq Data</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -166,7 +167,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+        <a href="episode2.html">2. Data Collection: ArrayExpress</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -175,7 +176,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+        <a href="episode3.html">3. Data Collection: GEO</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -253,7 +254,7 @@
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link float-end" href="episode1.html" rel="next">Next: Data Collection:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="episode1.html" rel="next">Next: Introduction:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><h1 class="schedule-heading">Summary and Setup</h1>
       
@@ -266,18 +267,49 @@ any links that you are not going to use.
  -->
 
 
-      <section id="setup"><section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
+      <section id="setup"><section id="summary"><h2 class="section-heading">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
+<hr class="half-width"><p>This lesson provides a practical guide to sourcing and pre-processing
+a bulk RNA-Seq dataset for use in a machine learning classification
+task. The lessons explains the characteristics of a dataset required for
+this type of analysis, how to search for and download a dataset from
+each of the main public functional genomics repositories, and then
+provides guidelines on how to pre-process a dataset to make it machine
+learning ready, with detailed examples. The lesson finally explains some
+of the additional data filtering and transformation steps that will
+improve the performance of machine learning algorithms using RNA-Seq
+count data.</p>
+<p>The lesson is written in the context of a supervised machine learning
+classification modelling task, where the goal is to construct a model
+that is able to differentiate two different disease states (e.g. disease
+vs. healthy control) based on the gene expression profile.</p>
+<div id="prereq1" class="callout prereq">
+<div class="callout-square">
+<i class="callout-icon" data-feather="check"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Prereq<a class="anchor" aria-label="anchor" href="#prereq1"></a>
+</h3>
+<div class="callout-content">
+<p>This lesson assumes a working knowledge of programming in R. For
+learners who aren’t familiar with R or feel they need a refresher, the
+<a href="https://swcarpentry.github.io/r-novice-inflammation/index.html" class="external-link">Programming
+with R</a> provides a good introduction to both R and working with R
+studio.</p>
+</div>
+</div>
+</div>
+</section><section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
 </h2>
 <hr class="half-width"><p>This lesson uses a number of RNA-Seq datasets downloaded from public
-functional genomics repositories. The links to the datasets are provided
-in each episode. Create a new RStudio project where you will keep all of
-the files for this lesson. In the project directory (where the .Rproj
-file is), create a subdirectory called data.</p>
-<p>Either download each file as you go along and save to you data
-subdirectory, or alternatively you can download all the files used in
-the lesson in this</p>
-<p>Download the <a href="data/rna-seq-ml-readiness-data.zip">data zip
-file</a> and unzip it to your data subdirectory.</p>
+functional genomics repositories. Create a new RStudio project where you
+will keep all of the files for this lesson. In the project directory
+(where the .Rproj file is), create a subdirectory called data.</p>
+<p>Links to the dataset and instructions on how to and download provided
+in each episode. Download each data file as instructed and save to you
+data subdirectory. The most important dataset files that we will be
+using throughout the lesson are also provided in the <a href="./data/rna-seq-ml-readiness-data.zip">data zip file</a>, which you
+can download and unzip to your data subdirectory right away.</p>
 </section><section id="software-setup"><h2 class="section-heading">Software Setup<a class="anchor" aria-label="anchor" href="#software-setup"></a>
 </h2>
 <hr class="half-width"><div id="r-and-rstudio" class="callout discussion">
@@ -292,8 +324,6 @@ file</a> and unzip it to your data subdirectory.</p>
 are instructions for installing R, RStudio, and additional R packages
 for all the main operating systems in the <a href="https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio" class="external-link">R
 Ecology Lesson</a>.</p>
-<div class="section level3">
-<h3 id="r-packages">R Packages<a class="anchor" aria-label="anchor" href="#r-packages"></a></h3>
 <p>Please install the following R packages. You will need to install the
 package <code>BiocManager</code> to be able to install packages from
 Bioconductor.</p>
@@ -314,9 +344,8 @@ BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
 following command, which will return <code>character(0)</code> if all
 packages have been successfully installed.</p>
 <pre class="{r}"><code><span></span>
-<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"here"</span>, <span class="st">"BiocManager"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
+<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"here"</span>, <span class="st">"BiocManager"</span>, <span class="st">"Biobase"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
 <span>        <span class="fu">rownames</span><span class="op">(</span><span class="fu">installed.packages</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -329,7 +358,7 @@ any links that you are not going to use.
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link float-end" href="episode1.html" rel="next">Next: Data Collection:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="episode1.html" rel="next">Next: Introduction:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div>
 <!-- END  : inst/pkgdown/templates/content-syllabus.html -->

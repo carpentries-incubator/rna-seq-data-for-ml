@@ -86,11 +86,11 @@
   RNA-Seq: Data Readiness for Machine Learning Applications
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 36%" class="percentage">
-    36%
+<aside class="col-md-12 lesson-progress"><div style="width: 42%" class="percentage">
+    42%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 36%" aria-valuenow="36" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 42%" aria-valuenow="42" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -145,7 +145,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+        <a href="episode1.html">1. Introduction: Machine Learning Ready RNA-Seq Data</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -154,7 +154,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+        <a href="episode2.html">2. Data Collection: ArrayExpress</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -163,7 +163,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+        <a href="episode3.html">3. Data Collection: GEO</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -256,7 +256,7 @@
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="episode3.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Data Collection:</a>
+        <a class="chapter-link" href="episode3.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Data Collection: GEO</a>
         <a class="chapter-link float-end" href="episode5.html" rel="next">Next: Data Readiness:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
@@ -308,20 +308,6 @@ Array Express or GEO platform to identify potential issues</li>
 new dataset</li>
 </ul></div>
 </div>
-</div>
-</div>
-</div>
-<div id="prereq1" class="callout prereq">
-<div class="callout-square">
-<i class="callout-icon" data-feather="check"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Prereq<a class="anchor" aria-label="anchor" href="#prereq1"></a>
-</h3>
-<div class="callout-content">
-<p>Learners will needs access to the files downloaded from ArrayExpress
-in Episode 2 of this lesson and should be familiar with what each file
-contains. The data is also available in the lesson data zip file.</p>
 </div>
 </div>
 </div>
@@ -502,7 +488,7 @@ an issue in the sample information for this dataset?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>All of the checklist items apply in this case. Let’s go through
 them…</p>
@@ -662,7 +648,7 @@ the code to address these issues?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <ul><li>There is clearly an issue with the coding of the
 <code>condition</code> Crohn’s disease. We’ll fix that first, and then
@@ -841,7 +827,7 @@ the counts matrix right away?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <ul><li>Remove the first row, which is in this case totals of counts for
 each sample</li>
@@ -955,7 +941,7 @@ file.</li>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>We renamed the samples in the sample information to remove spaces, so
 we need to do the same here.</p>
@@ -1142,7 +1128,7 @@ as the target variable.</p>
   Example code to clean up the sample information
   </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1219,7 +1205,7 @@ any links that you are not going to use.
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="episode3.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Data Collection:</a>
+        <a class="chapter-link" href="episode3.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Data Collection: GEO</a>
         <a class="chapter-link float-end" href="episode5.html" rel="next">Next: Data Readiness:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div> <!-- / div.primary-content.col-xs-12 -->

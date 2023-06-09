@@ -148,7 +148,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+        <a href="episode1.html">1. Introduction: Machine Learning Ready RNA-Seq Data</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -157,7 +157,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+        <a href="episode2.html">2. Data Collection: ArrayExpress</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -166,7 +166,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+        <a href="episode3.html">3. Data Collection: GEO</a>
     </div><!--/div.accordion-header-->
         
   </div><!--/div.accordion-item-->
@@ -244,7 +244,7 @@
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link float-end" href="../instructor/episode1.html" rel="next">Next: Data Collection:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/episode1.html" rel="next">Next: Introduction:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><h1 class="schedule-heading">Summary and Schedule</h1>
       
@@ -262,39 +262,41 @@ any links that you are not going to use.
 <span class="visually-hidden">Duration: </span>00h 00m
 </td>
 <td>
- 1. <a href="episode1.html">Data Collection: Platforms for RNA-Seq
+ 1. <a href="episode1.html">Introduction: Machine Learning Ready RNA-Seq
 Data</a>
 </td>
 <td>
-Where can I find an RNA-Seq dataset for a ML analysis?<br>What
-characteristics make data appropriate for ML?<br>What format is RNA-Seq
-data stored in?<br>Do I use ‘raw’ or ‘processed’ data?
+What characteristics of a dataset do I need to consider to make it
+‘ready’ for a machine learning /AI modelling analysis?<br>Where can I
+find a publicly available RNA-Seq dataset suitable for a machine
+learning analysis?<br>What format is RNA-Seq data stored in on public
+repositories?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>00h 12m
+<span class="visually-hidden">Duration: </span>00h 11m
 </td>
 <td>
- 2. <a href="episode2.html">Data Collection: Searching ArrayExpress</a>
+ 2. <a href="episode2.html">Data Collection: ArrayExpress</a>
 </td>
 <td>
 What format are processed RNA-Seq dataset store on Array
-Express?<br>Which files do I need to download?<br>How do I search for
-a dataset that meets my requirements on Array Express?<br>How do I
-download and import the data into R?
+Express?<br>How do I search for a dataset that meets my requirements on
+Array Express?<br>Which files do I need to download?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>00h 24m
+<span class="visually-hidden">Duration: </span>00h 26m
 </td>
 <td>
- 3. <a href="episode3.html">Data Collection: Searching GEO</a>
+ 3. <a href="episode3.html">Data Collection: GEO</a>
 </td>
 <td>
-What format are processed RNA-Seq dataset store on GEO?<br>Which files
-do I need to download?<br>How do I search for a dataset that meets my
-requirements on GEO?<br>How do I download and import the data into R?
+What format are processed RNA-Seq dataset store on GEO?<br>How do I
+search for a dataset that meets my requirements on GEO?<br>How do I use
+the R package <code>GEOquery</code> to download datasets from GEO into
+R?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>00h 36m
+<span class="visually-hidden">Duration: </span>00h 46m
 </td>
 <td>
  4. <a href="episode4.html">Data Readiness: Data Format and
@@ -308,7 +310,7 @@ downloaded from public repositories, that I’ll need to address before
 beginning any analysis?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 16m
+<span class="visually-hidden">Duration: </span>01h 26m
 </td>
 <td>
  5. <a href="episode5.html">Data Readiness: Technical Noise</a>
@@ -320,7 +322,7 @@ outlier read counts be effectively removed from RNA-Seq data prior to
 analysis?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 28m
+<span class="visually-hidden">Duration: </span>01h 38m
 </td>
 <td>
  6. <a href="episode6.html">Data Readiness: Distribution and Scale</a>
@@ -332,7 +334,7 @@ transformations and how do these depend on the particular machine
 learning algorithm being employed?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 40m
+<span class="visually-hidden">Duration: </span>01h 50m
 </td>
 <td>
 Finish
@@ -345,18 +347,49 @@ any links that you are not going to use.
  --></tbody></table><p>
       The actual schedule may vary slightly depending on the topics and exercises chosen by the instructor.
       </p>
-      </section><section id="setup"><section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
+      </section><section id="setup"><section id="summary"><h2 class="section-heading">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h2>
+<hr class="half-width"><p>This lesson provides a practical guide to sourcing and pre-processing
+a bulk RNA-Seq dataset for use in a machine learning classification
+task. The lessons explains the characteristics of a dataset required for
+this type of analysis, how to search for and download a dataset from
+each of the main public functional genomics repositories, and then
+provides guidelines on how to pre-process a dataset to make it machine
+learning ready, with detailed examples. The lesson finally explains some
+of the additional data filtering and transformation steps that will
+improve the performance of machine learning algorithms using RNA-Seq
+count data.</p>
+<p>The lesson is written in the context of a supervised machine learning
+classification modelling task, where the goal is to construct a model
+that is able to differentiate two different disease states (e.g. disease
+vs. healthy control) based on the gene expression profile.</p>
+<div id="prereq1" class="callout prereq">
+<div class="callout-square">
+<i class="callout-icon" data-feather="check"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Prereq<a class="anchor" aria-label="anchor" href="#prereq1"></a>
+</h3>
+<div class="callout-content">
+<p>This lesson assumes a working knowledge of programming in R. For
+learners who aren’t familiar with R or feel they need a refresher, the
+<a href="https://swcarpentry.github.io/r-novice-inflammation/index.html" class="external-link">Programming
+with R</a> provides a good introduction to both R and working with R
+studio.</p>
+</div>
+</div>
+</div>
+</section><section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
 </h2>
 <hr class="half-width"><p>This lesson uses a number of RNA-Seq datasets downloaded from public
-functional genomics repositories. The links to the datasets are provided
-in each episode. Create a new RStudio project where you will keep all of
-the files for this lesson. In the project directory (where the .Rproj
-file is), create a subdirectory called data.</p>
-<p>Either download each file as you go along and save to you data
-subdirectory, or alternatively you can download all the files used in
-the lesson in this</p>
-<p>Download the <a href="../data/rna-seq-ml-readiness-data.zip">data zip
-file</a> and unzip it to your data subdirectory.</p>
+functional genomics repositories. Create a new RStudio project where you
+will keep all of the files for this lesson. In the project directory
+(where the .Rproj file is), create a subdirectory called data.</p>
+<p>Links to the dataset and instructions on how to and download provided
+in each episode. Download each data file as instructed and save to you
+data subdirectory. The most important dataset files that we will be
+using throughout the lesson are also provided in the <a href=".././data/rna-seq-ml-readiness-data.zip">data zip file</a>, which you
+can download and unzip to your data subdirectory right away.</p>
 </section><section id="software-setup"><h2 class="section-heading">Software Setup<a class="anchor" aria-label="anchor" href="#software-setup"></a>
 </h2>
 <hr class="half-width"><div id="r-and-rstudio" class="callout discussion">
@@ -371,8 +404,6 @@ file</a> and unzip it to your data subdirectory.</p>
 are instructions for installing R, RStudio, and additional R packages
 for all the main operating systems in the <a href="https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio" class="external-link">R
 Ecology Lesson</a>.</p>
-<div class="section level3">
-<h3 id="r-packages">R Packages<a class="anchor" aria-label="anchor" href="#r-packages"></a></h3>
 <p>Please install the following R packages. You will need to install the
 package <code>BiocManager</code> to be able to install packages from
 Bioconductor.</p>
@@ -393,9 +424,8 @@ BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
 following command, which will return <code>character(0)</code> if all
 packages have been successfully installed.</p>
 <pre class="{r}"><code><span></span>
-<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"here"</span>, <span class="st">"BiocManager"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
+<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"here"</span>, <span class="st">"BiocManager"</span>, <span class="st">"Biobase"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
 <span>        <span class="fu">rownames</span><span class="op">(</span><span class="fu">installed.packages</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
-</div>
 </div>
 </div>
 </div>
@@ -408,7 +438,7 @@ any links that you are not going to use.
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link float-end" href="../instructor/episode1.html" rel="next">Next: Data Collection:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/episode1.html" rel="next">Next: Introduction:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
     </nav></div>
 <!-- END  : inst/pkgdown/templates/content-syllabus.html -->

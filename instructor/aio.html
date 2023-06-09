@@ -177,7 +177,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="episode1.html">1. Data Collection: Platforms for RNA-Seq Data</a>
+        <a href="episode1.html">1. Introduction: Machine Learning Ready RNA-Seq Data</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -189,7 +189,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="episode2.html">2. Data Collection: Searching ArrayExpress</a>
+        <a href="episode2.html">2. Data Collection: ArrayExpress</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -201,7 +201,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="episode3.html">3. Data Collection: Searching GEO</a>
+        <a href="episode3.html">3. Data Collection: GEO</a>
     </div>
 <!--/div.accordion-header-->
         
@@ -299,12 +299,12 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="aio-episode1"><p>Content from <a href="episode1.html">Data Collection: Platforms for RNA-Seq Data</a></p>
+<section id="aio-episode1"><p>Content from <a href="episode1.html">Introduction: Machine Learning Ready RNA-Seq Data</a></p>
 <hr>
 <p> Last updated on 2023-06-09 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode1.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
+<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 11 minutes </p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -316,10 +316,11 @@
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>Where can I find an RNA-Seq dataset for a ML analysis?</li>
-<li>What characteristics make data appropriate for ML?</li>
-<li>What format is RNA-Seq data stored in?</li>
-<li>Do I use ‘raw’ or ‘processed’ data?</li>
+<li>What characteristics of a dataset do I need to consider to make it
+‘ready’ for a machine learning /AI modelling analysis?</li>
+<li>Where can I find a publicly available RNA-Seq dataset suitable for a
+machine learning analysis?</li>
+<li>What format is RNA-Seq data stored in on public repositories?</li>
 </ul>
 </div>
 </div>
@@ -329,40 +330,93 @@
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
+<li>Describe the factors that must be considered in readying an RNA-Seq
+dataset for a machine learning analysis?</li>
 <li>Recall the main platforms hosting functional genomic datasets</li>
-<li>Recall the features of a gene expression dataset that make it more
-appropriate for ML</li>
-<li>Explain the difference between raw and processed RNA-Seq data</li>
-<li>Recall the different stages of processing observed in public
-datasets</li>
+<li>Explain the difference between raw and processed RNA-Seq data, and
+the different stages of processing for RNA-Seq data</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<section id="introduction"><h2 class="section-heading">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<section id="dataset-characteristics-for-supervised-learning"><h2 class="section-heading">Dataset Characteristics for supervised learning<a class="anchor" aria-label="anchor" href="#dataset-characteristics-for-supervised-learning"></a>
 </h2>
 <hr class="half-width">
-<p>This lesson provides a practical guide to sourcing and pre-processing
-a bulk RNA-Seq dataset for use in a machine learning classification
-task. The lessons explains the characteristics of a dataset required for
-this type of analysis, how to search for and download a dataset from
-each of the main public functional genomics repositories, and then
-provides guidelines on how to pre-process a dataset to make it machine
-learning ready, with detailed examples. The lesson finally explains some
-of the additional data filtering and transformation steps that will
-improve the performance of machine learning algorithms using RNA-Seq
-count data.</p>
-<p>The lesson is written in the context of a supervised machine learning
-classification modelling task, where the goal is to construct a model
-that is able to differentiate two different disease states (e.g. disease
-vs. healthy control) based on the gene expression profile.</p>
+<p>The success of a ML/AI model depends heavily on the input data.
+Finding an appropriate dataset can be a challenge and the data must be
+selected carefully as a predictive model trained on the unreliable or
+inappropriate data will produce unreliable predictions.</p>
+<p>There is currently no curated “ML/AI ready” datasets that meet the
+requirements of machine learning analyses within public functional
+genomics repositories. It is therefore important to examine a data set
+carefully to confirm its appropriateness for a supervised machine
+learning task. The following characteristics of the data should be
+considered:</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="75%">
+</colgroup>
+<thead><tr class="header">
+<th>Characteristic</th>
+<th>Considerations</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Quality and Provenance</strong></td>
+<td>Assess source of the data, its likely quality and whether it is
+recognised by the community, for example having been used in highly
+regarded publications. Datasets must have sufficient metadata, including
+accurate and reliable class labels, ideally connected to a
+domain-specific or community-specific ontology so that the meaning is
+widely interpretable and comparable between studies.</td>
+</tr>
+<tr class="even">
+<td><strong>Size</strong></td>
+<td>Ensure the data set captures the full complexity of the underlying
+distribution. If there is significant biological heterogeneity in the
+sample population, will there be sufficient samples to create
+independent and representative train, validation and tests sets? Bulk
+RNA-Seq datasets with only a few samples for each group are unlikely to
+be sufficient to train a machine learning classifier.</td>
+</tr>
+<tr class="odd">
+<td><strong>Format and Integrity</strong></td>
+<td>Machine learning models require data to be machine readable and
+input in a specific format. Data collected experimentally and data
+acquired from public repositories will likely need to be reformatted and
+checked for integrity issues.</td>
+</tr>
+<tr class="even">
+<td><strong>Technical Noise</strong></td>
+<td>RNA-Seq data is likely to contain some technical noise resulting
+from experiential processes that is unrelated to the underlying biology.
+This has the potential to bias machine learning algorithms and should be
+identified and ideally removed.</td>
+</tr>
+<tr class="odd">
+<td><strong>Distribution and Scale</strong></td>
+<td>Many machine learning algorithms are sensitive to the distribution
+and the scale of the input data. RNA-Seq data must be transformed and
+re-scaled to perform well in a machine learning analysis.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>In this lesson, we will address each of these issues in turn, working
+through the collection of a RNA-Seq dataset, reformatting, integrity
+checking, noise elimination, transformation and rescaling to make the
+data ready for machine learning. Further information on some of the data
+considerations in supervised machine learning with biological data can
+be found in the <a href="https://www.nature.com/articles/s41592-021-01205-4" class="external-link">DOME
+recommendations</a>.</p>
 </section><section id="functional-genomics-platforms"><h2 class="section-heading">Functional Genomics platforms<a class="anchor" aria-label="anchor" href="#functional-genomics-platforms"></a>
 </h2>
 <hr class="half-width">
 <p>There are two major public repositories for sourcing public
-functional genomics data sets, in particular microarry and
+functional genomics data sets, in particular microarray and
 next-generation sequencing data. Here we focus on NGS data, in
 particular RNA-Seq transcriptomics datasets:</p>
 <ol style="list-style-type: decimal">
@@ -377,114 +431,87 @@ Information, part of the US National Institues of Health.</p></li>
 <p>Each database contains thousands of RNA-Seq datasets relating to a
 wide variety of experiments, not all of which would be suitable for
 analysis with a machine learning approach.</p>
-</section><section id="dataset-characteristics-for-supervised-learning"><h2 class="section-heading">Dataset Characteristics for supervised learning<a class="anchor" aria-label="anchor" href="#dataset-characteristics-for-supervised-learning"></a>
-</h2>
-<hr class="half-width">
-<p>The success of a ML/AI model depends heavily on the input data.
-Finding an appropriate dataset can be a challenge and the data must be
-selected carefully as a predictive model trained on the unreliable or
-inappropriate data will produce unreliable predictions.</p>
-<p>There is currently no curated “ML/AI ready” datasets that meet the
-requirements of machine learning analyses within the ArrayExpress or GEO
-repositories. It is therefore important to conduct careful searches and
-examine the data sets identified to confirm their appropriateness for a
-supervised machine learning task. The following characteristics of the
-data should be considered:</p>
-<ul>
-<li>Data provenance. The source of the data, its likely quality and
-whether it is recognised by the community, for example having been used
-in highly regarded publications.</li>
-<li>Dataset size. Ensure the data set captures the full complexity of
-the underlying distribution, for example, the biological heterogeneity
-in the sample population, and that there are sufficient samples to
-create independent train, validation and tests sets within the dataset.
-Bulk RNA-Seq datasets with only a few samples for each group are
-unlikely to be sufficient as a training dataset. If examples are grouped
-in classes, there must be sufficient examples available in each
-class.</li>
-<li>Metadata Quality. Training data in classification task require
-accurate and reliable labels. Datasets must have sufficient metadata,
-ideally connected to a domain-specific or community-specific ontology so
-that the meaning is widely interpretable and comparable between
-studies.</li>
-</ul>
-<p>Further information on data considerations in supervised machine
-learning with biological data can be found in the <a href="https://www.nature.com/articles/s41592-021-01205-4" class="external-link">DOME
-recommendations</a>.</p>
-<div id="accordionInstructor1" class="accordion instructor-note accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
-  <h3 class="accordion-header" id="headingInstructor1">
-  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div>
-  Instructor Note
-  </h3>
-</button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
-<div class="accordion-body">
-<p>Add instructor notes here</p>
-</div>
-</div>
-</div>
-</div>
 </section><section id="raw-vs.-processed-data"><h2 class="section-heading">Raw vs. Processed Data<a class="anchor" aria-label="anchor" href="#raw-vs.-processed-data"></a>
 </h2>
 <hr class="half-width">
-<p>Data sets will contain both raw and processed RNA-Seq data data sets,
-as well as information about the relationship between the RNA-Seq data
-and study samples, and the design of the experiment.</p>
-<ul>
-<li><p>Raw RNA-Seq data consists of the sequences of each read obtained
-from the sequencing instrument, along with quality scores for each
-sequence, and is typically stored in FASTQ file format.</p></li>
-<li><p>Processed data refers to abundance data for the feature of
-interest, which may be genes, transcripts, exons or miRNAs. Processed
-RNA-Seq data is typically stored as a matrix in .csv or .txt format,
-with the names of each sample on one axis, and the unique identifiers of
-each feature of interest on the other. Processed data is often generated
-at different levels:</p></li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Raw counts of sequencing reads for each feature of interest
-(e.g. integer counts of the number of reads mapped to a given gene)</li>
-<li>Normalised abundance measurements, further processed to account for
-sequence depth and/or gene length such as TPM and FPKM (output using
-DESeq2, edgeR)</li>
-<li>Normalised and transformed adundance measurements with normalisation
-and further transformation applied such as log2 or variance stabilising
-transformation (vst) applied</li>
-</ol>
-<p>The features of interset, say transcripts, may also have been
-filtered to remove transcripts with read counts below a particular
-threshold. Transcripts may also be summarised to genes. It is important
-to carefully read the protocols to understand exactly what the processed
-data actually is, and if appropriate to your task.</p>
-<p>The data may be stored in a matrix transcripts IDs and samples.
-Alternatively there may be a separate file for each sample that need to
-be combined to create a matrix for all samples.</p>
-<p>The description “processed” therefore means different things in
-different studies. It is important therefore to read the study protocol
-to determine how the data has been processed.</p>
-<p>A quick summary of raw vs. processed data:</p>
-<table class="table">
+<p>Public datasets will contain both raw and processed RNA-Seq data, as
+well as information about the relationship between the RNA-Seq data and
+study samples, and the design of the experiment. Here is a brief summary
+of the difference between raw and processed RNA-Seq data:</p>
+<p><br></p>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="16%">
+<col width="66%">
+<col width="16%">
+</colgroup>
 <thead><tr class="header">
 <th>Data Type</th>
-<th>Raw</th>
+<th>What it is</th>
+<th>File Format</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Contains</td>
-<td>Strings of based pair sequence</td>
+<td><strong>Raw data</strong></td>
+<td>Sequences of each read obtained from the sequencing instrument,
+along with quality scores for each sequence</td>
+<td>FASTQ</td>
 </tr>
 <tr class="even">
-<td>File Format</td>
-<td>fastq</td>
+<td><strong>Processed data</strong></td>
+<td>Matrix of abundance values (e.g. integer counts) for the feature of
+interest, which may be genes, transcripts, exons or miRNAs</td>
+<td>.csv / .txt / .tsv</td>
 </tr>
 </tbody>
 </table>
 <p>For more information on the fastq file format, see <a href="https://www.youtube.com/watch?v=tO2H3zuBouw" class="external-link">RDMBites | FASTQ
-Format</a>. For further information on the processing of raw fastq to
-gene abundance data, see <a href="https://www.youtube.com/watch?v=3Pe9xcGF_Wo" class="external-link">RDMbites | RNAseq
+Format</a> and for information on the processing of raw fastq to gene
+abundance data, see <a href="https://www.youtube.com/watch?v=3Pe9xcGF_Wo" class="external-link">RDMbites | RNAseq
 expression data</a>.</p>
+<p><br></p>
+<div id="callout1" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout<a class="anchor" aria-label="anchor" href="#callout1"></a>
+</h3>
+<div class="callout-content">
+<p>The description “processed” means different things in different
+studies. Things to be aware of:</p>
+<ol style="list-style-type: decimal">
+<li>Data is often generated and made available at different levels:</li>
+</ol>
+<ul>
+<li>
+<strong>Raw abundance</strong> of sequencing reads for each feature
+of interest (e.g. integer counts of the number of reads mapped to a
+given gene)</li>
+<li>
+<strong>Normalised abundance </strong>, further processed to account
+for sequence depth and/or gene length such as TPM and FPKM (output using
+DESeq2, edgeR)</li>
+<li>
+<strong>Normalised and transformed</strong> adundance with
+normalisation and further transformation applied such as log2 or
+variance stabilising transformation (vst) applied</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><p>The features of interest, say transcripts, may also have been
+filtered to remove transcripts with read counts below a particular
+threshold.</p></li>
+<li><p>Transcripts may have been summarised to genes.</p></li>
+<li><p>The data may be given as a matrix of features of interest and
+samples. Alternatively there may be a separate file for each sample that
+need to be combined.</p></li>
+</ol>
+<p><strong>It is important to carefully read the protocols to understand
+determine how the data has been processed and if is appropriate for your
+task.</strong></p>
+</div>
+</div>
+</div>
 <div id="challenge-1" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -493,7 +520,7 @@ expression data</a>.</p>
 <h3 class="callout-title">Challenge 1:<a class="anchor" aria-label="anchor" href="#challenge-1"></a>
 </h3>
 <div class="callout-content">
-<p>What type of data do you need to look for on a gene expression data
+<p>What type of data do you need to look for in a gene expression data
 repository as input to a machine learning modelling analysis?</p>
 </div>
 </div>
@@ -509,8 +536,7 @@ repository as input to a machine learning modelling analysis?</p>
 <div class="accordion-body">
 <p>The starting point for a machine learning model is processed RNA-Seq
 data, in the form of count data. This could be raw count data, or TPM or
-FPKM pre-processed data. The data will likely need further
-pre-processing before input to a ML model as discussed in Episode X.</p>
+FPKM pre-processed data.</p>
 </div>
 </div>
 </div>
@@ -524,12 +550,13 @@ pre-processing before input to a ML model as discussed in Episode X.</p>
 </h3>
 <div class="callout-content">
 <ul>
-<li>Consider dataset provenance, dataset size and label quality when
-selecting a RNA-Seq dataset for ML</li>
-<li>The two main repositories for RNA-Seq dataset are ArrayExpress and
-GEO</li>
+<li>Sourcing and appropriate RNA-Seq dataset and preparing it for a
+machine learning analysis requires you to consider the dataset quality,
+size, format, noise content, data distribution and scale</li>
+<li>The two main repositories for sourcing RNA-Seq datasets are
+ArrayExpress and GEO</li>
 <li>Processed data, in the form of raw counts, or further processed
-counts data is the starting point for analysis</li>
+counts data is the starting point for machine learning analysis</li>
 </ul>
 </div>
 </div>
@@ -538,12 +565,12 @@ counts data is the starting point for analysis</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
-</section></section><section id="aio-episode2"><p>Content from <a href="episode2.html">Data Collection: Searching ArrayExpress</a></p>
+</section></section><section id="aio-episode2"><p>Content from <a href="episode2.html">Data Collection: ArrayExpress</a></p>
 <hr>
 <p> Last updated on 2023-06-09 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode2.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
+<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 15 minutes </p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -557,10 +584,9 @@ any links that you are not going to use.
 <ul>
 <li>What format are processed RNA-Seq dataset store on Array
 Express?</li>
-<li>Which files do I need to download?</li>
 <li>How do I search for a dataset that meets my requirements on Array
 Express?</li>
-<li>How do I download and import the data into R?</li>
+<li>Which files do I need to download?</li>
 </ul>
 </div>
 </div>
@@ -587,40 +613,56 @@ learning task (e.g., binary classification)</li>
 <section id="arrayexpress-file-formats"><h2 class="section-heading">ArrayExpress File Formats<a class="anchor" aria-label="anchor" href="#arrayexpress-file-formats"></a>
 </h2>
 <hr class="half-width">
-<p>Array Express data sets comprise of three important files. Each
-experiment is stored in <a href="https://www.ebi.ac.uk/biostudies/misc/MAGE-TABv1.1_2011_07_28.pdf" class="external-link">MAGE-TAB
-format</a>. There are four key files:</p>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Sample and Data Relationship Format (SDRF)</strong>. The
-tab-delimited SDRF file contains information about the samples, such as
+<p>Array Express data sets comprise of four important file types that
+contain all of the information about an experiment:</p>
+<p><br></p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="75%">
+</colgroup>
+<thead><tr class="header">
+<th>File Type</th>
+<th>What It Is</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Sample and Data Relationship Format (SDRF)</strong></td>
+<td>Tab-delimited file containing information about the samples, such as
 phenotypical information, and factors that may be of interest in a
 classification task. This file may also contain information about the
 relationships between the samples, and details of the file names of the
-raw data fastq for each sample.</li>
-<li>
-<strong>Investigation Description Format (IDF)</strong>. The
-tab-delimited IDF file contains top level information about the
+raw data fastq for each sample.</td>
+</tr>
+<tr class="even">
+<td><strong>Investigation Description Format (IDF)</strong></td>
+<td>Tab-delimited file containing top level information about the
 experiment including title, description, submitter contact details and
-protocols.</li>
-<li>
-<strong>Raw data files</strong>. These are typically sequence data
-stored in fastq format. In some data sets, the term raw data may refer
-to raw counts data, meaning RNA-Seq counts that have not undergone
-further processing.</li>
-<li>
-<strong>Processed data files</strong>. These may refer to raw counts
-data (i.e. data processed to counts from fastq) or counts data that has
-undergone further processing such as conversion to FPKM or TPM
-values.</li>
-</ol>
-<p>Raw or processed counts data may be provided as a separate txt files
-for each sample, or as a matrix of all samples in .csv, .tsv and other
-formats.</p>
+protocols.</td>
+</tr>
+<tr class="odd">
+<td><strong>Raw data files</strong></td>
+<td>Sequence data and quality scores, typically stored in FASTQ format.
+There is however inconsistency - in some data sets, the term raw data
+refers to processed data in the form of raw counts data, meaning RNA-Seq
+counts that have not undergone further processing.</td>
+</tr>
+<tr class="even">
+<td><strong>Processed data files</strong></td>
+<td>Processed data which includes raw counts or further processed
+abundance measures such as TPM and FPKM. The data may be provided as a
+separate file for each sample, or as a matrix of all samples</td>
+</tr>
+</tbody>
+</table>
+<p>Detailed information about BioStudies file formats is available in
+the <a href="https://www.ebi.ac.uk/biostudies/misc/MAGE-TABv1.1_2011_07_28.pdf" class="external-link">MAGE-TAB
+Specification document</a>.</p>
+<p><br></p>
 </section><section id="searching-for-a-dataset-on-arrayexpress"><h2 class="section-heading">Searching for a Dataset on ArrayExpress<a class="anchor" aria-label="anchor" href="#searching-for-a-dataset-on-arrayexpress"></a>
 </h2>
 <hr class="half-width">
-<p>We’ll use ArrayExpress to select a RNA-Seq dataset with a case
+<p>We will use ArrayExpress to select a RNA-Seq dataset with a case
 control design, suitable for constructing a machine learning
 classification model. Machine learning based analyses generally perform
 better the larger the sample size, and may perform very poorly and give
@@ -630,7 +672,7 @@ datasets with a relatively large number of samples.</p>
 home page</a>.</p>
 <p><br></p>
 <figure><img src="../fig/biostudies_home_page.jpg" alt="Screen Shot of Array Express Collection Tab" class="figure mx-auto d-block"><figcaption>ArrayExpress Home Page</figcaption></figure><p><br></p>
-<p>We’ll apply the following filters to refine the results set. Leave
+<p>We’ll apply the following filters to refine the results set, leaving
 all other filters as the default with no selection:</p>
 <p><br></p>
 <table class="table">
@@ -657,25 +699,33 @@ all other filters as the default with no selection:</p>
 </tr>
 <tr class="odd">
 <td>Processed Data Available</td>
-<td>check</td>
+<td>yes (check box)</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
-<p>Now use the sort to sort the results by “Samples”, in descending
-order. The results should look similar to this:</p>
+<p>Now use the sort in the top right of the screen to sort the results
+by “Samples”, in descending order. The results should look similar to
+this:</p>
 <p><br></p>
 <figure><img src="../fig/biostudies_home_filtered.jpg" alt="Screen Shot of Array Express Collection Tab Filtered Results" class="figure mx-auto d-block"><figcaption>ArrayExpress Filtered Results</figcaption></figure></section><section id="illustrative-dataset-ibd-dataset"><h2 class="section-heading">Illustrative Dataset: IBD Dataset<a class="anchor" aria-label="anchor" href="#illustrative-dataset-ibd-dataset"></a>
 </h2>
 <hr class="half-width">
 <p>In the search results displayed above, the top ranked dataset is
-E-MTAB-11349, Whole blood expression profiling of patients with
-inflammatory bowel diseases in the IBD-Character cohort. We’ll call it
-the <a href="https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-11349" class="external-link">IBD
+E-MTAB-11349: <em>Whole blood expression profiling of patients with
+inflammatory bowel diseases in the IBD-Character cohort</em>. We’ll call
+it the <a href="https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-11349" class="external-link">IBD
 dataset</a>.</p>
-<p>The IBD dataset (E-MTAB-11349) comprises human samples of patients
-with inflammatory bowel diseases and controls. Let’s look at some of the
-basic information on this dataset:</p>
+<p>The IBD dataset comprises human samples of patients with inflammatory
+bowel diseases and controls. The ‘Protocols’ section explains the main
+steps in the generation of the data. The nucleic acid sequencing
+protocol gives details of the sequencing platform used to generate the
+raw fastq data, and the version of the human genome used in the
+alignment step to generate the count data. The normalization data
+transformation protocol gives the tools used to normalise raw counts
+data for sequence depth and sample composition, in this case
+normalisation is conducted using the R package DESeq2. Let’s look at
+some of the basic information on this dataset:</p>
 <p><br></p>
 <table class="table">
 <thead><tr class="header">
@@ -698,15 +748,7 @@ basic information on this dataset:</p>
 </tbody>
 </table>
 <p><br></p>
-<p>The ‘Protocols’ section explains the main steps in the generation of
-the data. The nucleic acid sequencing protocol gives details of the
-sequencing platform used to generate the raw fastq data, and the version
-of the human genome used in the alignment step to generate the count
-data. The normalization data transformation protocol gives the tools
-used to normalise raw counts data for sequence depth and sample
-composition, in this case normalisation is conducted using the R package
-DESeq2.</p>
-<p>The dataset provides two alternative sets of processed data, a matrix
+<p>The dataset contains two alternative sets of processed data, a matrix
 of raw counts, and a matrix of processed counts that have been
 normalised using DESeq2, and filtered to only include transcripts with a
 mean raw expression read count &gt; 10.</p>
@@ -716,16 +758,19 @@ mean raw expression read count &gt; 10.</p>
 <p>Let’s download the SDRF file and the raw counts matrix - these are
 the two files that contain the information we will need to build a
 machine learning classification model. In the data files box to the
-right hand side, check three of the three files E-MTAB-11349.sdrf.txt,
-E-MTAB-11349.idf.txt and ArrayExpress-raw.csv, and save in a folder
-called data in the working directory for your R workbook.</p>
+right hand side, check the follwoing two files
+<code>E-MTAB-11349.sdrf.txt</code> and
+<code>ArrayExpress-raw.csv</code>, and save in a folder called
+<code>data</code> in the working directory for your R workbook. For
+consistency, rename <code>ArrayExpress-raw.csv</code> as
+<code>E-MTAB-11349.counts.matrix.csv</code>.</p>
 <p><br></p>
 <div class="section level3">
 <h3 id="raw-counts-matrix">Raw counts matrix<a class="anchor" aria-label="anchor" href="#raw-counts-matrix"></a>
 </h3>
-<p>Let’s read in the raw counts data and check the dimensions of the
-matrix to confirm we have the expected number of samples and transcript
-IDs.</p>
+<p>In R studio, open your project workbook and read in the raw counts
+data. Then check the dimensions of the matrix to confirm we have the
+expected number of samples and transcript IDs.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -800,7 +845,8 @@ IDs are formatted.</p>
 <div class="section level3">
 <h3 id="sdrf-file">SDRF File<a class="anchor" aria-label="anchor" href="#sdrf-file"></a>
 </h3>
-<p>Read the sdrf file into R and check the dimensions of the file.</p>
+<p>Now let’s read the sdrf file into R and check the dimensions of the
+file.</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -827,8 +873,9 @@ IDs are formatted.</p>
 </h3>
 <pre class="output" tabindex="0"><code>[1] "There are 32 columns, corresponding to the available variables for each sample"</code></pre>
 </div>
-<p>Examine the column names, which describe the variables available for
-each samples in the data.</p>
+<p>If we view the column names, we can see that the file does indeed
+contain a set of variables describing both phenotypical and experimental
+protocol information relating to each sample.</p>
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -885,8 +932,8 @@ experiment: 1. Sample and Data Relationship Format (SDRF) and 2.
 Investigation Description Format (IDF).</li>
 <li>ArrayExpress provides raw and processed data for RNA-Seq datasets,
 typically stored as csv, tsv, or txt files.</li>
-<li>The basic filers on the ArrayExpress website allow you to select and
-download a dataset that meets your needs</li>
+<li>The filters on the ArrayExpress website allow you to select and
+download a dataset that suit your task.</li>
 </ul>
 </div>
 </div>
@@ -896,12 +943,12 @@ Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
 </div>
-</section></section><section id="aio-episode3"><p>Content from <a href="episode3.html">Data Collection: Searching GEO</a></p>
+</section></section><section id="aio-episode3"><p>Content from <a href="episode3.html">Data Collection: GEO</a></p>
 <hr>
 <p> Last updated on 2023-06-09 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode3.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 12 minutes </p>
+<p>Estimated time <i aria-hidden="true" data-feather="clock"></i> 20 minutes </p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right"> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -914,10 +961,10 @@ any links that you are not going to use.
 <h3 class="card-title">Questions</h3>
 <ul>
 <li>What format are processed RNA-Seq dataset store on GEO?</li>
-<li>Which files do I need to download?</li>
 <li>How do I search for a dataset that meets my requirements on
 GEO?</li>
-<li>How do I download and import the data into R?</li>
+<li>How do I use the R package <code>GEOquery</code> to download
+datasets from GEO into R?</li>
 </ul>
 </div>
 </div>
@@ -941,7 +988,7 @@ files from GEO suitable for a simple supervised machine learning task
 </div>
 </div>
 </div>
-<section id="geo-data-objects-and-file-formats"><h2 class="section-heading">GEO Data Objects and File Formats<a class="anchor" aria-label="anchor" href="#geo-data-objects-and-file-formats"></a>
+<section id="geo-data-objects"><h2 class="section-heading">GEO Data Objects<a class="anchor" aria-label="anchor" href="#geo-data-objects"></a>
 </h2>
 <hr class="half-width">
 <p>NCBI ‘gene expression omnibus’ , GEO, one of the largest repositories
@@ -949,10 +996,10 @@ for functional genomics data. GEO data are stored as individual samples,
 series of samples and curated datasets. Accession numbers of GEO broadly
 fall into four categories:</p>
 <ul>
-<li>GSM - GEO samples. These refer to a single sample.</li>
-<li>GSE - GEO series. These refer to a list of GEO samples that together
+<li>GSM - GEO Sample. These refer to a single sample.</li>
+<li>GSE - GEO Series. These refer to a list of GEO samples that together
 form a single experiment.</li>
-<li>GDS - GEO Datasets. These are curated datasets containing summarised
+<li>GDS - GEO Dataset. These are curated datasets containing summarised
 information from the underlying GEO samples.</li>
 </ul>
 <p>There are many more datasets available as series than there are
@@ -968,7 +1015,7 @@ microarray studies):</p>
 </ol>
 <p>The metadata is equivalent to sample data relationship information
 provided on ArrayExpress and refers to the descriptive information about
-the overall study and invididual samples, as well as protocil
+the overall study and individual samples, as well as protocol
 information and references to the raw and processed data files names for
 each sample. Metadata is typically stored in a number of standard
 formats on GEO:</p>
@@ -1044,8 +1091,8 @@ neutrophils in Covid-19+ patients named “Longitudinal characterization
 of circulating neutrophils uncovers phenotypes associated with severity
 in hospitalized COVID-19 patients” and comprises longitudinal human
 samples from 306 hospitalized COVID-19+ patients, 78 symptomatic
-controls, and 8 healthy controls for a total of 781 samples. We’ll call
-it the <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE212041" class="external-link">Covid-19
+controls, and 8 healthy controls, each at multiple time points, with a
+total of 781 samples. We’ll call it the <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE212041" class="external-link">Covid-19
 dataset</a>. Processed data is provided as raw counts and TPM normalised
 counts in the Supplementary files.</p>
 <p>Let’s look at some of the basic information on this dataset:</p>
@@ -1135,8 +1182,8 @@ GSE212041.</p>
 file?<a class="anchor" aria-label="anchor" href="#challenge-1-how-many-samples-are-in-each-file"></a>
 </h3>
 <div class="callout-content">
-<p>Write the code to determine how many samples are in each of the
-files</p>
+<p>Write the code to check that the number of samples in each file gives
+us the total expected number of 781 samples.</p>
 </div>
 </div>
 </div>
@@ -1166,9 +1213,9 @@ file 2: 765 samples</code></pre>
 </div>
 </div>
 <p><br></p>
-<p>Extract the metadata for the larger dataset and examimne the column
-names, which describe the variables available for each samples in the
-data.</p>
+<p>Extract the metadata for the larger dataset and examine the column
+names to verify that the file contains the expected metadata about the
+experiment.</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -1371,16 +1418,15 @@ dataset of 760 TB patients.</p>
 </div>
 </div>
 </div>
-<div id="challenge-4-how-have-the-counts-data-been-processed-in-this-dataset" class="callout challenge">
+<div id="challenge-4" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-4-how-have-the-counts-data-been-processed-in-this-dataset" class="callout-inner">
-<h3 class="callout-title">Challenge 4: How have the counts data been
-processed in this dataset?<a class="anchor" aria-label="anchor" href="#challenge-4-how-have-the-counts-data-been-processed-in-this-dataset"></a>
+<div id="challenge-4" class="callout-inner">
+<h3 class="callout-title">Challenge 4:<a class="anchor" aria-label="anchor" href="#challenge-4"></a>
 </h3>
 <div class="callout-content">
-
+<p>How have the counts data been processed in this dataset?</p>
 </div>
 </div>
 </div>
@@ -1490,20 +1536,6 @@ new dataset</li>
 </ul>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div id="prereq1" class="callout prereq">
-<div class="callout-square">
-<i class="callout-icon" data-feather="check"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Prereq<a class="anchor" aria-label="anchor" href="#prereq1"></a>
-</h3>
-<div class="callout-content">
-<p>Learners will needs access to the files downloaded from ArrayExpress
-in Episode 2 of this lesson and should be familiar with what each file
-contains. The data is also available in the lesson data zip file.</p>
 </div>
 </div>
 </div>
@@ -1711,7 +1743,7 @@ an issue in the sample information for this dataset?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>All of the checklist items apply in this case. Let’s go through
 them…</p>
@@ -1879,7 +1911,7 @@ the code to address these issues?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <ul>
 <li>There is clearly an issue with the coding of the
@@ -2088,7 +2120,7 @@ the counts matrix right away?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <ul>
 <li>Remove the first row, which is in this case totals of counts for
@@ -2208,7 +2240,7 @@ file.</li>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>We renamed the samples in the sample information to remove spaces, so
 we need to do the same here.</p>
@@ -2355,7 +2387,7 @@ is:</p>
   Instructor Note
   </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Here are a number of issues that need addressing in the TB
 dataset:</p>
@@ -2445,7 +2477,7 @@ as the target variable.</p>
   Example code to clean up the sample information
   </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2559,6 +2591,18 @@ data</li>
 </div>
 </div>
 </div>
+<div id="under-development" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="under-development" class="callout-inner">
+<h3 class="callout-title">Under Development<a class="anchor" aria-label="anchor" href="#under-development"></a>
+</h3>
+<div class="callout-content">
+<p>This episode is still actively being developed</p>
+</div>
+</div>
+</div>
 <section id="technial-artefacts-in-rna-seq-data"><h2 class="section-heading">Technial Artefacts in RNA-Seq Data<a class="anchor" aria-label="anchor" href="#technial-artefacts-in-rna-seq-data"></a>
 </h2>
 <hr class="half-width"></section><section id="low-count-filtering"><h2 class="section-heading">Low Count Filtering<a class="anchor" aria-label="anchor" href="#low-count-filtering"></a>
@@ -2633,6 +2677,18 @@ algorithms</li>
 </ul>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div id="under-development" class="callout callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="under-development" class="callout-inner">
+<h3 class="callout-title">Under Development<a class="anchor" aria-label="anchor" href="#under-development"></a>
+</h3>
+<div class="callout-content">
+<p>This episode is still actively being developed</p>
 </div>
 </div>
 </div>
