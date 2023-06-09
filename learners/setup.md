@@ -2,53 +2,50 @@
 title: Setup
 ---
 
-FIXME: Setup instructions live in this document. Please specify the tools and
-the data sets the Learner needs to have installed.
 
 ## Data Sets
 
-<!--
-FIXME: place any data you want learners to use in `episodes/data` and then use
-       a relative link ( [data zip file](data/lesson-data.zip) ) to provide a
-       link to it, replacing the example.com link.
--->
-Download the [data zip file](https://example.com/FIXME) and unzip it to your Desktop
+This lesson uses a number of RNA-Seq datasets downloaded from public functional genomics repositories. The links to the datasets are provided in each episode. Create a new RStudio project where you will keep all of the files for this lesson. In the project directory (where the .Rproj file is), create a subdirectory called data.
+
+Either download each file as you go along and save to you data subdirectory, or alternatively you can download all the files used in the lesson in this 
+
+Download the [data zip file](data/rna-seq-ml-readiness-data.zip) and unzip it to your data subdirectory.
 
 ## Software Setup
 
 ::::::::::::::::::::::::::::::::::::::: discussion
 
-### Details
+### R and RStudio
 
-Setup for different systems can be presented in dropdown menus via a `solution`
-tag. They will join to this discussion block, so you can give a general overview
-of the software used in this lesson here and fill out the individual operating
-systems (and potentially add more, e.g. online setup) in the solutions blocks.
+Learners will need updated versions of R and RStudio installed. There are instructions for installing R, RStudio, and additional R packages for all the main operating systems in the [R Ecology Lesson](https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio).
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::
+### R Packages
 
-:::::::::::::::: solution
+Please install the following R packages. You will need to install the package `BiocManager` to be able to install packages from Bioconductor.
 
-### Windows
+* `tidyverse`
+* `here`
+* `BiocManager`
+* `Biobase`
+* `GEOquery`
+* `DESeq2`
 
-Use PuTTY
+Executing the following lines of code in the R console will install all of these packages
 
-:::::::::::::::::::::::::
+```{r}
 
-:::::::::::::::: solution
+install.packages(c("tidyverse", "here", "BiocManager"))
 
-### MacOS
+BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
 
-Use Terminal.app
+```
 
-:::::::::::::::::::::::::
+You can check that all packages have been installed using the following command, which will return `character(0)` if all packages have been successfully installed.
 
+```{r}
 
-:::::::::::::::: solution
+setdiff(c("tidyverse", "here", "BiocManager", "GEOquery", "DESeq2"),
+        rownames(installed.packages()))
 
-### Linux
-
-Use Terminal
-
-:::::::::::::::::::::::::
-
+```
+::::::::::::::::::::::::::::::::::::::: 

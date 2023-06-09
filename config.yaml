@@ -60,6 +60,11 @@ contact: 'parkinsone@cardiff.ac.uk' # FIXME
 # Order of episodes in your lesson
 episodes:
 - episode1.Rmd
+- episode2.Rmd
+- episode3.Rmd
+- episode4.Rmd
+- episode5.Rmd
+- episode6.Rmd
 
 # Information for Learners
 learners:
