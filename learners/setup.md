@@ -2,14 +2,24 @@
 title: Setup
 ---
 
+## Summary
+
+This lesson provides a practical guide to sourcing and pre-processing a bulk RNA-Seq dataset for use in a machine learning classification task. The lessons explains the characteristics of a dataset required for this type of analysis, how to search for and download a dataset from each of the main public functional genomics repositories, and then provides guidelines on how to pre-process a dataset to make it machine learning ready, with detailed examples. The lesson finally explains some of the additional data filtering and transformation steps that will improve the performance of machine learning algorithms using RNA-Seq count data.
+
+The lesson is written in the context of a supervised machine learning classification modelling task, where the goal is to construct a model that is able to differentiate two different disease states (e.g. disease vs. healthy control) based on the gene expression profile.
+
+:::::::::::::::::::::::::::::::::::::: prereq 
+
+This lesson assumes a working knowledge of programming in R. For learners who aren't familiar with R or feel they need a refresher, the [Programming with R](https://swcarpentry.github.io/r-novice-inflammation/index.html) provides a good introduction to both R and working with R studio.
+
+:::::::::::::::::::::::::::::::::::::::::::::
 
 ## Data Sets
 
-This lesson uses a number of RNA-Seq datasets downloaded from public functional genomics repositories. The links to the datasets are provided in each episode. Create a new RStudio project where you will keep all of the files for this lesson. In the project directory (where the .Rproj file is), create a subdirectory called data.
+This lesson uses a number of RNA-Seq datasets downloaded from public functional genomics repositories. Create a new RStudio project where you will keep all of the files for this lesson. In the project directory (where the .Rproj file is), create a subdirectory called data.
 
-Either download each file as you go along and save to you data subdirectory, or alternatively you can download all the files used in the lesson in this 
+Links to the dataset and instructions on how to and download provided in each episode. Download each data file as instructed and save to you data subdirectory. The most important dataset files that we will be using throughout the lesson are also provided in the [data zip file](./data/rna-seq-ml-readiness-data.zip), which you can download and unzip to your data subdirectory right away.
 
-Download the [data zip file](data/rna-seq-ml-readiness-data.zip) and unzip it to your data subdirectory.
 
 ## Software Setup
 
@@ -18,8 +28,6 @@ Download the [data zip file](data/rna-seq-ml-readiness-data.zip) and unzip it to
 ### R and RStudio
 
 Learners will need updated versions of R and RStudio installed. There are instructions for installing R, RStudio, and additional R packages for all the main operating systems in the [R Ecology Lesson](https://datacarpentry.org/R-ecology-lesson/#Install_R_and_RStudio).
-
-### R Packages
 
 Please install the following R packages. You will need to install the package `BiocManager` to be able to install packages from Bioconductor.
 
@@ -44,7 +52,7 @@ You can check that all packages have been installed using the following command,
 
 ```{r}
 
-setdiff(c("tidyverse", "here", "BiocManager", "GEOquery", "DESeq2"),
+setdiff(c("tidyverse", "here", "BiocManager", "Biobase", "GEOquery", "DESeq2"),
         rownames(installed.packages()))
 
 ```
