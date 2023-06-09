@@ -18,6 +18,14 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+:::::::::::::::::::::::::::::::::::::: callout
+
+## Under Development
+
+This episode is still actively being developed
+
+:::::::::::::::::::::::::::::::::::::: 
+
 ## Technial Artefacts in RNA-Seq Data
 
 

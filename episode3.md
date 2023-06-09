@@ -1,15 +1,14 @@
 ---
-title: "Data Collection: Searching GEO"
-teaching: 10
-exercises: 2
+title: "Data Collection: GEO"
+teaching: 15
+exercises: 5
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What format are processed RNA-Seq dataset store on GEO?
-- Which files do I need to download?
 - How do I search for a dataset that meets my requirements on GEO?
-- How do I download and import the data into R?
+- How do I use the R package `GEOquery` to download datasets from GEO into R?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -22,13 +21,13 @@ exercises: 2
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## GEO Data Objects and File Formats
+## GEO Data Objects
 
 NCBI 'gene expression omnibus' , GEO, one of the largest repositories for functional genomics data. GEO data are stored as individual samples, series of samples and curated datasets. Accession numbers of GEO broadly fall into four categories:
 
-* GSM - GEO samples. These refer to a single sample.
-* GSE - GEO series. These refer to a list of GEO samples that together form a single experiment.
-* GDS - GEO Datasets. These are curated datasets containing summarised information from the underlying GEO samples.
+* GSM - GEO Sample. These refer to a single sample.
+* GSE - GEO Series. These refer to a list of GEO samples that together form a single experiment.
+* GDS - GEO Dataset. These are curated datasets containing summarised information from the underlying GEO samples.
 
 There are many more datasets available as series than there are curated GEO Datasets. For this lesson, we'll focus finding a GEO Series as an illustrative dataset.
 
@@ -39,7 +38,7 @@ Data for RNA-Seq studies have three components on GEO (similar to microarray stu
 
 1. **Metadata**
 
-The metadata is equivalent to sample data relationship information provided on ArrayExpress and refers to the descriptive information about the overall study and invididual samples, as well as protocil information and references to the raw and processed data files names for each sample. Metadata is typically stored in a number of standard formats on GEO:
+The metadata is equivalent to sample data relationship information provided on ArrayExpress and refers to the descriptive information about the overall study and individual samples, as well as protocol information and references to the raw and processed data files names for each sample. Metadata is typically stored in a number of standard formats on GEO:
 
 * SOFT (Simple Omnibus Format in Text) is a line-based plain text format
 * MINiML is an alternative to SOFT and offers an XML rendering of SOFT
@@ -87,7 +86,7 @@ The filtered results page should looks like this:
 
 ## Illustrative Dataset: Covid-19 Dataset
 
-The data set GSE212041 relates to the case-control study of neutrophils in Covid-19+ patients named "Longitudinal characterization of circulating neutrophils uncovers phenotypes associated with severity in hospitalized COVID-19 patients" and comprises longitudinal human samples from  306 hospitalized COVID-19+ patients, 78 symptomatic controls, and 8 healthy controls for a total of 781 samples. We'll call it the [Covid-19 dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE212041). Processed data is provided as raw counts and TPM normalised counts in the Supplementary files.
+The data set GSE212041 relates to the case-control study of neutrophils in Covid-19+ patients named "Longitudinal characterization of circulating neutrophils uncovers phenotypes associated with severity in hospitalized COVID-19 patients" and comprises longitudinal human samples from  306 hospitalized COVID-19+ patients, 78 symptomatic controls, and 8 healthy controls, each at multiple time points, with a total of 781 samples. We'll call it the [Covid-19 dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE212041). Processed data is provided as raw counts and TPM normalised counts in the Supplementary files.
 
 Let's look at some of the basic information on this dataset:
 
@@ -150,7 +149,7 @@ sprintf("Number of files downloaded: %i", length(gse212041))
 
 ## Challenge 1: How many samples are in each file?
 
-Write the code to determine how many samples are in each of the files
+Write the code to check that the number of samples in each file gives us the total expected number of 781 samples.
 
 :::::::::::::::::::::::: solution 
  
@@ -171,7 +170,7 @@ file 2: 765 samples
 
 <br>
 
-Extract the metadata for the larger dataset and examimne the column names, which describe the variables available for each samples in the data.
+Extract the metadata for the larger dataset and examine the column names to verify that the file contains the expected metadata about the experiment.
 
 
 ```r
@@ -328,7 +327,9 @@ sprintf("%i columns, corresponding to samples", dim(raw.counts.geotb)[2])
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 4: How have the counts data been processed in this dataset?
+## Challenge 4:
+
+How have the counts data been processed in this dataset?
 
 :::::::::::::::::::::::: hint 
 

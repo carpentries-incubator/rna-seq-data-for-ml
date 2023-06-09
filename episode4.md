@@ -20,12 +20,6 @@ exercises: 20
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::::::: prereq 
-
-Learners will needs access to the files downloaded from ArrayExpress in Episode 2 of this lesson and should be familiar with what each file contains. The data is also available in the lesson data zip file.
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ## Required format for machine learning libraries
 
