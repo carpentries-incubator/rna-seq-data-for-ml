@@ -33,6 +33,8 @@ Please install the following R packages. You will need to install the package `B
 
 * `tidyverse`
 * `here`
+* `reshape2`
+* `scales`
 * `BiocManager`
 * `Biobase`
 * `GEOquery`
