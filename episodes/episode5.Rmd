@@ -26,7 +26,7 @@ This episode is still actively being developed
 
 :::::::::::::::::::::::::::::::::::::: 
 
-## Technial Artefacts in RNA-Seq Data
+## Technical Artefacts in RNA-Seq Data
 
 Machine learning classification algorithms are highly sensitive to any feature data characteristic, regardless of scale, that may differ between experimental groups, and will exploit these data characteristic differences when training a model. Given this, it is important to make sure that data input into a machine learning model reflects true biological signal, and not technical artefacts or noise that stems from the experimental process used to generate the data.
 
