@@ -26,7 +26,7 @@ This episode is still actively being developed
 
 :::::::::::::::::::::::::::::::::::::: 
 
-## Technial Artefacts in RNA-Seq Data
+## Technical Artefacts in RNA-Seq Data
 
 
 ## Low Count Filtering
