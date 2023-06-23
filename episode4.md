@@ -376,7 +376,7 @@ Can you see the irrelevant information that we need to remove from the counts ma
 
 
 ```r
-counts.mat.idb <- raw.counts.ibd[-1,-1]
+counts.mat.ibd <- raw.counts.ibd[-1,-1]
 ```
 
 ```{.error}
@@ -384,27 +384,27 @@ Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
 ```
 
 ```r
-rownames(counts.mat.idb) <- NULL
+rownames(counts.mat.ibd) <- NULL
 ```
 
 ```{.error}
-Error: object 'counts.mat.idb' not found
+Error: object 'counts.mat.ibd' not found
 ```
 
 ```r
-counts.mat.idb <-  counts.mat.idb %>% column_to_rownames('read')
+counts.mat.ibd <-  counts.mat.ibd %>% column_to_rownames('read')
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 ```r
-counts.mat.idb[1:10,1:6]
+counts.mat.ibd[1:10,1:6]
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 ::::::::::::::::::::::::::
@@ -417,19 +417,19 @@ Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
 
 
 ```r
-which(duplicated(rownames(counts.mat.idb)))
+which(duplicated(rownames(counts.mat.ibd)))
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 ```r
-which(duplicated(colnames(counts.mat.idb)))
+which(duplicated(colnames(counts.mat.ibd)))
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 <br>
@@ -438,11 +438,11 @@ Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
 
 
 ```r
-if(!identical(colnames(counts.mat.idb), samp.info.ibd.sel$sampleID)){stop()}
+if(!identical(colnames(counts.mat.ibd), samp.info.ibd.sel$sampleID)){stop()}
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -457,11 +457,11 @@ We renamed the samples in the sample information to remove spaces, so we need to
 
 
 ```r
-colnames(counts.mat.idb) <- gsub(x = colnames(counts.mat.idb), pattern = "\ ", replacement = "_")
+colnames(counts.mat.ibd) <- gsub(x = colnames(counts.mat.ibd), pattern = "\ ", replacement = "_")
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 :::::::::::::::::::::::: 
@@ -476,11 +476,11 @@ Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
 ```r
 allMissValues <- function(x){all(is.na(x) | x == "")}
 
-allMissValues(counts.mat.idb)
+allMissValues(counts.mat.ibd)
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 <br>
@@ -489,27 +489,27 @@ Take a final look at the cleaned up matrix.
 
 
 ```r
-counts.mat.idb[1:10,1:6]
+counts.mat.ibd[1:10,1:6]
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 ```r
-sprintf("There are %i rows, corresponding to the transcript IDs", dim(counts.mat.idb)[1])
+sprintf("There are %i rows, corresponding to the transcript IDs", dim(counts.mat.ibd)[1])
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 ```r
-sprintf("There are %i columns, corresponding to the samples", dim(counts.mat.idb)[2])
+sprintf("There are %i columns, corresponding to the samples", dim(counts.mat.ibd)[2])
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.idb' not found
+Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 ```
 
 <br>
@@ -518,7 +518,7 @@ And save the output as a file.
 
 ```r
 
-write.table(counts.mat.idb, file="./data/counts.mat.idb.txt", sep = '\t', quote = FALSE, row.names = FALSE)
+write.table(counts.mat.ibd, file="./data/counts.mat.ibd.txt", sep = '\t', quote = FALSE, row.names = TRUE)
 
 ```
 
