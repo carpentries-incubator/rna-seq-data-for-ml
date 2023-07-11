@@ -262,7 +262,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Data Readiness: Technical Noise</h1>
-        <p> Last updated on 2023-07-04 | 
+        <p> Last updated on 2023-07-11 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode5.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -461,11 +461,17 @@ used see <a href="https://www.youtube.com/watch?v=tO2H3zuBouw" class="external-l
 <span>    design <span class="op">=</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
+<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="warning" tabindex="0"><code>Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</code></pre>
+</div>
+<div class="codewrapper">
 <h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="error" tabindex="0"><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'ncol': object 'counts.mat.ibd' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -477,7 +483,7 @@ used see <a href="https://www.youtube.com/watch?v=tO2H3zuBouw" class="external-l
 </h3>
 <pre class="error" tabindex="0"><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'estimateSizeFactors': object 'dds.ibd' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -509,7 +515,7 @@ worry too much about the code, the main point is that we find a filter
 threshold, and filter out all the genes where the max count value is
 below the threshold, on the basis that these are likely technical
 noise.</p>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -521,7 +527,7 @@ noise.</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'samp.info.ibd.sel' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb22">
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -550,7 +556,7 @@ noise.</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in FUN(X[[i]], ...): object 'counts.ibd.norm' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb24">
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -563,7 +569,7 @@ noise.</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'ms.jac' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb26">
+<div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -587,7 +593,7 @@ normalised counts. As you can see, over 4,000 genes are removed from the
 dataset, approximately 20% of the genes, all of which are likely to
 contain very little biologically meaningful information but which might
 easily bias a machine learning classifier.</p>
-<div class="codewrapper sourceCode" id="cb28">
+<div class="codewrapper sourceCode" id="cb29">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -598,7 +604,7 @@ easily bias a machine learning classifier.</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb30">
+<div class="codewrapper sourceCode" id="cb31">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -634,7 +640,7 @@ the raw counts matrix. Compare this with the histogram above, and the
 mean read count value which is approximately 500. The largest read count
 values range from 2MM to over 3MM counts for a gene in a particular
 sample. These require investigation.</p>
-<div class="codewrapper sourceCode" id="cb32">
+<div class="codewrapper sourceCode" id="cb33">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -645,7 +651,7 @@ sample. These require investigation.</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb34">
+<div class="codewrapper sourceCode" id="cb35">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -665,7 +671,7 @@ potential influential outiers based on their Cooks distance.</p>
 <p>Run the following code to create DESeq Data Set object from the
 filtered raw counts matrix, with condition as the experimental factor of
 interest</p>
-<div class="codewrapper sourceCode" id="cb36">
+<div class="codewrapper sourceCode" id="cb37">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -681,7 +687,7 @@ interest</p>
 </div>
 <p>Run DESeq2 differential expression analysis to calculate Cook’s
 distances matrix</p>
-<div class="codewrapper sourceCode" id="cb38">
+<div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -692,7 +698,7 @@ distances matrix</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'dds.ibd.filt' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb40">
+<div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -704,7 +710,7 @@ distances matrix</p>
 <pre class="error" tabindex="0"><code>Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'assays': object 'deseq.ibd' not found</code></pre>
 </div>
 <p>Calculate the cooks outlier threshold based on the F-distribution</p>
-<div class="codewrapper sourceCode" id="cb42">
+<div class="codewrapper sourceCode" id="cb43">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -716,7 +722,7 @@ distances matrix</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'deseq.ibd' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb44">
+<div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -731,7 +737,7 @@ distances matrix</p>
 </div>
 <p>Filter the counts matrix to eliminate all genes where the cooks
 distance is over the outlier threshold</p>
-<div class="codewrapper sourceCode" id="cb46">
+<div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -742,7 +748,7 @@ distance is over the outlier threshold</p>
 </h3>
 <pre class="error" tabindex="0"><code>Error in eval(expr, envir, enclos): object 'counts.mat.ibd.filtered' not found</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb48">
+<div class="codewrapper sourceCode" id="cb49">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -804,7 +810,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.12.4" class="external-link">sandpaper (0.12.4)</a>,
+        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.5)</a>,
         <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
       and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
 			</div>
@@ -827,8 +833,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode5.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode5.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-04",
-  "datePublished": "2023-07-04"
+  "dateModified": "2023-07-11",
+  "datePublished": "2023-07-11"
 }
 
   </script><script>
