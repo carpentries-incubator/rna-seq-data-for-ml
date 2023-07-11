@@ -132,6 +132,11 @@ dds.ibd <- DESeq2::DESeqDataSetFromMatrix(
     design = ~ condition)
 ```
 
+```{.warning}
+Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+```
+
 ```{.error}
 Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'ncol': object 'counts.mat.ibd' not found
 ```
