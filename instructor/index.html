@@ -266,11 +266,11 @@ any links that you are not going to use.
 Data</a>
 </td>
 <td>
-What characteristics of a dataset do I need to consider to make it
-‘ready’ for a machine learning /AI modelling analysis?<br>Where can I
-find a publicly available RNA-Seq dataset suitable for a machine
-learning analysis?<br>What format is RNA-Seq data stored in on public
-repositories?
+Where can I find a publicly available RNA-Seq dataset suitable for a
+machine learning analysis?<br>What format is RNA-Seq data stored in on
+public repositories?<br>What characteristics of a dataset do I need to
+consider to make it ‘ready’ for a machine learning /AI modelling
+analysis?
 </td>
 </tr><tr><td>
 <span class="visually-hidden">Duration: </span>00h 11m
@@ -279,7 +279,7 @@ repositories?
  2. <a href="episode2.html">Data Collection: ArrayExpress</a>
 </td>
 <td>
-What format are processed RNA-Seq dataset store on Array
+What format are processed RNA-Seq dataset stored on Array
 Express?<br>How do I search for a dataset that meets my requirements on
 Array Express?<br>Which files do I need to download?
 </td>
@@ -290,7 +290,7 @@ Array Express?<br>Which files do I need to download?
  3. <a href="episode3.html">Data Collection: GEO</a>
 </td>
 <td>
-What format are processed RNA-Seq dataset store on GEO?<br>How do I
+What format are processed RNA-Seq dataset stored on GEO?<br>How do I
 search for a dataset that meets my requirements on GEO?<br>How do I use
 the R package <code>GEOquery</code> to download datasets from GEO into
 R?
@@ -310,7 +310,7 @@ downloaded from public repositories, that I’ll need to address before
 beginning any analysis?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 26m
+<span class="visually-hidden">Duration: </span>01h 36m
 </td>
 <td>
  5. <a href="episode5.html">Data Readiness: Technical Noise</a>
@@ -322,7 +322,7 @@ outlier read counts be effectively removed from RNA-Seq data prior to
 analysis?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 38m
+<span class="visually-hidden">Duration: </span>01h 48m
 </td>
 <td>
  6. <a href="episode6.html">Data Readiness: Distribution and Scale</a>
@@ -334,7 +334,7 @@ transformations and how do these depend on the particular machine
 learning algorithm being employed?
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>01h 50m
+<span class="visually-hidden">Duration: </span>02h 00m
 </td>
 <td>
 Finish
@@ -382,14 +382,13 @@ studio.</p>
 </section><section id="data-sets"><h2 class="section-heading">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
 </h2>
 <hr class="half-width"><p>This lesson uses a number of RNA-Seq datasets downloaded from public
-functional genomics repositories. Create a new RStudio project where you
-will keep all of the files for this lesson. In the project directory
-(where the .Rproj file is), create a subdirectory called data.</p>
-<p>Links to the dataset and instructions on how to and download provided
-in each episode. Download each data file as instructed and save to you
-data subdirectory. The most important dataset files that we will be
-using throughout the lesson are also provided in the <a href=".././data/rna-seq-ml-readiness-data.zip">data zip file</a>, which you
-can download and unzip to your data subdirectory right away.</p>
+functional genomics repositories.</p>
+<p>Before the start of the lesson, create a new RStudio project where
+you will keep all of the files for this lesson. In the project directory
+(where the .Rproj file is), <strong>create a subdirectory called
+<code>data</code></strong>.</p>
+<p>Links to the relevant datasets and instructions on how to download
+them provided in each episode.</p>
 </section><section id="software-setup"><h2 class="section-heading">Software Setup<a class="anchor" aria-label="anchor" href="#software-setup"></a>
 </h2>
 <hr class="half-width"><div id="r-and-rstudio" class="callout discussion">
@@ -408,7 +407,6 @@ Ecology Lesson</a>.</p>
 package <code>BiocManager</code> to be able to install packages from
 Bioconductor.</p>
 <ul><li><code>tidyverse</code></li>
-<li><code>here</code></li>
 <li><code>reshape2</code></li>
 <li><code>scales</code></li>
 <li><code>BiocManager</code></li>
@@ -418,7 +416,7 @@ Bioconductor.</p>
 </ul><p>Executing the following lines of code in the R console will install
 all of these packages</p>
 <pre class="{r}"><code>
-install.packages(c("tidyverse", "here", "BiocManager"))
+install.packages(c("tidyverse", "reshape2", "scales", "BiocManager"))
 
 BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
 </code></pre>
@@ -426,7 +424,7 @@ BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
 following command, which will return <code>character(0)</code> if all
 packages have been successfully installed.</p>
 <pre class="{r}"><code><span></span>
-<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"here"</span>, <span class="st">"BiocManager"</span>, <span class="st">"Biobase"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
+<span><span class="fu">setdiff</span><span class="op">(</span><span class="fu">c</span><span class="op">(</span><span class="st">"tidyverse"</span>, <span class="st">"reshape2"</span>, <span class="st">"scales"</span>, <span class="st">"BiocManager"</span>, <span class="st">"Biobase"</span>, <span class="st">"GEOquery"</span>, <span class="st">"DESeq2"</span><span class="op">)</span>,</span>
 <span>        <span class="fu">rownames</span><span class="op">(</span><span class="fu">installed.packages</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
@@ -485,8 +483,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/index.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/index.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-11",
-  "datePublished": "2023-07-11"
+  "dateModified": "2023-07-14",
+  "datePublished": "2023-07-14"
 }
 
   </script><script>

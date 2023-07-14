@@ -155,9 +155,9 @@
         
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
-        <ul><li><a href="#dataset-characteristics-for-supervised-learning">Dataset Characteristics for supervised learning</a></li>
-<li><a href="#functional-genomics-platforms">Functional Genomics platforms</a></li>
-<li><a href="#raw-vs.-processed-data">Raw vs. Processed Data</a></li>
+        <ul><li><a href="#functional-genomics-platforms">Functional Genomics platforms</a></li>
+<li><a href="#raw-vs.-processed-rna-seq-data">Raw vs. Processed RNA-Seq Data</a></li>
+<li><a href="#dataset-characteristics-for-supervised-learning">Dataset Characteristics for supervised learning</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
         
@@ -260,7 +260,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introduction: Machine Learning Ready RNA-Seq Data</h1>
-        <p> Last updated on 2023-07-11 | 
+        <p> Last updated on 2023-07-14 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode1.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -279,11 +279,11 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What characteristics of a dataset do I need to consider to make it
-‘ready’ for a machine learning /AI modelling analysis?</li>
-<li>Where can I find a publicly available RNA-Seq dataset suitable for a
+<ul><li>Where can I find a publicly available RNA-Seq dataset suitable for a
 machine learning analysis?</li>
 <li>What format is RNA-Seq data stored in on public repositories?</li>
+<li>What characteristics of a dataset do I need to consider to make it
+‘ready’ for a machine learning /AI modelling analysis?</li>
 </ul></div>
 </div>
 </div>
@@ -291,67 +291,17 @@ machine learning analysis?</li>
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Describe the factors that must be considered in readying an RNA-Seq
-dataset for a machine learning analysis?</li>
-<li>Recall the main platforms hosting functional genomic datasets</li>
+<ul><li>Recall the main platforms hosting functional genomic datasets</li>
 <li>Explain the difference between raw and processed RNA-Seq data, and
 the different stages of processing for RNA-Seq data</li>
+<li>Describe the factors that must be considered in readying an RNA-Seq
+dataset for a machine learning analysis?</li>
 </ul></div>
 </div>
 </div>
 </div>
 </div>
-<section id="dataset-characteristics-for-supervised-learning"><h2 class="section-heading">Dataset Characteristics for supervised learning<a class="anchor" aria-label="anchor" href="#dataset-characteristics-for-supervised-learning"></a>
-</h2>
-<hr class="half-width"><p>The success of a ML/AI model depends heavily on the input data.
-Finding an appropriate dataset can be a challenge and the data must be
-selected carefully as a predictive model trained on the unreliable or
-inappropriate data will produce unreliable predictions.</p>
-<p>There is currently no curated “ML/AI ready” datasets that meet the
-requirements of machine learning analyses within public functional
-genomics repositories. It is therefore important to examine a data set
-carefully to confirm its appropriateness for a supervised machine
-learning task. The following characteristics of the data should be
-considered:</p>
-<table class="table"><colgroup><col width="25%"><col width="75%"></colgroup><thead><tr class="header"><th>Characteristic</th>
-<th>Considerations</th>
-</tr></thead><tbody><tr class="odd"><td><strong>Quality and Provenance</strong></td>
-<td>Assess source of the data, its likely quality and whether it is
-recognised by the community, for example having been used in highly
-regarded publications. Datasets must have sufficient metadata, including
-accurate and reliable class labels, ideally connected to a
-domain-specific or community-specific ontology so that the meaning is
-widely interpretable and comparable between studies.</td>
-</tr><tr class="even"><td><strong>Size</strong></td>
-<td>Ensure the data set captures the full complexity of the underlying
-distribution. If there is significant biological heterogeneity in the
-sample population, will there be sufficient samples to create
-independent and representative train, validation and tests sets? Bulk
-RNA-Seq datasets with only a few samples for each group are unlikely to
-be sufficient to train a machine learning classifier.</td>
-</tr><tr class="odd"><td><strong>Format and Integrity</strong></td>
-<td>Machine learning models require data to be machine readable and
-input in a specific format. Data collected experimentally and data
-acquired from public repositories will likely need to be reformatted and
-checked for integrity issues.</td>
-</tr><tr class="even"><td><strong>Technical Noise</strong></td>
-<td>RNA-Seq data is likely to contain some technical noise resulting
-from experiential processes that is unrelated to the underlying biology.
-This has the potential to bias machine learning algorithms and should be
-identified and ideally removed.</td>
-</tr><tr class="odd"><td><strong>Distribution and Scale</strong></td>
-<td>Many machine learning algorithms are sensitive to the distribution
-and the scale of the input data. RNA-Seq data must be transformed and
-re-scaled to perform well in a machine learning analysis.</td>
-</tr></tbody></table><p><br></p>
-<p>In this lesson, we will address each of these issues in turn, working
-through the collection of a RNA-Seq dataset, reformatting, integrity
-checking, noise elimination, transformation and rescaling to make the
-data ready for machine learning. Further information on some of the data
-considerations in supervised machine learning with biological data can
-be found in the <a href="https://www.nature.com/articles/s41592-021-01205-4" class="external-link">DOME
-recommendations</a>.</p>
-</section><section id="functional-genomics-platforms"><h2 class="section-heading">Functional Genomics platforms<a class="anchor" aria-label="anchor" href="#functional-genomics-platforms"></a>
+<section id="functional-genomics-platforms"><h2 class="section-heading">Functional Genomics platforms<a class="anchor" aria-label="anchor" href="#functional-genomics-platforms"></a>
 </h2>
 <hr class="half-width"><p>There are two major public repositories for sourcing public
 functional genomics data sets, in particular microarray and
@@ -363,11 +313,12 @@ the European Molecular Biology Laboratory - European Bioinformatics
 Institute (EMBL-EBI).</p></li>
 <li><p>The <a href="https://www.ncbi.nlm.nih.gov/geo/" class="external-link">Gene Expression
 Onmibus (GEO)</a>, maintained by the National Center for Biotechnology
-Information, part of the US National Institues of Health.</p></li>
+Information (NCBI), part of the US National Institues of Health
+(NIH).</p></li>
 </ol><p>Each database contains thousands of RNA-Seq datasets relating to a
 wide variety of experiments, not all of which would be suitable for
 analysis with a machine learning approach.</p>
-</section><section id="raw-vs.-processed-data"><h2 class="section-heading">Raw vs. Processed Data<a class="anchor" aria-label="anchor" href="#raw-vs.-processed-data"></a>
+</section><section id="raw-vs.-processed-rna-seq-data"><h2 class="section-heading">Raw vs. Processed RNA-Seq Data<a class="anchor" aria-label="anchor" href="#raw-vs.-processed-rna-seq-data"></a>
 </h2>
 <hr class="half-width"><p>Public datasets will contain both raw and processed RNA-Seq data, as
 well as information about the relationship between the RNA-Seq data and
@@ -406,7 +357,7 @@ studies. Things to be aware of:</p>
 of interest (e.g. integer counts of the number of reads mapped to a
 given gene)</li>
 <li>
-<strong>Normalised abundance </strong>, further processed to account
+<strong>Normalised abundance</strong>, further processed to account
 for sequence depth and/or gene length such as TPM and FPKM (output using
 DESeq2, edgeR)</li>
 <li>
@@ -416,11 +367,12 @@ variance stabilising transformation (vst) applied</li>
 </ul><ol start="2" style="list-style-type: decimal"><li><p>The features of interest, say transcripts, may also have been
 filtered to remove transcripts with read counts below a particular
 threshold.</p></li>
-<li><p>Transcripts may have been summarised to genes.</p></li>
-<li><p>The data may be given as a matrix of features of interest and
-samples. Alternatively there may be a separate file for each sample that
-need to be combined.</p></li>
-</ol><p><strong>It is important to carefully read the protocols to understand
+<li><p>Transcript level information may have been mapped to genes, and
+the expression for multiple transcripts summarised (average, maximum) at
+the gene level</p></li>
+<li><p>The data may be given as a matrix of features of interest for all
+samples, or alternatively as a separate file for each sample.</p></li>
+</ol><figure><img src="fig/samples_matrix.jpg" alt="Illustration of sample data formats" class="figure mx-auto d-block"><figcaption>Dataset Formats</figcaption></figure><p><strong>It is important to carefully read the protocols to understand
 determine how the data has been processed and if is appropriate for your
 task.</strong></p>
 </div>
@@ -446,7 +398,7 @@ repository as input to a machine learning modelling analysis?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The starting point for a machine learning model is processed RNA-Seq
 data, in the form of count data. This could be raw count data, or TPM or
@@ -455,6 +407,60 @@ FPKM pre-processed data.</p>
 </div>
 </div>
 </div>
+</section><section id="dataset-characteristics-for-supervised-learning"><h2 class="section-heading">Dataset Characteristics for supervised learning<a class="anchor" aria-label="anchor" href="#dataset-characteristics-for-supervised-learning"></a>
+</h2>
+<hr class="half-width"><p>Machine learning / AI modelling is a powerful tool in the analysis of
+RNA-Seq gene expression data. ML techniques are widely used to discover
+new biomarkers for disease diagnosis and treatment monitoring, and to
+discover hidden patterns in gene expression that enhance our
+understanding of the underlying biological pathways. The success of a
+ML/AI model depends heavily on the input data. Finding an appropriate
+dataset can be a challenge and the data must be selected carefully as a
+predictive model trained on the unreliable or inappropriate data will
+produce unreliable predictions.</p>
+<p>There is currently no curated “ML/AI ready” datasets that meet the
+requirements of machine learning analyses within public functional
+genomics repositories. It is therefore important to examine a data set
+carefully to confirm its appropriateness for a supervised machine
+learning task. The following characteristics of the data should be
+considered:</p>
+<table class="table"><colgroup><col width="25%"><col width="75%"></colgroup><thead><tr class="header"><th>Characteristic</th>
+<th>Considerations</th>
+</tr></thead><tbody><tr class="odd"><td><strong>Quality and Provenance</strong></td>
+<td>Assess source of the data, its likely quality and whether it is
+recognised by the community. Datasets must have sufficient metadata,
+ideally connected to a domain-specific or community-specific ontology so
+that the meaning is widely interpretable and comparable between
+studies.</td>
+</tr><tr class="even"><td><strong>Size</strong></td>
+<td>Ensure the data set captures the full complexity of the underlying
+distribution. If there is significant biological heterogeneity in the
+sample population, will there be sufficient samples to create
+independent and representative train, validation and tests sets? Bulk
+RNA-Seq datasets with only a few samples for each group are unlikely to
+be sufficient to train a machine learning classifier.</td>
+</tr><tr class="odd"><td><strong>Format and Integrity</strong></td>
+<td>Machine learning models require data to be machine readable and
+input in a specific format. Data collected experimentally and data
+acquired from public repositories will likely need to be reformatted and
+checked for integrity issues.</td>
+</tr><tr class="even"><td><strong>Technical Noise</strong></td>
+<td>RNA-Seq data is likely to contain some technical noise resulting
+from experimental processes that is unrelated to the underlying biology.
+This has the potential to bias machine learning algorithms and should be
+identified and ideally removed.</td>
+</tr><tr class="odd"><td><strong>Distribution and Scale</strong></td>
+<td>Many machine learning algorithms are sensitive to the distribution
+and the scale of the input data. RNA-Seq data must be transformed and
+re-scaled to perform well in a machine learning analysis.</td>
+</tr></tbody></table><p><br></p>
+<p>In the following episodes, we will address each of these issues in
+turn, working through the collection of a RNA-Seq dataset, reformatting,
+integrity checking, noise elimination, transformation and rescaling to
+make the data ready for machine learning. Further information on some of
+the data considerations in supervised machine learning with biological
+data can be found in the <a href="https://www.nature.com/articles/s41592-021-01205-4" class="external-link">DOME
+recommendations</a>.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -463,13 +469,13 @@ FPKM pre-processed data.</p>
 <h3 class="callout-title">Keypoints<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
 </h3>
 <div class="callout-content">
-<ul><li>Sourcing and appropriate RNA-Seq dataset and preparing it for a
-machine learning analysis requires you to consider the dataset quality,
-size, format, noise content, data distribution and scale</li>
-<li>The two main repositories for sourcing RNA-Seq datasets are
+<ul><li>The two main repositories for sourcing RNA-Seq datasets are
 ArrayExpress and GEO</li>
 <li>Processed data, in the form of raw counts, or further processed
 counts data is the starting point for machine learning analysis</li>
+<li>Sourcing and appropriate RNA-Seq dataset and preparing it for a
+machine learning analysis requires you to consider the dataset quality,
+size, format, noise content, data distribution and scale</li>
 </ul></div>
 </div>
 </div>
@@ -530,8 +536,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode1.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode1.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-11",
-  "datePublished": "2023-07-11"
+  "dateModified": "2023-07-14",
+  "datePublished": "2023-07-14"
 }
 
   </script><script>

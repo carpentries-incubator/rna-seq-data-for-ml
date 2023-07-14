@@ -304,13 +304,13 @@
 <section id="episode1"><h2 class="section-heading"><a href="episode1.html">Introduction: Machine Learning Ready RNA-Seq Data</a></h2>
 <hr class="half-width">
 <ul>
-<li>Sourcing and appropriate RNA-Seq dataset and preparing it for a
-machine learning analysis requires you to consider the dataset quality,
-size, format, noise content, data distribution and scale</li>
 <li>The two main repositories for sourcing RNA-Seq datasets are
 ArrayExpress and GEO</li>
 <li>Processed data, in the form of raw counts, or further processed
 counts data is the starting point for machine learning analysis</li>
+<li>Sourcing and appropriate RNA-Seq dataset and preparing it for a
+machine learning analysis requires you to consider the dataset quality,
+size, format, noise content, data distribution and scale</li>
 </ul></section><section id="episode2"><h2 class="section-heading"><a href="episode2.html">Data Collection: ArrayExpress</a></h2>
 <hr class="half-width">
 <ul>
@@ -354,11 +354,18 @@ reproducible</li>
 <hr class="half-width">
 <ul>
 <li>RNA-Seq read counts contain two main sources of technical ‘noise’
-and are unlikely to represent true biological signals from the samples:
-Low count genes/transcripts and influential outlier read counts.</li>
-<li>Filtering out low read count and influential outlier genes /
-transcripts removes potentially biasing variables without negatively
-impacting the performance of downstream machine learning analysis.</li>
+that are unlikely to represent true biological information, and may be
+artefacts from experimental processes required to generate the data: Low
+read counts and influential outlier read counts.</li>
+<li>Filtering out low count and influential outlier genes removes
+potentially biasing variables without negatively impacting the
+performance of downstream machine learning analysis. Gene filtering is
+therefore an important step in preparing an RNA-Seq dataset to be
+machine learning ready.</li>
+<li>Multiple approaches exist to identify the specific genes with
+uninformative low count and influential outlier read counts in RNA-Seq
+data, however they all aim to find the boundary between true biological
+signal and technical and biological artefacts.</li>
 </ul></section><section id="episode6"><h2 class="section-heading"><a href="episode6.html">Data Readiness: Distribution and Scale</a></h2>
 <hr class="half-width">
 <ul>
@@ -367,16 +374,20 @@ zero values. The distribution is heteroskedastic, meaning the variance
 depends on the mean.</li>
 <li>Standard transformations such as the variance stabilising
 transformation and rlog transformation are designed to make the
-distribution of RNA-Seq data more Gaussian, and therefore more
-appropriately distributed for many machine learning models. These
+distribution of RNA-Seq data more Gaussian and homoskedastic, which will
+improve the performance of some machine learning approaches. These
 transformations are improvements to a simple log2 transformation in
 particular for low count values.</li>
 <li>Many machine learning algorithms require predictor variables to be
-on the same scale. Standardisation (z-score) and min-max scaling are two
-common techniques to rescale variables to the same scale. Tree based
-models are less sensitive to scaling. Standardisation is appropriate for
-linear models such as logistic regression and svm. min-max scaling is
-most appropirate for neural network based models.</li>
+on the same scale. Even after vst or rlog transformation, genes in an
+RNA-Seq dataset will be on very different scales.</li>
+<li>Standardisation (z-score) and min-max scaling are two common
+techniques to rescale variables.</li>
+<li>Data should be scaled before use with machine learning models that
+use distance based measures, that include regularisation penalties that
+utilise absolute values of model coefficients and for models that are
+optimised via gradient descent. Naive Bayes and tree based models are
+insensitive to scaling and variables may be left unscaled.</li>
 </ul></section>
 </div>
     </main>
@@ -426,8 +437,8 @@ most appropirate for neural network based models.</li>
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/key-points.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/key-points.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-11",
-  "datePublished": "2023-07-11"
+  "dateModified": "2023-07-14",
+  "datePublished": "2023-07-14"
 }
 
   </script><script>

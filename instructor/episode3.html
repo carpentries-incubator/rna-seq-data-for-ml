@@ -85,11 +85,11 @@
   RNA-Seq: Data Readiness for Machine Learning Applications
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 24%" class="percentage">
-    24%
+<aside class="col-md-12 lesson-progress"><div style="width: 22%" class="percentage">
+    22%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 24%" aria-valuenow="24" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 22%" aria-valuenow="22" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -261,7 +261,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Data Collection: GEO</h1>
-        <p> Last updated on 2023-07-11 | 
+        <p> Last updated on 2023-07-14 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode3.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -282,7 +282,7 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What format are processed RNA-Seq dataset store on GEO?</li>
+<ul><li>What format are processed RNA-Seq dataset stored on GEO?</li>
 <li>How do I search for a dataset that meets my requirements on
 GEO?</li>
 <li>How do I use the R package <code>GEOquery</code> to download
@@ -309,18 +309,18 @@ files from GEO suitable for a simple supervised machine learning task
 </div>
 <section id="geo-data-objects"><h2 class="section-heading">GEO Data Objects<a class="anchor" aria-label="anchor" href="#geo-data-objects"></a>
 </h2>
-<hr class="half-width"><p>NCBI ‘gene expression omnibus’ , GEO, one of the largest repositories
-for functional genomics data. GEO data are stored as individual samples,
-series of samples and curated datasets. Accession numbers of GEO broadly
-fall into four categories:</p>
+<hr class="half-width"><p>NCBI ‘gene expression omnibus’ , GEO, is one of the largest
+repositories for functional genomics data. GEO data are stored as
+individual samples, series of samples and curated datasets. Accession
+numbers of GEO broadly fall into four categories:</p>
 <ul><li>GSM - GEO Sample. These refer to a single sample.</li>
 <li>GSE - GEO Series. These refer to a list of GEO samples that together
 form a single experiment.</li>
 <li>GDS - GEO Dataset. These are curated datasets containing summarised
 information from the underlying GEO samples.</li>
 </ul><p>There are many more datasets available as series than there are
-curated GEO Datasets. For this lesson, we’ll focus finding a GEO Series
-as an illustrative dataset.</p>
+curated GEO Datasets. For this lesson, we’ll focus on finding a GEO
+Series as an illustrative dataset.</p>
 </section><section id="geo-file-formats"><h2 class="section-heading">GEO File Formats<a class="anchor" aria-label="anchor" href="#geo-file-formats"></a>
 </h2>
 <hr class="half-width"><p>Data for RNA-Seq studies have three components on GEO (similar to
@@ -328,9 +328,9 @@ microarray studies):</p>
 <ol style="list-style-type: decimal"><li><strong>Metadata</strong></li>
 </ol><p>The metadata is equivalent to sample data relationship information
 provided on ArrayExpress and refers to the descriptive information about
-the overall study and individual samples, as well as protocol
-information and references to the raw and processed data files names for
-each sample. Metadata is typically stored in a number of standard
+the overall study and individual samples. Metadata also contains
+protocol information and references to the raw and processed data files
+names for each sample. Metadata is stored in the following standard
 formats on GEO:</p>
 <ul><li>SOFT (Simple Omnibus Format in Text) is a line-based plain text
 format</li>
@@ -343,22 +343,22 @@ the above files for an RNA-Seq experiement (whereas they may be included
 with a microarray experiment).</p>
 <ol start="2" style="list-style-type: decimal"><li><strong>Processed data files</strong></li>
 </ol><p>Processed data (raw counts, noramlised counts) are typically provided
-in a supplementary file, often a gz archieves of text files. Raw and
+in a supplementary file, often a .gz archive of text files. Raw and
 normalised counts may be provided as separate supplementary files.</p>
 <ol start="3" style="list-style-type: decimal"><li><strong>Raw data files</strong></li>
 </ol><p>Raw data files provide the original reads and quality scores and are
 stored in the NIH’s <a href="https://www.ncbi.nlm.nih.gov/sra" class="external-link">Sequence
-Read Archieve (SRA)</a>.</p>
+Read Archive (SRA)</a>.</p>
 <p>Further information on how RNA-Seq experiments are stored on GEO is
 given in the <a href="https://www.ncbi.nlm.nih.gov/geo/info/seq.html" class="external-link">submission
-guidelines</a></p>
+guidelines</a> on the GEO website.</p>
 </section><section id="searching-for-a-dataset-on-geo"><h2 class="section-heading">Searching for a Dataset on GEO<a class="anchor" aria-label="anchor" href="#searching-for-a-dataset-on-geo"></a>
 </h2>
 <hr class="half-width"><p>Let’s begin on the <a href="https://www.ncbi.nlm.nih.gov/geo/" class="external-link">GEO
 home page</a>. GEO provides online search and filter tools. We search by
 adding “rna-seq” as a keyword in the search box, and then apply the
 following filters to the subsequent results page, and rank the results
-by the number of samples descending:</p>
+by the number of samples in descending order:</p>
 <p><br></p>
 <table class="table"><thead><tr class="header"><th>Filter</th>
 <th>Selection</th>
@@ -491,9 +491,12 @@ file 2: 765 samples</code></pre>
 </div>
 </div>
 <p><br></p>
-<p>Extract the metadata for the larger dataset and examine the column
-names to verify that the file contains the expected metadata about the
-experiment.</p>
+</div>
+<div class="section level3">
+<h3 id="extracting-the-metadata">Extracting the Metadata<a class="anchor" aria-label="anchor" href="#extracting-the-metadata"></a></h3>
+<p>We’ll extract the metadata for the larger dataset (765 samples) and
+examine the column names to verify that the file contains the expected
+metadata about the experiment.</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -533,13 +536,28 @@ experiment.</p>
 <p><br></p>
 </div>
 <div class="section level3">
-<h3 id="downloading-supplementary-files">Downloading supplementary files<a class="anchor" aria-label="anchor" href="#downloading-supplementary-files"></a></h3>
-<p>Notice in this series, the counts matrix is not contained in the
-exprs() slot of the expression set. The expression set only contains a
-list of the accession numbers of the samples included in the expression
-set, but not the actual count data. We can verify this by looking at the
-dimensions of the object in the exprs slot.</p>
+<h3 id="getting-the-counts-data">Getting the Counts Data<a class="anchor" aria-label="anchor" href="#getting-the-counts-data"></a></h3>
+<p>If we use the <code>exprs()</code> function to extract the counts
+data from the expression slot of the downloaded dataset, we’ll see that
+in this data series, the counts matrix is not there. The expression set
+only contains a list of the accession numbers of the samples included in
+the expression set, but not the actual count data. (The code below
+attempts to view a sample of the data).</p>
 <div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">Biobase</span><span class="fu">::</span><span class="fu">exprs</span><span class="op">(</span><span class="va">gse212041</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>     GSM6507615 GSM6507616 GSM6507617 GSM6507618 GSM6507619 GSM6507620
+     GSM6507621 GSM6507622 GSM6507623 GSM6507624</code></pre>
+</div>
+<p>We can verify this by looking at the dimensions of the object in the
+exprs slot.</p>
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -558,7 +576,7 @@ function doesn’t parse the downloaded files, since the file format may
 vary between data series.</p>
 <p>Set the ‘fetch_files’ argument to FALSE initially to view the
 available files.</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -577,12 +595,13 @@ available files.</p>
 [1] "GSE212041_Neutrophil_RNAseq_Count_Matrix.txt.gz" "GSE212041_Neutrophil_RNAseq_TPM_Matrix.txt.gz" 
 </code></pre>
 </div>
-<div id="challenge-2-download-the-dataset" class="callout challenge">
+<div id="challenge-2-download-the-supplementary-files" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-2-download-the-dataset" class="callout-inner">
-<h3 class="callout-title">Challenge 2: Download the dataset<a class="anchor" aria-label="anchor" href="#challenge-2-download-the-dataset"></a>
+<div id="challenge-2-download-the-supplementary-files" class="callout-inner">
+<h3 class="callout-title">Challenge 2: Download the supplementary
+files<a class="anchor" aria-label="anchor" href="#challenge-2-download-the-supplementary-files"></a>
 </h3>
 <div class="callout-content">
 <p>Now Download the file to your /data subdirectory, by setting
@@ -602,7 +621,7 @@ correspond to the expected number of samples.</p>
 </button>
 <div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -659,7 +678,7 @@ dataset of 760 TB patients.</p>
 </button>
 <div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -816,8 +835,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/episode3.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/episode3.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-11",
-  "datePublished": "2023-07-11"
+  "dateModified": "2023-07-14",
+  "datePublished": "2023-07-14"
 }
 
   </script><script>

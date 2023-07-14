@@ -86,11 +86,11 @@
   RNA-Seq: Data Readiness for Machine Learning Applications
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 89%" class="percentage">
-    89%
+<aside class="col-md-12 lesson-progress"><div style="width: 90%" class="percentage">
+    90%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 89%" aria-valuenow="89" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 90%" aria-valuenow="90" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -202,7 +202,8 @@
       <div class="accordion-body">
         <ul><li><a href="#rna-seq-counts-data-a-skewed-distribution">RNA-Seq Counts Data: A Skewed Distribution</a></li>
 <li><a href="#variance-stabilising-and-rlog-transformation">Variance Stabilising and rlog Transformation</a></li>
-<li><a href="#standardisation-and-min-max-scaling">Standardisation and Min-Max Scaling</a></li>
+<li><a href="#rescaling-transformed-counts-data-standardisation-and-min-max-scaling">Rescaling transformed counts data: standardisation and Min-Max
+Scaling</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
         
@@ -260,7 +261,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Data Readiness: Distribution and Scale</h1>
-        <p> Last updated on 2023-07-11 | 
+        <p> Last updated on 2023-07-14 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode6.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -294,37 +295,361 @@ depend on the particular machine learning algorithm being employed?</li>
 count data and how this impacts the performance of machine learning
 algorithms</li>
 <li>Recall the main types of data transformation commonly applied to
-RNA-Seq count data to account for the skewedness, zero-inflation and
-heteroskedasticity</li>
+RNA-Seq count data to account for skewedness and heteroskedasticity</li>
 <li>Demonstrate how to apply these transformations in R</li>
-<li>Recall the main types of data rescaling commonly applied to data
-prior to inputing into machine learning algorithms, and which rescaling
-are most appropriate / necessary for a range of commonly used
-algorithms</li>
+<li>Recall the two types of data rescaling commonly applied prior to
+machine learning analysis, and which is most appropriate for a range of
+common algorithms</li>
 </ul></div>
 </div>
 </div>
 </div>
 </div>
-<div id="under-development" class="callout callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="under-development" class="callout-inner">
-<h3 class="callout-title">Under Development<a class="anchor" aria-label="anchor" href="#under-development"></a>
-</h3>
-<div class="callout-content">
-<p>This episode is still actively being developed</p>
-</div>
-</div>
-</div>
 <section id="rna-seq-counts-data-a-skewed-distribution"><h2 class="section-heading">RNA-Seq Counts Data: A Skewed Distribution<a class="anchor" aria-label="anchor" href="#rna-seq-counts-data-a-skewed-distribution"></a>
 </h2>
-<hr class="half-width"></section><section id="variance-stabilising-and-rlog-transformation"><h2 class="section-heading">Variance Stabilising and rlog Transformation<a class="anchor" aria-label="anchor" href="#variance-stabilising-and-rlog-transformation"></a>
+<hr class="half-width"><p>RNA-Seq count data has an approximately negative binomial
+distribution. Even after filtering out low count genes, the distribution
+of count data is heavily skewed towards low counts. Counts data is also
+heteroskedastic, which means the variance depends on the mean. These two
+properties negatively impact the performance of some machine learning
+models, in particular Regression based models. Let’s examine these
+properties in our dataset.</p>
+<p>To begin, import the filtered counts matrix and sample information
+text files that we prepared in Episodes 4 and 5. If you didn’t manage to
+save it, you can download it directly with the following code.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">download.file</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://zenodo.org/record/8125141/files/ibd.sample.info.txt"</span>,</span>
+<span>              destfile <span class="op">=</span> <span class="st">"data/ibd.sample.info.txt"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">download.file</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://zenodo.org/record/8125141/files/counts.mat.ibd.ol.filtered.txt"</span>,</span>
+<span>              destfile <span class="op">=</span> <span class="st">"data/counts.mat.ibd.ol.filtered.txt"</span><span class="op">)</span></span></code></pre>
+</div>
+<p>And now read the files into R…</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">suppressPackageStartupMessages</span><span class="op">(</span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">samp.info.ibd.sel</span> <span class="op">&lt;-</span> <span class="fu">read.table</span><span class="op">(</span>file<span class="op">=</span><span class="st">"./data/ibd.sample.info.txt"</span>, sep<span class="op">=</span><span class="st">"\t"</span>, header<span class="op">=</span><span class="cn">T</span>, fill<span class="op">=</span><span class="cn">T</span>, check.names<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">counts.mat.ibd.ol.filtered</span> <span class="op">&lt;-</span> <span class="fu">read.table</span><span class="op">(</span>file<span class="op">=</span><span class="st">"./data/counts.mat.ibd.ol.filtered.txt"</span>, sep<span class="op">=</span><span class="st">'\t'</span>, header<span class="op">=</span><span class="cn">T</span>, fill<span class="op">=</span><span class="cn">T</span>, check.names<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span></code></pre>
+</div>
+<p>A simple histogram of the raw counts data illustrates the skewed
+nature of the distribution. Here we plot a random sample of just 5,000
+counts to illustrate the point.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">set.seed</span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="va">counts.mat.ibd.ol.filtered</span> <span class="op">%&gt;%</span>               </span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu">rownames_to_column</span><span class="op">(</span><span class="st">"geneID"</span><span class="op">)</span>  <span class="op">%&gt;%</span>      </span>
+<span>  <span class="fu">reshape2</span><span class="fu">::</span><span class="fu">melt</span><span class="op">(</span>id.vars <span class="op">=</span> <span class="st">'geneID'</span>, value.name<span class="op">=</span><span class="st">'count'</span>, variable.name<span class="op">=</span><span class="fu">c</span><span class="op">(</span><span class="st">'sampleID'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="fu">sample</span><span class="op">(</span><span class="fu">nrow</span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5000</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Raw Counts"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">ylab</span><span class="op">(</span><span class="st">"Frequency"</span><span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="fig/episode6-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>A plot of the mean count against the variance of the counts for a
+random sample of 5,000 genes (to reduce compute time) illustrates the
+clear mean variance relationship in the data. The variance is increasing
+as the mean count increases.</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">counts.mat.ibd.ol.filtered</span> <span class="op">%&gt;%</span>               </span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="fu">sample</span><span class="op">(</span><span class="fu">nrow</span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5000</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">data.frame</span><span class="op">(</span>row.mean <span class="op">=</span> <span class="fu">apply</span><span class="op">(</span><span class="va">.</span>, <span class="fl">1</span>, <span class="va">mean</span><span class="op">)</span>,</span>
+<span>           row.var <span class="op">=</span> <span class="fu">apply</span><span class="op">(</span><span class="va">.</span>, <span class="fl">1</span>, <span class="va">var</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="va">row.var</span> <span class="op">&lt;</span> <span class="fl">5000</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">row.mean</span>, y<span class="op">=</span><span class="op">(</span><span class="va">row.var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_point</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Mean Count"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ylab</span><span class="op">(</span><span class="st">"Variance"</span><span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="fig/episode6-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></section><section id="variance-stabilising-and-rlog-transformation"><h2 class="section-heading">Variance Stabilising and rlog Transformation<a class="anchor" aria-label="anchor" href="#variance-stabilising-and-rlog-transformation"></a>
 </h2>
-<hr class="half-width"></section><section id="standardisation-and-min-max-scaling"><h2 class="section-heading">Standardisation and Min-Max Scaling<a class="anchor" aria-label="anchor" href="#standardisation-and-min-max-scaling"></a>
+<hr class="half-width"><p>A number of standard transformations exist to change the distribution
+of RNA-Seq counts to reduce the mean variance relationship, and make the
+distribution more ‘normal’ (Gaussian). Two such transformations are the
+<code>variance stabilising transformation (vst)</code> and the
+<code>rlog</code> transformation available in the <code>DESeq2</code> R
+package. Both transformations take raw counts data as input, and perform
+the normalisation step before the transformation.</p>
+<p>The <code>vst</code> transformation is faster to run and more
+suitable for datasets with a large sample size. Let’s conduct the
+<code>vst</code> transformation on our filtered counts data. This may
+take a few minutes to run on our dataset.</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># convert the condition variable to a factor as required by DESeq2</span></span>
+<span><span class="va">samp.info.ibd.sel</span><span class="op">[</span><span class="fu">c</span><span class="op">(</span><span class="st">'condition'</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">lapply</span><span class="op">(</span><span class="va">samp.info.ibd.sel</span><span class="op">[</span><span class="fu">c</span><span class="op">(</span><span class="st">'condition'</span><span class="op">)</span><span class="op">]</span>, <span class="va">factor</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create DESeq Data Set object from the raw counts, with condition as the factor of interest</span></span>
+<span><span class="va">dds.ibd.filt.ol</span> <span class="op">&lt;-</span> <span class="fu">DESeq2</span><span class="fu">::</span><span class="fu">DESeqDataSetFromMatrix</span><span class="op">(</span></span>
+<span>  countData <span class="op">=</span> <span class="va">counts.mat.ibd.ol.filtered</span>,</span>
+<span>  colData <span class="op">=</span> <span class="fu">data.frame</span><span class="op">(</span><span class="va">samp.info.ibd.sel</span>, row.names <span class="op">=</span> <span class="st">'sampleID'</span><span class="op">)</span>,</span>
+<span>  design <span class="op">=</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span>                    </span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="warning" tabindex="0"><code>Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate the vst count values and extract the counts matrix using the assay() function</span></span>
+<span><span class="va">counts.mat.ibd.vst</span> <span class="op">&lt;-</span> <span class="fu">DESeq2</span><span class="fu">::</span><span class="fu">varianceStabilizingTransformation</span><span class="op">(</span><span class="va">dds.ibd.filt.ol</span>, blind<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu">assay</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+</div>
+<p>Plotting the data again, we can see the difference in the
+distribution of the data following transformation. Although there is
+still a large number of count values equal to zero, the distribution of
+vst transformed counts is far less heavily skewed than the original. The
+dependence of the variance on the mean has essentially been
+eliminated.</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">set.seed</span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="va">counts.mat.ibd.vst</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">as.data.frame</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu">rownames_to_column</span><span class="op">(</span><span class="st">"geneID"</span><span class="op">)</span>  <span class="op">%&gt;%</span>      </span>
+<span>  <span class="fu">reshape2</span><span class="fu">::</span><span class="fu">melt</span><span class="op">(</span>id.vars <span class="op">=</span> <span class="st">'geneID'</span>, value.name<span class="op">=</span><span class="st">'count'</span>, variable.name<span class="op">=</span><span class="fu">c</span><span class="op">(</span><span class="st">'sampleID'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="fu">sample</span><span class="op">(</span><span class="fu">nrow</span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5000</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">200</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Raw Counts"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">ylab</span><span class="op">(</span><span class="st">"Frequency"</span><span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="fig/episode6-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">counts.mat.ibd.vst</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">as.data.frame</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>               </span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="fu">sample</span><span class="op">(</span><span class="fu">nrow</span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5000</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">data.frame</span><span class="op">(</span>row.mean <span class="op">=</span> <span class="fu">apply</span><span class="op">(</span><span class="va">.</span>, <span class="fl">1</span>, <span class="va">mean</span><span class="op">)</span>,</span>
+<span>           row.var <span class="op">=</span> <span class="fu">apply</span><span class="op">(</span><span class="va">.</span>, <span class="fl">1</span>, <span class="va">var</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">filter</span><span class="op">(</span><span class="va">row.var</span> <span class="op">&lt;</span> <span class="fl">2.5</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">row.mean</span>, y<span class="op">=</span><span class="op">(</span><span class="va">row.var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_point</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Mean Count"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ylab</span><span class="op">(</span><span class="st">"Variance"</span><span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="fig/episode6-rendered-unnamed-chunk-8-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></section><section id="rescaling-transformed-counts-data-standardisation-and-min-max-scaling"><h2 class="section-heading">Rescaling transformed counts data: standardisation and Min-Max
+Scaling<a class="anchor" aria-label="anchor" href="#rescaling-transformed-counts-data-standardisation-and-min-max-scaling"></a>
 </h2>
-<hr class="half-width"><div id="keypoints1" class="callout keypoints">
+<hr class="half-width"><p>Many machine learning algorithms are sensitive to the scale of the
+data. Even after having ‘normalised’ RNA-Seq counts data to account for
+differences in sequence depth and sample composition, and having
+performed a variance stabilising transformation or rlog transformation
+to reduce the skewedness and mean-variance relationship, individual
+genes (variables) will still be on very different scales. The box plot
+below illustrates this for a small sample of 50 genes from our dataset,
+with median vst counts ranging from close to zero, to greater than
+10.</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">counts.mat.ibd.vst</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">as.data.frame</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu">rownames_to_column</span><span class="op">(</span><span class="st">"geneID"</span><span class="op">)</span>  <span class="op">%&gt;%</span>  </span>
+<span>  <span class="va">.</span><span class="op">[</span><span class="fu">sample</span><span class="op">(</span><span class="fu">nrow</span><span class="op">(</span><span class="va">.</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,<span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu">head</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">reshape2</span><span class="fu">::</span><span class="fu">melt</span><span class="op">(</span>id.vars <span class="op">=</span> <span class="st">'geneID'</span>, value.name<span class="op">=</span><span class="st">'count'</span>, variable.name<span class="op">=</span><span class="fu">c</span><span class="op">(</span><span class="st">'sampleID'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu">reorder</span><span class="op">(</span><span class="va">geneID</span>, <span class="va">count</span>, <span class="va">median</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">geom_boxplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">xlab</span><span class="op">(</span><span class="st">"Gene"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>    <span class="fu">ylab</span><span class="op">(</span><span class="st">"VST Counts"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="fig/episode6-rendered-unnamed-chunk-9-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>In some cases, further scaling of variables will be necessary to put
+each gene on a similar scale before inputting into a machine learning
+algorithm. The table below outlines the scenarios where variable scaling
+will improve the performance of downstream machine learning
+analysis.</p>
+<table class="table"><colgroup><col width="25%"><col width="75%"></colgroup><thead><tr class="header"><th>Scenario</th>
+<th>Rationale for Scaling</th>
+</tr></thead><tbody><tr class="odd"><td><strong>Distance-Based Algorithms</strong></td>
+<td>Algorithms that use the Euclidian distance between points to
+determine the similarity between points require all features to be on
+the same scale. Without scaling, models will be biased towards features
+on a larger scale. Examples include clustering techniques:
+<strong>K-Nearest Neighbours</strong>, <strong>K-means
+clustering</strong>, <strong>Principal Component Analysis</strong>, and
+<strong>Support Vector Machines</strong>
+</td>
+</tr><tr class="even"><td><strong>Gradient Descent Optimised Algorithms</strong></td>
+<td>Algorithms that are optimised using a gradient descent algorithm
+apply the same learning rate to each variable. Different variable scales
+will result in very different step sizes across variables, compromising
+the algorithm’s ability to find a minimum. <strong>Linear
+Regression</strong>, <strong>Logistic Regression</strong> and
+<strong>Neural Networks</strong> are all optimised using gradient
+descent algorithms.</td>
+</tr><tr class="odd"><td><strong>Loss Functions with Regularisation Penalties</strong></td>
+<td>Machine learning models incorporating a penalty term in the cost
+function to regularise the model, for example the
+<strong>LASSO</strong>, use magnitude of variable coefficients in the
+penalty term. Without scaling, the penalisation will be biased towards
+variables on a larger scale.</td>
+</tr></tbody></table><p>On the other hand, there are algorithms that are insensitive to scale
+where scaling is not necessary. These include tree based models such as
+<strong>Random Forest</strong>, <strong>XGBoost</strong>, <strong>Linear
+Discriminant Analysis</strong> and <strong>Naive Bayes</strong>.</p>
+<p><br></p>
+<p>Two widely used rescaling approaches are standardisation (also known
+as z-scoring), where the distribution of values in every variable is
+centred around a mean of zero with unit standard deviation, and min-max
+scaling (confusingly, also known as normalisation) where the values are
+rescaled to be within the range [0, 1]. In many cases either may be
+appropriate. The table below gives a few guidelines on when one may be
+more appropriate than the other.</p>
+<table class="table"><colgroup><col width="18%"><col width="12%"><col width="68%"></colgroup><thead><tr class="header"><th>Scaling Method</th>
+<th>Formula</th>
+<th>When more appropriate</th>
+</tr></thead><tbody><tr class="odd"><td><strong>Standardisation</strong></td>
+<td><span class="math inline">\(\frac{(x - \mu)}{\sigma}\)</span></td>
+<td>- Distribution of the variable data is Gaussian or unknown <br> -
+Data contains outlier values that would cause the remaining data to be
+compressed into a very small range if Min-Max scaling is used <br> - The
+algorithm being used assumes the data has a Gaussian distribution,
+e.g. <strong>linear regression</strong>
+</td>
+</tr><tr class="even"><td><strong>Min-Max Scaling</strong></td>
+<td><span class="math inline">\(\frac{(x - x_{min})}{x_{max} -
+x_{min}}\)</span></td>
+<td>- The distribution of the variable data known not to be Gaussian
+<br> - The algorithm being used does not make any assumptions about the
+distribution fo the the data, e.g. <strong>neural networks</strong>,
+<strong>k-nearest neighbours</strong>
+</td>
+</tr></tbody></table><p>The above is based on a more detailed explanation available at <a href="https://www.analyticsvidhya.com/blog/2020/04/feature-scaling-machine-learning-normalization-standardization/" class="external-link">Analytics
+Vidhya</a>.</p>
+<div id="challenge-1" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-1" class="callout-inner">
+<h3 class="callout-title">Challenge 1:<a class="anchor" aria-label="anchor" href="#challenge-1"></a>
+</h3>
+<div class="callout-content">
+<p>Test your machine learning knowledge. For each of the following
+commonly used supervised and unsupervised machine learning algorithms,
+how would you scale your data, assuming that there were no significant
+outliers? Would you standardise it, min-max scale it, or leave it
+unscaled?</p>
+<ul><li>Linear Regression</li>
+<li>Linear Descriminant Analysis</li>
+<li>Logistic Regression</li>
+<li>Support Vector Machines</li>
+<li>Naive Bayes</li>
+<li>K-Nearest-Neighbour</li>
+<li>Decision Trees</li>
+<li>Random Forest</li>
+<li>XGBoost</li>
+<li>Neural Network based models</li>
+<li>Principal Component Analysis</li>
+<li>K-means clustering</li>
+</ul></div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1">
+  Show me the solution
+  </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<table class="table"><colgroup><col width="18%"><col width="7%"><col width="7%"><col width="7%"><col width="59%"></colgroup><thead><tr class="header"><th>Model</th>
+<th>Standardise</th>
+<th>Min-Max</th>
+<th>Unscaled</th>
+<th>Rationale</th>
+</tr></thead><tbody><tr class="odd"><td><strong>Linear Regression</strong></td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>May be optimised by gradient descent; may be regularised with
+penalty</td>
+</tr><tr class="even"><td><strong>Linear Descriminant Analysis</strong></td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>Insensitive to scale</td>
+</tr><tr class="odd"><td><strong>Logistic Regression</strong></td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>Optimised by gradient descent; may be regularised with penalty</td>
+</tr><tr class="even"><td><strong>Support Vector Machines</strong></td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>Distance based; may be optimised by gradient descent; may be
+regularised with penalty</td>
+</tr><tr class="odd"><td><strong>Naive Bayes</strong></td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>Insensitive to scale, probability (not distance) based</td>
+</tr><tr class="even"><td><strong>K-Nearest-Neighbour</strong></td>
+<td></td>
+<td>x</td>
+<td></td>
+<td>Distance based; no assumption about data distribution</td>
+</tr><tr class="odd"><td><strong>Random Forest</strong></td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>Insensitive to scale, variables treated individually</td>
+</tr><tr class="even"><td><strong>XGBoost</strong></td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>Insensitive to scale, variables treated individually</td>
+</tr><tr class="odd"><td><strong>Neural Network based models</strong></td>
+<td></td>
+<td>x</td>
+<td></td>
+<td>Optimised by gradient descent; no assumption about data
+distribution</td>
+</tr><tr class="even"><td><strong>Principal Component Analysis</strong></td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>Distance based; may be optimised by gradient descent</td>
+</tr><tr class="odd"><td><strong>K-means clustering</strong></td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>Distance based</td>
+</tr></tbody></table></div>
+</div>
+</div>
+</div>
+<div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
 </div>
@@ -337,16 +662,20 @@ zero values. The distribution is heteroskedastic, meaning the variance
 depends on the mean.</li>
 <li>Standard transformations such as the variance stabilising
 transformation and rlog transformation are designed to make the
-distribution of RNA-Seq data more Gaussian, and therefore more
-appropriately distributed for many machine learning models. These
+distribution of RNA-Seq data more Gaussian and homoskedastic, which will
+improve the performance of some machine learning approaches. These
 transformations are improvements to a simple log2 transformation in
 particular for low count values.</li>
 <li>Many machine learning algorithms require predictor variables to be
-on the same scale. Standardisation (z-score) and min-max scaling are two
-common techniques to rescale variables to the same scale. Tree based
-models are less sensitive to scaling. Standardisation is appropriate for
-linear models such as logistic regression and svm. min-max scaling is
-most appropirate for neural network based models.</li>
+on the same scale. Even after vst or rlog transformation, genes in an
+RNA-Seq dataset will be on very different scales.</li>
+<li>Standardisation (z-score) and min-max scaling are two common
+techniques to rescale variables.</li>
+<li>Data should be scaled before use with machine learning models that
+use distance based measures, that include regularisation penalties that
+utilise absolute values of model coefficients and for models that are
+optimised via gradient descent. Naive Bayes and tree based models are
+insensitive to scaling and variables may be left unscaled.</li>
 </ul></div>
 </div>
 </div>
@@ -407,8 +736,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode6.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode6.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-11",
-  "datePublished": "2023-07-11"
+  "dateModified": "2023-07-14",
+  "datePublished": "2023-07-14"
 }
 
   </script><script>
