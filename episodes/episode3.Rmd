@@ -6,7 +6,7 @@ exercises: 5
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What format are processed RNA-Seq dataset store on GEO?
+- What format are processed RNA-Seq dataset stored on GEO?
 - How do I search for a dataset that meets my requirements on GEO?
 - How do I use the R package `GEOquery` to download datasets from GEO into R?
 
@@ -23,13 +23,13 @@ exercises: 5
 
 ## GEO Data Objects
 
-NCBI 'gene expression omnibus' , GEO, one of the largest repositories for functional genomics data. GEO data are stored as individual samples, series of samples and curated datasets. Accession numbers of GEO broadly fall into four categories:
+NCBI 'gene expression omnibus' , GEO, is one of the largest repositories for functional genomics data. GEO data are stored as individual samples, series of samples and curated datasets. Accession numbers of GEO broadly fall into four categories:
 
 * GSM - GEO Sample. These refer to a single sample.
 * GSE - GEO Series. These refer to a list of GEO samples that together form a single experiment.
 * GDS - GEO Dataset. These are curated datasets containing summarised information from the underlying GEO samples.
 
-There are many more datasets available as series than there are curated GEO Datasets. For this lesson, we'll focus finding a GEO Series as an illustrative dataset.
+There are many more datasets available as series than there are curated GEO Datasets. For this lesson, we'll focus on finding a GEO Series as an illustrative dataset.
 
 
 ## GEO File Formats
@@ -38,7 +38,7 @@ Data for RNA-Seq studies have three components on GEO (similar to microarray stu
 
 1. **Metadata**
 
-The metadata is equivalent to sample data relationship information provided on ArrayExpress and refers to the descriptive information about the overall study and individual samples, as well as protocol information and references to the raw and processed data files names for each sample. Metadata is typically stored in a number of standard formats on GEO:
+The metadata is equivalent to sample data relationship information provided on ArrayExpress and refers to the descriptive information about the overall study and individual samples. Metadata also contains protocol information and references to the raw and processed data files names for each sample. Metadata is stored in the following standard formats on GEO:
 
 * SOFT (Simple Omnibus Format in Text) is a line-based plain text format
 * MINiML is an alternative to SOFT and offers an XML rendering of SOFT
@@ -48,19 +48,19 @@ The raw and processed counts data is typically not included in any of the above 
 
 2. **Processed data files**
 
-Processed data (raw counts, noramlised counts) are typically provided in a supplementary file, often a gz archieves of text files. Raw and normalised counts may be provided as separate supplementary files.
+Processed data (raw counts, noramlised counts) are typically provided in a supplementary file, often a .gz archive of text files. Raw and normalised counts may be provided as separate supplementary files.
 
 
 3. **Raw data files**
 
-Raw data files provide the original reads and quality scores and are stored in the NIH's [Sequence Read Archieve (SRA)](https://www.ncbi.nlm.nih.gov/sra).
+Raw data files provide the original reads and quality scores and are stored in the NIH's [Sequence Read Archive (SRA)](https://www.ncbi.nlm.nih.gov/sra).
 
-Further information on how RNA-Seq experiments are stored on GEO is given in the [submission guidelines](https://www.ncbi.nlm.nih.gov/geo/info/seq.html)
+Further information on how RNA-Seq experiments are stored on GEO is given in the [submission guidelines](https://www.ncbi.nlm.nih.gov/geo/info/seq.html) on the GEO website.
 
 
 ## Searching for a Dataset on GEO
 
-Let's begin on the [GEO home page](https://www.ncbi.nlm.nih.gov/geo/). GEO provides online search and filter tools. We search by adding "rna-seq" as a keyword in the search box, and then apply the following filters to the subsequent results page, and rank the results by the number of samples descending:
+Let's begin on the [GEO home page](https://www.ncbi.nlm.nih.gov/geo/). GEO provides online search and filter tools. We search by adding "rna-seq" as a keyword in the search box, and then apply the following filters to the subsequent results page, and rank the results by the number of samples in descending order:
 
 <br>
 
@@ -144,7 +144,9 @@ writeLines(sprintf("file %i: %i samples", 1:2, c(dim(gse212041[[1]])[2], dim(gse
 
 <br>
 
-Extract the metadata for the larger dataset and examine the column names to verify that the file contains the expected metadata about the experiment.
+### Extracting the Metadata
+
+We'll extract the metadata for the larger dataset (765 samples) and examine the column names to verify that the file contains the expected metadata about the experiment.
 
 ```{r}
 
@@ -156,9 +158,18 @@ colnames(samp.info.cov19)
 
 <br>
 
-### Downloading supplementary files
+### Getting the Counts Data
 
-Notice in this series, the counts matrix is not contained in the exprs() slot of the expression set. The expression set only contains a list of the accession numbers of the samples included in the expression set, but not the actual count data. We can verify this by looking at the dimensions of the object in the exprs slot.
+If we use the `exprs()` function to extract the counts data from the expression slot of the downloaded dataset, we'll see that in this data series, the counts matrix is not there. The expression set only contains a list of the accession numbers of the samples included in the expression set, but not the actual count data. (The code below attempts to view a sample of the data).
+
+```{r}
+
+Biobase::exprs(gse212041[[2]])[,1:10]
+
+```
+
+
+We can verify this by looking at the dimensions of the object in the exprs slot.
 
 ```{r}
 
@@ -190,7 +201,7 @@ GEOquery::getGEOSuppFiles(GEO = "GSE212041",
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 2: Download the dataset
+## Challenge 2: Download the supplementary files
 
 Now Download the file to your /data subdirectory, by setting `fetch_files` to TRUE and apply a `filter_regex` of `'*Count_Matrix*'` to include the raw counts file only. Read a sample of the file into R and check the dimensions of the file correspond to the expected number of samples.
 
