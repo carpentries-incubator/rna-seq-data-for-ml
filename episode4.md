@@ -1,7 +1,7 @@
 ---
 title: "Data Readiness: Data Format and Integrity"
 teaching: 20
-exercises: 20
+exercises: 30
 ---
 :::::::::::::::::::::::::::::::::::::: questions 
 
@@ -13,8 +13,9 @@ exercises: 20
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Describe the format of a dataset required as input to a simple supervised machine learning analysis
-- Recall a checklist of common formatting and data integrity issues encountered with sample information (metadata) in real RNA-Seq datasets, and why each checklist item presents a problem in downstream ML analysis
-- Recall a checklist of common formatting and data integrity issues encountered with counts matrix RNA-Seq datasets, and why each checklist item presents a problem in downstream ML analysis
+- Recall a checklist of common formatting and data integrity issues encountered with sample information (metadata) in RNA-Seq datasets
+- Recall a checklist of common formatting and data integrity issues encountered with counts matrix RNA-Seq datasets
+- Recall why formatting and data integrity issues present a problem for downstream ML analysis
 - Apply the checklist to an unseen dataset downloaded from either the Array Express or GEO platform to identify potential issues
 - Construct a reusable R code pipeline implement required changes to a new dataset
 
@@ -23,30 +24,34 @@ exercises: 20
 
 ## Required format for machine learning libraries
 
-Data must be correctly formatted for use in a machine learning / AI pipeline. The garbage in garbage out principle applies; a machine learning model is only as good as the input data. This episode discusses the kind of data requesed as input to a machine learing classification model, and illustrates the processes formatting an RNA-Seq dataset downloaded from a public repository, highlighting some of the likely data format and integrity issues that learners may encounter.
+Data must be correctly formatted for use in a machine learning / AI pipeline. The *garbage in garbage out* principle applies; a machine learning model is only as good as the input data. This episode first discusses the kind of data required as input to a machine learing classification model.  We'll then illustrates the process of formatting an RNA-Seq dataset downloaded from a public repository. On the way, we'll define a checklist of data integrity issues to watch out for.
 
 For a supervised machine learning classification task, we require:
 
-1. **A matrix of values of all of the predictor variables** to be included in a machine learning model for each of the samples. Example predictor variables would be genes obtained from the counts data. Additional predictor variables may be obtained from the sample information including demographic data (e.g. `sex`, `age`) and clinical and laboratory measures.
+1. **A matrix of values of all of the predictor variables** to be included in a machine learning model for each of the samples. Example predictor variables would be gene abundance in the form of read counts. Additional predictor variables may be obtained from the sample information including demographic data (e.g. `sex`, `age`) and clinical and laboratory measures.
 
-2. **A vector of values for the target variable** that we are trying to predict for each sample. Example target variables for a classification model would be disease state (the analogy for a regression task would be a continuous variable such as a disease progression or severity score).
+2. **A vector of values for the target variable** that we are trying to predict for each sample. Example target variables for a classification model would be disease state, for example 'infected with tuburculosis' compared with 'healthy control'. The analogy for a regression task would be a continuous variable such as a disease progression or severity score.
 
-We will follow a series of steps to reformat and clean up the sample information and counts matrix file for the IBD dataset collected form ArrayExpress by applying a checklist of data clean up items. We'll start by reading in the dataset again from the data subfolder.
+We will follow a series of steps to reformat and clean up the sample information and counts matrix file for the IBD dataset collected form ArrayExpress in Episode 2 by applying a checklist of data clean up items. If required, the data can be downloaded again by running this code.
+
+
+```r
+download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.sdrf.txt",
+              destfile = "data/E-MTAB-11349.sdrf.txt")
+              
+download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv",
+              destfile = "data/E-MTAB-11349.counts.matrix.csv")
+```
+
+
+We'll start by reading in the dataset from our `data` subfolder.
+
 
 
 ```r
 samp.info.ibd <- read.table(file="./data/E-MTAB-11349.sdrf.txt", sep="\t", header=T, fill=T, check.names=F)
 
 raw.counts.ibd <- read.table(file="./data/E-MTAB-11349.counts.matrix.csv", sep="," , header=T, fill=T, check.names=F)
-```
-
-```{.warning}
-Warning in file(file, "rt"): cannot open file
-'./data/E-MTAB-11349.counts.matrix.csv': No such file or directory
-```
-
-```{.error}
-Error in file(file, "rt"): cannot open the connection
 ```
 
 
@@ -61,8 +66,8 @@ In real RNA-Seq experiments, sample information (metadata) has likely been colle
 
 Item  | Check For... | Rationale
 - | ------ | -------
-1 |  **Unique identifier** matching between counts matrix and sample information | Target variables must be matched to predictor variables for each sample
-2 | **Appropriate target variable** present in the data | Sample information needs to contain the measure you are trying in your machine learning model
+1 |  **Unique identifier** matching between counts matrix and sample information | Target variables must be matched to predictor variables for each sample. Target variables are the thing we are trying to predict such as disease state. Predictor variables are the things we are going to predict based on, such as the expression levels of particular genes.
+2 | **Appropriate target variable** present in the data | The sample information needs to contain the target variable you are trying to predict with the machine learning model
 3 |  **Unique variable names**, without spaces or special characters | Predictor variables may be drawn from the sample information. ML algorithms require unique variables. Spaces etc. may cause errors with bioinformatics and machine learning libraries used downstream
 4 |  **Machine readable and consistent encoding**  of categorical variables | Inconsistent spellings between samples will be treated as separate values. Application specific formatting such as colour coding and notes in spreadsheets will be lost when converting to plain text formats.
 5 |  **Numerical class values** formatted as a factor (for classification) | Some machine learning algorithms/libraries (e.g. SVM) require classes defined by a number (e.g. -1 and +1 )
@@ -133,34 +138,22 @@ All of the checklist items apply in this case. Let's go through them...
 
 <br>
 
-1. Let's verify that there is a unique identifier that matches between the sample information and counts matrix, and identify the name of the column in the sample information. We manually find the names of the samples in `raw.counts.ibd` (the counts matrix), and set to a new variable `ibd.samp.names`. We then write a `for loop` that evaluates which columns in the sample information match the sample names. There is one match, the column named `Source Name`. Note that there are other columns such as `Assay Name` in this dataset that contain identifiers for some but not all samples. This is a good illustration of why it important to check carefully to ensure you have a complete set of unique identifiers.
+1. Let's verify that there is a unique identifier that matches between the sample information and counts matrix, and identify the name of the column in the sample information. We manually find the names of the samples in `raw.counts.ibd` (the counts matrix), and set to a new variable `ibd.samp.names`. We then write a `for loop` that evaluates which columns in the sample information match the sample names. There is one match, the column named `Source Name`. Note that there are other columns such as `Assay Name` in this dataset that contain identifiers for some but not all samples. This is a good illustration of why it is important to check carefully to ensure you have a complete set of unique identifiers.
 
 
 ```r
 ibd.samp.names <- colnames(raw.counts.ibd)[3:ncol(raw.counts.ibd)]
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
-```
-
-```r
 lst.colnames <- c()
 for(i in seq_along(1:ncol(samp.info.ibd))){
   lst.colnames[i] <- all(samp.info.ibd[,i] == ibd.samp.names)
 }
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'ibd.samp.names' not found
-```
-
-```r
 sprintf("The unique IDs that match the counts matrix are in column: %s", colnames(samp.info.ibd)[which(lst.colnames)])
 ```
 
-```{.error}
-Error in which(lst.colnames): argument to 'which' is not logical
+```{.output}
+[1] "The unique IDs that match the counts matrix are in column: Source Name"
 ```
 
 
@@ -170,24 +163,7 @@ Error in which(lst.colnames): argument to 'which' is not logical
 
 
 ```r
-require(tidyverse)
-```
-
-```{.output}
-Loading required package: tidyverse
-```
-
-```{.output}
-── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
 ```
 
 
@@ -358,8 +334,18 @@ Item  | Check For... | Rationale
 raw.counts.ibd[1:10,1:8]
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
+```{.output}
+            read Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6
+1   1          *    13961    16595    20722    17696    25703    20848
+2   2 ERCC-00002        0        0        0        0        0        0
+3   3 ERCC-00003        0        0        0        0        0        0
+4   4 ERCC-00004        0        0        0        0        3        0
+5   5 ERCC-00009        0        0        0        0        0        0
+6   6 ERCC-00012        0        0        0        0        0        0
+7   7 ERCC-00013        0        0        0        0        0        0
+8   8 ERCC-00014        0        0        0        0        0        0
+9   9 ERCC-00016        0        0        0        0        0        0
+10 10 ERCC-00017        2        0        0        0        1        0
 ```
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -377,34 +363,26 @@ Can you see the irrelevant information that we need to remove from the counts ma
 
 ```r
 counts.mat.ibd <- raw.counts.ibd[-1,-1]
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
-```
-
-```r
 rownames(counts.mat.ibd) <- NULL
-```
 
-```{.error}
-Error: object 'counts.mat.ibd' not found
-```
-
-```r
 counts.mat.ibd <-  counts.mat.ibd %>% column_to_rownames('read')
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
-```
-
-```r
 counts.mat.ibd[1:10,1:6]
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+           Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6
+ERCC-00002        0        0        0        0        0        0
+ERCC-00003        0        0        0        0        0        0
+ERCC-00004        0        0        0        0        3        0
+ERCC-00009        0        0        0        0        0        0
+ERCC-00012        0        0        0        0        0        0
+ERCC-00013        0        0        0        0        0        0
+ERCC-00014        0        0        0        0        0        0
+ERCC-00016        0        0        0        0        0        0
+ERCC-00017        2        0        0        0        1        0
+ERCC-00019        0        0        0        0        0        0
 ```
 
 ::::::::::::::::::::::::::
@@ -420,16 +398,16 @@ Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
 which(duplicated(rownames(counts.mat.ibd)))
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+integer(0)
 ```
 
 ```r
 which(duplicated(colnames(counts.mat.ibd)))
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+integer(0)
 ```
 
 <br>
@@ -442,7 +420,7 @@ if(!identical(colnames(counts.mat.ibd), samp.info.ibd.sel$sampleID)){stop()}
 ```
 
 ```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+Error in eval(expr, envir, enclos): 
 ```
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -460,10 +438,6 @@ We renamed the samples in the sample information to remove spaces, so we need to
 colnames(counts.mat.ibd) <- gsub(x = colnames(counts.mat.ibd), pattern = "\ ", replacement = "_")
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
-```
-
 :::::::::::::::::::::::: 
 ::::::::::::::::::::::::::::::::::::: 
 
@@ -479,8 +453,8 @@ allMissValues <- function(x){all(is.na(x) | x == "")}
 allMissValues(counts.mat.ibd)
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+[1] FALSE
 ```
 
 <br>
@@ -492,24 +466,34 @@ Take a final look at the cleaned up matrix.
 counts.mat.ibd[1:10,1:6]
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+           Sample_1 Sample_2 Sample_3 Sample_4 Sample_5 Sample_6
+ERCC-00002        0        0        0        0        0        0
+ERCC-00003        0        0        0        0        0        0
+ERCC-00004        0        0        0        0        3        0
+ERCC-00009        0        0        0        0        0        0
+ERCC-00012        0        0        0        0        0        0
+ERCC-00013        0        0        0        0        0        0
+ERCC-00014        0        0        0        0        0        0
+ERCC-00016        0        0        0        0        0        0
+ERCC-00017        2        0        0        0        1        0
+ERCC-00019        0        0        0        0        0        0
 ```
 
 ```r
 sprintf("There are %i rows, corresponding to the transcript IDs", dim(counts.mat.ibd)[1])
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+[1] "There are 22750 rows, corresponding to the transcript IDs"
 ```
 
 ```r
 sprintf("There are %i columns, corresponding to the samples", dim(counts.mat.ibd)[2])
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd' not found
+```{.output}
+[1] "There are 590 columns, corresponding to the samples"
 ```
 
 <br>
@@ -531,7 +515,7 @@ It is crucial that you document your data reformatting so that it is reproducibl
 * Raw input data files collected from ArrayExpress, GEO or similar
 * The output counts matrix and target variable vector, stored in a common format such at .txt format
 * The full R scripts used to perform all the data clean up steps. Store the script with the input and output data.
-* A readme file that explains the steps taken, and how to run the script on the inputs to generate the outputs. This should also include details of all software versions used (e.g. R version, RStudio version, and the versions of any code libraries used)
+* A readme file that explains the steps taken, and how to run the script on the inputs to generate the outputs. This should also include details of all software versions used (e.g. R version, RStudio or Jupyter Notebooks version, and the versions of any code libraries used)
 
 :::::::::::::::::::::::::::::::::::::: 
 
@@ -539,9 +523,15 @@ It is crucial that you document your data reformatting so that it is reproducibl
 
 :::::::::::::::::::::::::::::::::::::: discussion
 
-Take a look at [The Tuburculosis (TB) Dataset - E-MTAB-6845](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-6845) that was included in the lesson data zip file.
+Take a look at [The Tuburculosis (TB) Dataset - E-MTAB-6845](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-6845). You can download the sdrf file from zenodo and save it to your `data` directory by running the following code.
 
-In your groups, read the sdrf file into R. Each take a look at the data and then as a group, make a list of the potential issues with this data based on the checklist above? What steps would need to be taken to get them ready to train a machine learning classifier? Record your findings in the shared document.
+
+```r
+download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-6845.sdrf.txt",
+              destfile = "data/E-MTAB-6845.sdrf.txt")
+```
+
+Read the sdrf file into R and take a look at the data. Make a list of the potential issues with this data based on the checklist above? What steps would need to be taken to get them ready to train a machine learning classifier?
 
 As a help, the code to read the file in from your data directory is:
 

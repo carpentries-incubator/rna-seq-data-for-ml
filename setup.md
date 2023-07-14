@@ -16,9 +16,11 @@ This lesson assumes a working knowledge of programming in R. For learners who ar
 
 ## Data Sets
 
-This lesson uses a number of RNA-Seq datasets downloaded from public functional genomics repositories. Create a new RStudio project where you will keep all of the files for this lesson. In the project directory (where the .Rproj file is), create a subdirectory called data.
+This lesson uses a number of RNA-Seq datasets downloaded from public functional genomics repositories.
 
-Links to the dataset and instructions on how to and download provided in each episode. Download each data file as instructed and save to you data subdirectory. The most important dataset files that we will be using throughout the lesson are also provided in the [data zip file](./data/rna-seq-ml-readiness-data.zip), which you can download and unzip to your data subdirectory right away.
+Before the start of the lesson, create a new RStudio project where you will keep all of the files for this lesson. In the project directory (where the .Rproj file is), **create a subdirectory called `data`**.
+
+Links to the relevant datasets and instructions on how to download them provided in each episode.
 
 
 ## Software Setup
@@ -32,7 +34,6 @@ Learners will need updated versions of R and RStudio installed. There are instru
 Please install the following R packages. You will need to install the package `BiocManager` to be able to install packages from Bioconductor.
 
 * `tidyverse`
-* `here`
 * `reshape2`
 * `scales`
 * `BiocManager`
@@ -44,7 +45,7 @@ Executing the following lines of code in the R console will install all of these
 
 ```{r}
 
-install.packages(c("tidyverse", "here", "BiocManager"))
+install.packages(c("tidyverse", "reshape2", "scales", "BiocManager"))
 
 BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
 
@@ -54,7 +55,7 @@ You can check that all packages have been installed using the following command,
 
 ```{r}
 
-setdiff(c("tidyverse", "here", "BiocManager", "Biobase", "GEOquery", "DESeq2"),
+setdiff(c("tidyverse", "reshape2", "scales", "BiocManager", "Biobase", "GEOquery", "DESeq2"),
         rownames(installed.packages()))
 
 ```

@@ -1,0 +1,83 @@
+#------------------------------------------------------------
+# Values for this lesson.
+#------------------------------------------------------------
+
+# Which carpentry is this (swc, dc, lc, or cp)?
+# swc: Software Carpentry
+# dc: Data Carpentry
+# lc: Library Carpentry
+# cp: Carpentries (to use for instructor training for instance)
+# incubator: The Carpentries Incubator
+carpentry: 'incubator'
+
+# Overall title for pages.
+title: 'RNA-Seq: Data Readiness for Machine Learning Applications'
+
+# Date the lesson was created (YYYY-MM-DD, this is empty by default)
+created: 2023-05-23
+
+# Comma-separated list of keywords for the lesson
+keywords: 'machine learning, RNA-Seq, data readiness, pre-processing, data management' # FIXME
+
+# Life cycle stage of the lesson
+# possible values: pre-alpha, alpha, beta, stable
+life_cycle: 'pre-alpha' # FIXME
+
+# License of the lesson
+license: 'CC-BY 4.0'
+
+# Link to the source repository for this lesson
+source: 'https://github.com/carpentries-incubator/rna-seq-data-for-ml.git' # FIXME
+
+# Default branch of your lesson
+branch: 'main'
+
+# Who to contact if there are any issues
+contact: 'parkinsone@cardiff.ac.uk' # FIXME
+
+# Navigation ------------------------------------------------
+#
+# Use the following menu items to specify the order of
+# individual pages in each dropdown section. Leave blank to
+# include all pages in the folder.
+#
+# Example -------------
+#
+# episodes:
+# - introduction.md
+# - first-steps.md
+#
+# learners:
+# - setup.md
+#
+# instructors:
+# - instructor-notes.md
+#
+# profiles:
+# - one-learner.md
+# - another-learner.md
+
+# Order of episodes in your lesson
+episodes:
+- episode1.Rmd
+- episode2.Rmd
+- episode3.Rmd
+- episode4.Rmd
+- episode5.Rmd
+- episode6.Rmd
+
+# Information for Learners
+learners:
+
+# Information for Instructors
+instructors:
+
+# Learner Profiles
+profiles:
+
+# Customisation ---------------------------------------------
+#
+# This space below is where custom yaml items (e.g. pinning
+# sandpaper and varnish versions) should live
+
+

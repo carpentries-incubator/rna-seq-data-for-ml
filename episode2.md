@@ -6,7 +6,7 @@ exercises: 5
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What format are processed RNA-Seq dataset store on Array Express?
+- What format are processed RNA-Seq dataset stored on Array Express?
 - How do I search for a dataset that meets my requirements on Array Express?
 - Which files do I need to download?
 
@@ -40,7 +40,7 @@ Detailed information about BioStudies file formats is available in the [MAGE-TAB
 
 ## Searching for a Dataset on ArrayExpress
 
-We will use ArrayExpress to select a RNA-Seq dataset with a case control design, suitable for constructing a machine learning classification model. Machine learning based analyses generally perform better the larger the sample size, and may perform very poorly and give misleading results with insufficient samples, so we'll look for a datasets with a relatively large number of samples.
+We will use ArrayExpress to select an RNA-Seq dataset with a case control design, suitable for constructing a machine learning classification model. Machine learning based analyses generally perform better the larger the sample size, and may perform very poorly and give misleading results with insufficient samples. Given that, we'll look for a datasets with a relatively large number of samples.
 
 Let's begin on the [ArrayExpress home page](https://www.ebi.ac.uk/biostudies/arrayexpress/studies). 
 
@@ -74,7 +74,7 @@ Now use the sort in the top right of the screen to sort the results by "Samples"
 
 In the search results displayed above, the top ranked dataset is E-MTAB-11349: *Whole blood expression profiling of patients with inflammatory bowel diseases in the IBD-Character cohort*. We'll call it the [IBD dataset](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-11349).
 
-The IBD dataset comprises human samples of patients with inflammatory bowel diseases and controls. The 'Protocols' section explains the main steps in the generation of the data. The nucleic acid sequencing protocol gives details of the sequencing platform used to generate the raw fastq data, and the version of the human genome used in the alignment step to generate the count data. The normalization data transformation protocol gives the tools used to normalise raw counts data for sequence depth and sample composition, in this case normalisation is conducted using the R package DESeq2. Let's look at some of the basic information on this dataset:
+The IBD dataset comprises human samples of patients with inflammatory bowel diseases and controls. The 'Protocols' section explains the main steps in the generation of the data, from RNA extraction and sample preparation, to sequencing and processing of the raw RNA-Seq data. The nucleic acid sequencing protocol gives details of the sequencing platform used to generate the raw fastq data, and the version of the human genome used in the alignment step to generate the count data. The normalization data transformation protocol gives the tools used to normalise raw counts data for sequence depth and sample composition, in this case normalisation is conducted using the R package [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html). DESEq2 contains a range of functions for the transformation and analysis of RNA-Seq data. Let's look at some of the basic information on this dataset:
 
 <br>
 
@@ -90,9 +90,35 @@ The dataset contains two alternative sets of processed data, a matrix of raw cou
 
 ## Downloading and Reading into R
 
-Let's download the SDRF file and the raw counts matrix - these are the two files that contain the information we will need to build a machine learning classification model. In the data files box to the right hand side, check the follwoing two files
-`E-MTAB-11349.sdrf.txt` and `ArrayExpress-raw.csv`, and save in a folder called `data` in the working directory for your R workbook. For consistency, rename `ArrayExpress-raw.csv` as `E-MTAB-11349.counts.matrix.csv`.
+Let's download the SDRF file and the raw counts matrix - these are the two files that contain the information we will need to build a machine learning classification model. In the data files box to the right hand side, check the follwoing two files `E-MTAB-11349.sdrf.txt` and `ArrayExpress-raw.csv`, and save in a folder called `data` in the working directory for your R project. For consistency, rename `ArrayExpress-raw.csv` as `E-MTAB-11349.counts.matrix.csv`.
 
+For convenience, a copy of the files is also stored on zenodo. You can run the following code that uses the function `download.file()` to download the files and save them directly into your `data` directory. (You need to have created the `data` directory beforehand).
+
+
+```r
+download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.sdrf.txt",
+              destfile = "data/E-MTAB-11349.sdrf.txt")
+              
+download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv",
+              destfile = "data/E-MTAB-11349.counts.matrix.csv")
+```
+
+```{.warning}
+Warning in download.file(url =
+"https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv", :
+downloaded length 0 != reported length 0
+```
+
+```{.warning}
+Warning in download.file(url =
+"https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv", : URL
+'https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv':
+Timeout of 60 seconds was reached
+```
+
+```{.error}
+Error in download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv", : download from 'https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv' failed
+```
 <br>
 
 ### Raw counts matrix
@@ -106,23 +132,13 @@ raw.counts.ibd <- read.table(file="data/E-MTAB-11349.counts.matrix.csv",
                              header=T,
                              fill=T,
                              check.names=F)
-```
 
-```{.warning}
-Warning in file(file, "rt"): cannot open file
-'data/E-MTAB-11349.counts.matrix.csv': No such file or directory
-```
-
-```{.error}
-Error in file(file, "rt"): cannot open the connection
-```
-
-```r
 writeLines(sprintf("%i %s", c(dim(raw.counts.ibd)[1], dim(raw.counts.ibd)[2]), c("rows corresponding to transcript IDs", "columns corresponding to samples")))
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
+```{.output}
+6559 rows corresponding to transcript IDs
+592 columns corresponding to samples
 ```
 
 
@@ -139,8 +155,18 @@ View a small subset of the data, (e.g. first ten rows and 8 columns) to see how 
 raw.counts.ibd[1:10,1:8]
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
+```{.output}
+            read Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6
+1   1          *    13961    16595    20722    17696    25703    20848
+2   2 ERCC-00002        0        0        0        0        0        0
+3   3 ERCC-00003        0        0        0        0        0        0
+4   4 ERCC-00004        0        0        0        0        3        0
+5   5 ERCC-00009        0        0        0        0        0        0
+6   6 ERCC-00012        0        0        0        0        0        0
+7   7 ERCC-00013        0        0        0        0        0        0
+8   8 ERCC-00014        0        0        0        0        0        0
+9   9 ERCC-00016        0        0        0        0        0        0
+10 10 ERCC-00017        2        0        0        0        1        0
 ```
 :::::::::::::::::::::::::::::::::
 
@@ -149,7 +175,7 @@ Error in eval(expr, envir, enclos): object 'raw.counts.ibd' not found
 
 ### SDRF File
 
-Now let's read the sdrf file into R and check the dimensions of the file.
+Now let's read the sdrf file (a plain text file) into R and check the dimensions of the file.
 
 
 ```r
