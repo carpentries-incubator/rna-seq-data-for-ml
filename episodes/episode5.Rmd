@@ -35,7 +35,7 @@ Genes with consistently low read count values across all samples in a dataset ma
 
 We'll briefly investigate the distribution of read counts in the IBD dataset to illustrate this point. Import the cleaned up counts matrix and sample information text files that we prepared in Episode 4. If you didn't manage to save them, you can download them directly using the following code.
 
-```{r}
+```r
 
 download.file(url = "https://zenodo.org/record/8125141/files/ibd.sample.info.txt",
               destfile = "data/ibd.sample.info.txt")
@@ -60,6 +60,9 @@ suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
 samp.info.ibd.sel <- read.table(file="./data/ibd.sample.info.txt", sep="\t", header=T, fill=T, check.names=F)
 
 counts.mat.ibd <- read.table(file="./data/counts.mat.ibd.txt", sep='\t', header=T, fill=T, check.names=F)
+
+# head(counts.mat.ibd)
+# any(is.na(samp.info.ibd.sel))
 
 ```
 
@@ -93,6 +96,7 @@ There is no right answer. However, looking at the histogram, you can see an appr
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+<br>
 
 ### Read Count Normalisation
 
@@ -100,12 +104,15 @@ In order to be able to compare read counts between samples, we must first adjust
 
 ```{r}
 
+# load DESeq2 library
+suppressPackageStartupMessages(library(DESeq2))
+
 # convert the condition variable to a factor as required by DESeq2
 samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
 
-# create DESeq Data Set object from the raw counts, with condition as the factor of interest
+# create DESeq Data Set object from the raw counts (converted to a matrix), with condition as the factor of interest
 dds.ibd <- DESeq2::DESeqDataSetFromMatrix(
-    countData = counts.mat.ibd,
+    countData = as.matrix(counts.mat.ibd),
     colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
     design = ~ condition)
   
@@ -226,9 +233,11 @@ Run the following code to create DESeq Data Set object from the filtered raw cou
 ```{r}
 
 dds.ibd.filt <- DESeq2::DESeqDataSetFromMatrix(
-    countData = counts.mat.ibd.filtered,
+    countData = as.matrix(counts.mat.ibd.filtered),
     colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
     design = ~ condition)
+
+
 
 ```
 

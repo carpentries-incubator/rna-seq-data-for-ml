@@ -34,13 +34,14 @@ For a supervised machine learning classification task, we require:
 
 We will follow a series of steps to reformat and clean up the sample information and counts matrix file for the IBD dataset collected form ArrayExpress in Episode 2 by applying a checklist of data clean up items. If required, the data can be downloaded again by running this code.
 
-```{r}
+```r
 
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.sdrf.txt",
               destfile = "data/E-MTAB-11349.sdrf.txt")
               
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv",
               destfile = "data/E-MTAB-11349.counts.matrix.csv")
+
 ```
 
 

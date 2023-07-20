@@ -26,7 +26,7 @@ RNA-Seq count data has an approximately negative binomial distribution. Even aft
 
 To begin, import the filtered counts matrix and sample information text files that we prepared in Episodes 4 and 5. If you didn't manage to save it, you can download it directly with the following code.
 
-```{r}
+```r
 
 download.file(url = "https://zenodo.org/record/8125141/files/ibd.sample.info.txt",
               destfile = "data/ibd.sample.info.txt")
@@ -99,14 +99,13 @@ samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], f
 
 # create DESeq Data Set object from the raw counts, with condition as the factor of interest
 dds.ibd.filt.ol <- DESeq2::DESeqDataSetFromMatrix(
-  countData = counts.mat.ibd.ol.filtered,
+  countData = as.matrix(counts.mat.ibd.ol.filtered),
   colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
   design = ~ condition)                    
                       
 # calculate the vst count values and extract the counts matrix using the assay() function
 counts.mat.ibd.vst <- DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol, blind=FALSE) %>% 
   SummarizedExperiment::assay()
-
 
 ```
 

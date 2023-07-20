@@ -94,14 +94,13 @@ Let's download the SDRF file and the raw counts matrix - these are the two files
 
 For convenience, a copy of the files is also stored on zenodo. You can run the following code that uses the function `download.file()` to download the files and save them directly into your `data` directory. (You need to have created the `data` directory beforehand).
 
-```{r}
+```r
 
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.sdrf.txt",
               destfile = "data/E-MTAB-11349.sdrf.txt")
               
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv",
               destfile = "data/E-MTAB-11349.counts.matrix.csv")
-
 ```
 <br>
 
