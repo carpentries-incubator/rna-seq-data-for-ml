@@ -94,30 +94,13 @@ Let's download the SDRF file and the raw counts matrix - these are the two files
 
 For convenience, a copy of the files is also stored on zenodo. You can run the following code that uses the function `download.file()` to download the files and save them directly into your `data` directory. (You need to have created the `data` directory beforehand).
 
-
 ```r
+
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.sdrf.txt",
               destfile = "data/E-MTAB-11349.sdrf.txt")
               
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv",
               destfile = "data/E-MTAB-11349.counts.matrix.csv")
-```
-
-```{.warning}
-Warning in download.file(url =
-"https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv", :
-downloaded length 0 != reported length 0
-```
-
-```{.warning}
-Warning in download.file(url =
-"https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv", : URL
-'https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv':
-Timeout of 60 seconds was reached
-```
-
-```{.error}
-Error in download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv", : download from 'https://zenodo.org/record/8125141/files/E-MTAB-11349.counts.matrix.csv' failed
 ```
 <br>
 
@@ -137,7 +120,7 @@ writeLines(sprintf("%i %s", c(dim(raw.counts.ibd)[1], dim(raw.counts.ibd)[2]), c
 ```
 
 ```{.output}
-6559 rows corresponding to transcript IDs
+22751 rows corresponding to transcript IDs
 592 columns corresponding to samples
 ```
 

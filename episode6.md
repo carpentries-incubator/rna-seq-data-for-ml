@@ -26,13 +26,14 @@ RNA-Seq count data has an approximately negative binomial distribution. Even aft
 
 To begin, import the filtered counts matrix and sample information text files that we prepared in Episodes 4 and 5. If you didn't manage to save it, you can download it directly with the following code.
 
-
 ```r
+
 download.file(url = "https://zenodo.org/record/8125141/files/ibd.sample.info.txt",
               destfile = "data/ibd.sample.info.txt")
 
 download.file(url = "https://zenodo.org/record/8125141/files/counts.mat.ibd.ol.filtered.txt",
               destfile = "data/counts.mat.ibd.ol.filtered.txt")
+
 ```
 
 And now read the files into R...
@@ -65,7 +66,7 @@ counts.mat.ibd.ol.filtered %>%
     ylab("Frequency")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+<img src="fig/episode6-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 A plot of the mean count against the variance of the counts for a random sample of 5,000 genes (to reduce compute time) illustrates the clear mean variance relationship in the data. The variance is increasing as the mean count increases.
 
@@ -82,7 +83,7 @@ counts.mat.ibd.ol.filtered %>%
     ylab("Variance")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="fig/episode6-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 ## Variance Stabilising and rlog Transformation
 
@@ -97,7 +98,7 @@ samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], f
 
 # create DESeq Data Set object from the raw counts, with condition as the factor of interest
 dds.ibd.filt.ol <- DESeq2::DESeqDataSetFromMatrix(
-  countData = counts.mat.ibd.ol.filtered,
+  countData = as.matrix(counts.mat.ibd.ol.filtered),
   colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
   design = ~ condition)                    
 ```
@@ -130,7 +131,7 @@ counts.mat.ibd.vst %>%
     ylab("Frequency")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="fig/episode6-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -146,7 +147,7 @@ counts.mat.ibd.vst %>%
     ylab("Variance")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="fig/episode6-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 
 ## Rescaling transformed counts data: standardisation and Min-Max Scaling
@@ -168,7 +169,7 @@ counts.mat.ibd.vst %>%
   theme(axis.text.x = element_blank())
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="fig/episode6-rendered-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 In some cases, further scaling of variables will be necessary to put each gene on a similar scale before inputting into a machine learning algorithm. The table below outlines the scenarios where variable scaling will improve the performance of downstream machine learning analysis.
 

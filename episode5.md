@@ -35,30 +35,14 @@ Genes with consistently low read count values across all samples in a dataset ma
 
 We'll briefly investigate the distribution of read counts in the IBD dataset to illustrate this point. Import the cleaned up counts matrix and sample information text files that we prepared in Episode 4. If you didn't manage to save them, you can download them directly using the following code.
 
-
 ```r
+
 download.file(url = "https://zenodo.org/record/8125141/files/ibd.sample.info.txt",
               destfile = "data/ibd.sample.info.txt")
 
 download.file(url = "https://zenodo.org/record/8125141/files/counts.mat.ibd.txt",
               destfile = "data/counts.mat.ibd.txt")
-```
 
-```{.warning}
-Warning in download.file(url =
-"https://zenodo.org/record/8125141/files/counts.mat.ibd.txt", : downloaded
-length 0 != reported length 0
-```
-
-```{.warning}
-Warning in download.file(url =
-"https://zenodo.org/record/8125141/files/counts.mat.ibd.txt", : URL
-'https://zenodo.org/record/8125141/files/counts.mat.ibd.txt': Timeout of 60
-seconds was reached
-```
-
-```{.error}
-Error in download.file(url = "https://zenodo.org/record/8125141/files/counts.mat.ibd.txt", : download from 'https://zenodo.org/record/8125141/files/counts.mat.ibd.txt' failed
 ```
 
 <br>
@@ -75,6 +59,9 @@ suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
 samp.info.ibd.sel <- read.table(file="./data/ibd.sample.info.txt", sep="\t", header=T, fill=T, check.names=F)
 
 counts.mat.ibd <- read.table(file="./data/counts.mat.ibd.txt", sep='\t', header=T, fill=T, check.names=F)
+
+# head(counts.mat.ibd)
+# any(is.na(samp.info.ibd.sel))
 ```
 
 Run the following code to view the histogram giving the frequency of the maximum count for each gene in the sample (plotted on a log10 scale). You'll see in the resulting plot that over 800 genes have no counts for any gene (i.e., maximum = 0), and that there are hundreds of genes where the maximum count for the gene across all samples is below 10. This compares to a median maximum count value of around 250 for the dataset. These low count genes are likely to represent technical noise.
@@ -91,7 +78,15 @@ data.frame(max_count = apply(counts.mat.ibd, 1, max, na.rm=TRUE)) %>%
     scale_x_log10(n.breaks = 6, labels = scales::comma)
 ```
 
-<img src="fig/episode5-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+```{.warning}
+Warning: Transformation introduced infinite values in continuous x-axis
+```
+
+```{.warning}
+Warning: Removed 10 rows containing non-finite values (`stat_bin()`).
+```
+
+<img src="fig/episode5-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -108,6 +103,7 @@ There is no right answer. However, looking at the histogram, you can see an appr
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+<br>
 
 ### Read Count Normalisation
 
@@ -115,14 +111,8 @@ In order to be able to compare read counts between samples, we must first adjust
 
 
 ```r
-# convert the condition variable to a factor as required by DESeq2
-samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
-
-# create DESeq Data Set object from the raw counts, with condition as the factor of interest
-dds.ibd <- DESeq2::DESeqDataSetFromMatrix(
-    countData = counts.mat.ibd,
-    colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
-    design = ~ condition)
+# load DESeq2 library
+suppressPackageStartupMessages(library(DESeq2))
 ```
 
 ```{.warning}
@@ -130,26 +120,21 @@ Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
-```{.error}
-Error in DESeqDataSet(se, design = design, ignoreRank): NA values are not allowed in the count matrix
-```
-
 ```r
+# convert the condition variable to a factor as required by DESeq2
+samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
+
+# create DESeq Data Set object from the raw counts (converted to a matrix), with condition as the factor of interest
+dds.ibd <- DESeq2::DESeqDataSetFromMatrix(
+    countData = as.matrix(counts.mat.ibd),
+    colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
+    design = ~ condition)
+  
 # calculate the normalised count values using the median-of-ratios method
 dds.ibd <- dds.ibd %>% DESeq2::estimateSizeFactors()
-```
 
-```{.error}
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'estimateSizeFactors': object 'dds.ibd' not found
-```
-
-```r
 # extract the normalised counts
 counts.ibd.norm <- DESeq2::counts(dds.ibd, normalized = TRUE)
-```
-
-```{.error}
-Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'counts': object 'dds.ibd' not found
 ```
 
 ### Setting a Low Counts Threshold
@@ -165,13 +150,7 @@ Calculating the Jaccard index between all pairs of samples in a dataset does not
 set.seed(10)
 
 counts.ibd.norm.samp <- counts.ibd.norm[sample(nrow(counts.ibd.norm), size = 5000, replace = FALSE),]
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.ibd.norm' not found
-```
-
-```r
 # create vector of the class labels
 condition <- samp.info.ibd.sel$condition
 
@@ -195,13 +174,8 @@ ms.jac = sapply(t.seq, function(t){
   })
   return(min(group.jac))
 })
-```
 
-```{.error}
-Error in FUN(X[[i]], ...): object 'counts.ibd.norm.samp' not found
-```
 
-```r
 # plot the threshold value against the value of the Multiset Jaccard index to visualise
 
 ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
@@ -212,9 +186,7 @@ ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
             ylab("Multiset Jaccard Index")
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'ms.jac' not found
-```
+<img src="fig/episode5-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -231,8 +203,8 @@ The threshold value is given by the following code, which should return a value 
 (t.hold <- which.max(ms.jac))
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'ms.jac' not found
+```{.output}
+[1] 11
 ```
 
 :::::::::::::::::::::::::::::::::
@@ -247,18 +219,12 @@ Having determined a threshold, we then filter the raw counts matrix on the rows 
 
 ```r
 counts.mat.ibd.filtered <- counts.mat.ibd[which(apply(counts.ibd.norm, 1, function(x){sum(x > t.hold) >= 1})),]
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.ibd.norm' not found
-```
-
-```r
 sprintf("Genes filtered: %s; Genes remaining: %s", nrow(counts.mat.ibd)-nrow(counts.mat.ibd.filtered), nrow(counts.mat.ibd.filtered))
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd.filtered' not found
+```{.output}
+[1] "Genes filtered: 3712; Genes remaining: 19038"
 ```
 
 
@@ -285,7 +251,7 @@ sprintf("The mean read count value: %f", mean(as.matrix(counts.mat.ibd)))
 ```
 
 ```{.output}
-[1] "The mean read count value: NA"
+[1] "The mean read count value: 506.731355"
 ```
 
 ## Outlier Read Count Filtering
@@ -297,13 +263,9 @@ Run the following code to create DESeq Data Set object from the filtered raw cou
 
 ```r
 dds.ibd.filt <- DESeq2::DESeqDataSetFromMatrix(
-    countData = counts.mat.ibd.filtered,
+    countData = as.matrix(counts.mat.ibd.filtered),
     colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
     design = ~ condition)
-```
-
-```{.error}
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'ncol': object 'counts.mat.ibd.filtered' not found
 ```
 
 Run `DESeq2` differential expression analysis, which automatically calculates the Cook's distances for every read count. This may take a few minutes to run.
@@ -313,16 +275,46 @@ Run `DESeq2` differential expression analysis, which automatically calculates th
 deseq.ibd <-  DESeq2::DESeq(dds.ibd.filt)
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'dds.ibd.filt' not found
+```{.output}
+estimating size factors
+```
+
+```{.output}
+estimating dispersions
+```
+
+```{.output}
+gene-wise dispersion estimates
+```
+
+```{.output}
+mean-dispersion relationship
+```
+
+```{.output}
+final dispersion estimates
+```
+
+```{.output}
+fitting model and testing
+```
+
+```{.output}
+-- replacing outliers and refitting for 1559 genes
+-- DESeq argument 'minReplicatesForReplace' = 7 
+-- original counts are preserved in counts(dds)
+```
+
+```{.output}
+estimating dispersions
+```
+
+```{.output}
+fitting model and testing
 ```
 
 ```r
 cooks.mat <- SummarizedExperiment::assays(deseq.ibd)[["cooks"]]
-```
-
-```{.error}
-Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'assays': object 'deseq.ibd' not found
 ```
 
 We now calculate the cooks outlier threshold by computing the expected F-distribution for the number of samples in the dataset.
@@ -331,20 +323,9 @@ We now calculate the cooks outlier threshold by computing the expected F-distrib
 ```r
 cooks.quantile <- 0.95
 m <- ncol(deseq.ibd)     # number of samples
-```
-
-```{.error}
-Error in eval(expr, envir, enclos): object 'deseq.ibd' not found
-```
-
-```r
 p <- 3                   # number of model parameters (in the three condition case)
 
 h.threshold <- stats::qf(cooks.quantile, p, m - p)
-```
-
-```{.error}
-Error in eval(expr, envir, enclos): object 'm' not found
 ```
 
 Filter the counts matrix to eliminate all genes where the cooks distance is over the outlier threshold. Here you can see that a further ~1,800 genes are filtered out based on having outlier read count values for at least one sample.
@@ -352,18 +333,12 @@ Filter the counts matrix to eliminate all genes where the cooks distance is over
 
 ```r
 counts.mat.ibd.ol.filtered <-  counts.mat.ibd.filtered[which(apply(cooks.mat, 1, function(x){(max(x) < h.threshold) >= 1})),]
-```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd.filtered' not found
-```
-
-```r
 sprintf("Genes filtered: %s; Genes remaining: %s", nrow(counts.mat.ibd.filtered)-nrow(counts.mat.ibd.ol.filtered), nrow(counts.mat.ibd.ol.filtered))
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd.filtered' not found
+```{.output}
+[1] "Genes filtered: 1776; Genes remaining: 17262"
 ```
 
 
@@ -379,9 +354,7 @@ data.frame(max_count = apply(counts.mat.ibd.ol.filtered, 1, max, na.rm=TRUE)) %>
     scale_x_log10(n.breaks = 6, labels = scales::comma)
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): object 'counts.mat.ibd.ol.filtered' not found
-```
+<img src="fig/episode5-rendered-unnamed-chunk-13-1.png" style="display: block; margin: auto;" />
 
 <br>
 
