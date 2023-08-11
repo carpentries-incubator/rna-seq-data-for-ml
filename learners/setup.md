@@ -41,13 +41,13 @@ Please install the following R packages. You will need to install the package `B
 * `GEOquery`
 * `DESeq2`
 
-Executing the following lines of code in the R console will install all of these packages
+Executing the following lines of code in the R console will install all of these packages.
 
 ```{r}
 
 install.packages(c("tidyverse", "reshape2", "scales", "BiocManager"))
 
-BiocManager::install(c("Biobase", GEOquery", "DESeq2"))
+BiocManager::install(c("Biobase", "GEOquery", "DESeq2"))
 
 ```
 
