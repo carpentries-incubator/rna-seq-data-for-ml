@@ -94,7 +94,7 @@ Let's download the SDRF file and the raw counts matrix - these are the two files
 
 For convenience, a copy of the files is also stored on zenodo. You can run the following code that uses the function `download.file()` to download the files and save them directly into your `data` directory. (You need to have created the `data` directory beforehand). 
 
-To get or set a working directory in R `getwd` function can be used to return an absolute file path representing the current working directory of the R process; if not correct `setwd` can be used to set the working directory to location.
+To get or set a working directory in R `getwd` function can be used to return an absolute file path representing the current working directory of the R process; if not correct `setwd` can be used to set the working directory to the desired location.
 
 ```r
 
