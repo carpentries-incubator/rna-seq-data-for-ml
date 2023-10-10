@@ -51,7 +51,9 @@ And now read the files into R...
 
 ```{r}
 
-suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
+# suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
+# suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
+# suppressPackageStartupMessages(library(tibble, quietly = TRUE))
 
 ```
 
@@ -61,9 +63,6 @@ samp.info.ibd.sel <- read.table(file="./data/ibd.sample.info.txt", sep="\t", hea
 
 counts.mat.ibd <- read.table(file="./data/counts.mat.ibd.txt", sep='\t', header=T, fill=T, check.names=F)
 
-# head(counts.mat.ibd)
-# any(is.na(samp.info.ibd.sel))
-
 ```
 
 Run the following code to view the histogram giving the frequency of the maximum count for each gene in the sample (plotted on a log10 scale). You'll see in the resulting plot that over 800 genes have no counts for any gene (i.e., maximum = 0), and that there are hundreds of genes where the maximum count for the gene across all samples is below 10. For comparison, the median of these maximum counts across all genes is around 250. These low count genes are likely to represent technical noise.
@@ -72,12 +71,14 @@ A simple filtering approach is to remove all genes where the maximum read count 
 
 ```{r}
 
+`%>%` <- magrittr::`%>%`
+
 data.frame(max_count = apply(counts.mat.ibd, 1, max, na.rm=TRUE)) %>% 
-  ggplot(aes(x = max_count)) + 
-    geom_histogram(bins = 200) + 
-    xlab("Max Counts (log10 scale)") + 
-    ylab("Frequency") +
-    scale_x_log10(n.breaks = 6, labels = scales::comma)
+  ggplot2::ggplot(ggplot2::aes(x = max_count)) + 
+    ggplot2::geom_histogram(bins = 200) + 
+    ggplot2::xlab("Max Counts (log10 scale)") + 
+    ggplot2::ylab("Frequency") +
+    ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma)
 
 ```
 
@@ -103,9 +104,6 @@ There is no right answer. However, looking at the histogram, you can see an appr
 In order to be able to compare read counts between samples, we must first adjust ('normalise') the counts to control for differences in sequence depth and sample composition between samples. To achieve this, we run the following code that will normalise the counts matrix using the median-of-ratios method implemented in the R package `DESeq2`. For more information on the rationale for scaling RNA-Seq counts and a comparison of the different metrics used see [RDMBites | RNAseq expression data](https://www.youtube.com/watch?v=tO2H3zuBouw).
 
 ```{r}
-
-# load DESeq2 library
-suppressPackageStartupMessages(library(DESeq2))
 
 # convert the condition variable to a factor as required by DESeq2
 samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
@@ -165,12 +163,12 @@ ms.jac = sapply(t.seq, function(t){
 
 # plot the threshold value against the value of the Multiset Jaccard index to visualise
 
-ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
-            geom_line(aes(x=t, y=jacc)) +
-            geom_hline(yintercept = max(ms.jac), lty=2,col='gray') +
-            geom_point(aes(x=which.max(ms.jac), y=max(ms.jac)), col="red", cex=6, pch=1) +
-            xlab("Low Count Threshold") + 
-            ylab("Multiset Jaccard Index")
+ggplot2::ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
+            ggplot2::geom_line(ggplot2::aes(x=t, y=jacc)) +
+            ggplot2::geom_hline(yintercept = max(ms.jac), lty=2,col='gray') +
+            ggplot2::geom_point(ggplot2::aes(x=which.max(ms.jac), y=max(ms.jac)), col="red", cex=6, pch=1) +
+            ggplot2::xlab("Low Count Threshold") + 
+            ggplot2::ylab("Multiset Jaccard Index")
 
 ```
 
@@ -266,6 +264,7 @@ h.threshold <- stats::qf(cooks.quantile, p, m - p)
 Filter the counts matrix to eliminate all genes where the cooks distance is over the outlier threshold. Here you can see that a further ~1,800 genes are filtered out based on having outlier read count values for at least one sample.
 
 ```{r}
+
 counts.mat.ibd.ol.filtered <-  counts.mat.ibd.filtered[which(apply(cooks.mat, 1, function(x){(max(x) < h.threshold) >= 1})),]
 
 sprintf("Genes filtered: %s; Genes remaining: %s", nrow(counts.mat.ibd.filtered)-nrow(counts.mat.ibd.ol.filtered), nrow(counts.mat.ibd.ol.filtered))
@@ -277,11 +276,11 @@ Run the same plot as above, and we can see that the genes with very low maximum 
 ```{r}
 
 data.frame(max_count = apply(counts.mat.ibd.ol.filtered, 1, max, na.rm=TRUE)) %>% 
-  ggplot(aes(x = max_count)) + 
-    geom_histogram(bins = 200) + 
-    xlab("Max Counts (log10 scale)") + 
-    ylab("Frequency") +
-    scale_x_log10(n.breaks = 6, labels = scales::comma)
+  ggplot2::ggplot(ggplot2::aes(x = max_count)) + 
+    ggplot2::geom_histogram(bins = 200) + 
+    ggplot2::xlab("Max Counts (log10 scale)") + 
+    ggplot2::ylab("Frequency") +
+    ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma)
 
 ```
 
