@@ -21,7 +21,7 @@ exercises: 2
 
 ## Technical Artefacts in RNA-Seq Data
 
-Machine learning classification algorithms are highly sensitive to any feature data characteristic, regardless of scale, that may differ between experimental groups, and will exploit these data characteristic differences when training a model. Given this, it is important to make sure that data input into a machine learning model reflects true biological signal, and not technical artefacts or noise that stems from the experimental process used to generate the data. In simple terms, we need to remove things are aren't "real biological information".
+Machine learning classification algorithms are highly sensitive to any feature data characteristic that differs between experimental groups, and will exploit these differences when training a model. Given this, it is important to make sure that data input into a machine learning model reflects true biological signal, and not technical artefacts or noise that stems from the experimental process used to generate the data. In simple terms, we need to remove things are aren't "real biological information".
 
 There are two important sources of noise inherent in RNA-Seq data that may negatively impact machine learning modelling performance, namely low read counts, and influential outlier read counts.
 
@@ -29,7 +29,7 @@ There are two important sources of noise inherent in RNA-Seq data that may negat
 
 ## Low read counts
 
-Genes with consistently low read count values across all samples in a dataset may be technical or biological stochastic artefacts such as the detection of a transcript from a gene that is not uniformly active in a heterogeneous cell population or as the result of a transcriptional error. Below some count threshold, genes are unlikely to be representative of true biological differences related to the condition of interest. Filtering out low count genes has been show to increase the classification performance of machine learning classifiers, and to increase the stability of the set of genes selected by a machine learning algorithm in the context of selecting relevant genes.
+Genes with consistently low read count values across all samples in a dataset may be technical or biological stochastic artefacts such as the detection of a transcript from a gene that is not uniformly active in a heterogeneous cell population or as the result of a transcriptional error. Below some threshold, differences in counts between the conditions of interest for a given gene are unlikely to be representative of true biological differences between the groups. Filtering out low count genes has been show to increase the classification performance of machine learning classifiers, and to increase the stability of the set of genes selected by a machine learning algorithm in the context of selecting relevant genes.
 
 ### Investigating Low Counts
 
@@ -51,7 +51,9 @@ And now read the files into R...
 
 
 ```r
-suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
+# suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
+# suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
+# suppressPackageStartupMessages(library(tibble, quietly = TRUE))
 ```
 
 
@@ -59,23 +61,22 @@ suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
 samp.info.ibd.sel <- read.table(file="./data/ibd.sample.info.txt", sep="\t", header=T, fill=T, check.names=F)
 
 counts.mat.ibd <- read.table(file="./data/counts.mat.ibd.txt", sep='\t', header=T, fill=T, check.names=F)
-
-# head(counts.mat.ibd)
-# any(is.na(samp.info.ibd.sel))
 ```
 
-Run the following code to view the histogram giving the frequency of the maximum count for each gene in the sample (plotted on a log10 scale). You'll see in the resulting plot that over 800 genes have no counts for any gene (i.e., maximum = 0), and that there are hundreds of genes where the maximum count for the gene across all samples is below 10. This compares to a median maximum count value of around 250 for the dataset. These low count genes are likely to represent technical noise.
+Run the following code to view the histogram giving the frequency of the maximum count for each gene in the sample (plotted on a log10 scale). You'll see in the resulting plot that over 800 genes have no counts for any gene (i.e., maximum = 0), and that there are hundreds of genes where the maximum count for the gene across all samples is below 10. For comparison, the median of these maximum counts across all genes is around 250. These low count genes are likely to represent technical noise.
 
 A simple filtering approach is to remove all genes where the maximum read count for that gene over all samples is below a given threshold. The next step is to determine what this threshold should be.
 
 
 ```r
+`%>%` <- magrittr::`%>%`
+
 data.frame(max_count = apply(counts.mat.ibd, 1, max, na.rm=TRUE)) %>% 
-  ggplot(aes(x = max_count)) + 
-    geom_histogram(bins = 200) + 
-    xlab("Max Counts (log10 scale)") + 
-    ylab("Frequency") +
-    scale_x_log10(n.breaks = 6, labels = scales::comma)
+  ggplot2::ggplot(ggplot2::aes(x = max_count)) + 
+    ggplot2::geom_histogram(bins = 200) + 
+    ggplot2::xlab("Max Counts (log10 scale)") + 
+    ggplot2::ylab("Frequency") +
+    ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma)
 ```
 
 ```{.warning}
@@ -111,16 +112,6 @@ In order to be able to compare read counts between samples, we must first adjust
 
 
 ```r
-# load DESeq2 library
-suppressPackageStartupMessages(library(DESeq2))
-```
-
-```{.warning}
-Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
-```
-
-```r
 # convert the condition variable to a factor as required by DESeq2
 samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
 
@@ -129,7 +120,14 @@ dds.ibd <- DESeq2::DESeqDataSetFromMatrix(
     countData = as.matrix(counts.mat.ibd),
     colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
     design = ~ condition)
-  
+```
+
+```{.warning}
+Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+```
+
+```r
 # calculate the normalised count values using the median-of-ratios method
 dds.ibd <- dds.ibd %>% DESeq2::estimateSizeFactors()
 
@@ -178,12 +176,12 @@ ms.jac = sapply(t.seq, function(t){
 
 # plot the threshold value against the value of the Multiset Jaccard index to visualise
 
-ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
-            geom_line(aes(x=t, y=jacc)) +
-            geom_hline(yintercept = max(ms.jac), lty=2,col='gray') +
-            geom_point(aes(x=which.max(ms.jac), y=max(ms.jac)), col="red", cex=6, pch=1) +
-            xlab("Low Count Threshold") + 
-            ylab("Multiset Jaccard Index")
+ggplot2::ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
+            ggplot2::geom_line(ggplot2::aes(x=t, y=jacc)) +
+            ggplot2::geom_hline(yintercept = max(ms.jac), lty=2,col='gray') +
+            ggplot2::geom_point(ggplot2::aes(x=which.max(ms.jac), y=max(ms.jac)), col="red", cex=6, pch=1) +
+            ggplot2::xlab("Low Count Threshold") + 
+            ggplot2::ylab("Multiset Jaccard Index")
 ```
 
 <img src="fig/episode5-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
@@ -347,11 +345,11 @@ Run the same plot as above, and we can see that the genes with very low maximum 
 
 ```r
 data.frame(max_count = apply(counts.mat.ibd.ol.filtered, 1, max, na.rm=TRUE)) %>% 
-  ggplot(aes(x = max_count)) + 
-    geom_histogram(bins = 200) + 
-    xlab("Max Counts (log10 scale)") + 
-    ylab("Frequency") +
-    scale_x_log10(n.breaks = 6, labels = scales::comma)
+  ggplot2::ggplot(ggplot2::aes(x = max_count)) + 
+    ggplot2::geom_histogram(bins = 200) + 
+    ggplot2::xlab("Max Counts (log10 scale)") + 
+    ggplot2::ylab("Frequency") +
+    ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma)
 ```
 
 <img src="fig/episode5-rendered-unnamed-chunk-13-1.png" style="display: block; margin: auto;" />

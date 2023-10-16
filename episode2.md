@@ -72,7 +72,7 @@ Now use the sort in the top right of the screen to sort the results by "Samples"
 
 ## Illustrative Dataset: IBD Dataset
 
-In the search results displayed above, the top ranked dataset is E-MTAB-11349: *Whole blood expression profiling of patients with inflammatory bowel diseases in the IBD-Character cohort*. We'll call it the [IBD dataset](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-11349).
+In the search results displayed above, the top-ranked dataset is E-MTAB-11349: *Whole blood expression profiling of patients with inflammatory bowel diseases in the IBD-Character cohort*. We'll call it the [IBD dataset](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-11349).
 
 The IBD dataset comprises human samples of patients with inflammatory bowel diseases and controls. The 'Protocols' section explains the main steps in the generation of the data, from RNA extraction and sample preparation, to sequencing and processing of the raw RNA-Seq data. The nucleic acid sequencing protocol gives details of the sequencing platform used to generate the raw fastq data, and the version of the human genome used in the alignment step to generate the count data. The normalization data transformation protocol gives the tools used to normalise raw counts data for sequence depth and sample composition, in this case normalisation is conducted using the R package [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html). DESEq2 contains a range of functions for the transformation and analysis of RNA-Seq data. Let's look at some of the basic information on this dataset:
 
@@ -90,9 +90,11 @@ The dataset contains two alternative sets of processed data, a matrix of raw cou
 
 ## Downloading and Reading into R
 
-Let's download the SDRF file and the raw counts matrix - these are the two files that contain the information we will need to build a machine learning classification model. In the data files box to the right hand side, check the follwoing two files `E-MTAB-11349.sdrf.txt` and `ArrayExpress-raw.csv`, and save in a folder called `data` in the working directory for your R project. For consistency, rename `ArrayExpress-raw.csv` as `E-MTAB-11349.counts.matrix.csv`.
+Let's download the SDRF file and the raw counts matrix - these are the two files that contain the information we will need to build a machine-learning classification model. In the data files box to the right-hand side, check the following two files `E-MTAB-11349.sdrf.txt` and `ArrayExpress-raw.csv`, and save them in a folder called `data` in the working directory for your R project. For consistency, rename `ArrayExpress-raw.csv` as `E-MTAB-11349.counts.matrix.csv`.
 
-For convenience, a copy of the files is also stored on zenodo. You can run the following code that uses the function `download.file()` to download the files and save them directly into your `data` directory. (You need to have created the `data` directory beforehand).
+For convenience, a copy of the files is also stored on zenodo. You can run the following code that uses the function `download.file()` to download the files and save them directly into your `data` directory. (You need to have created the `data` directory beforehand). 
+
+To get or set a working directory in R `getwd` function can be used to return an absolute file path representing the current working directory of the R process; if not correct `setwd` can be used to set the working directory to the desired location.
 
 ```r
 
@@ -106,7 +108,7 @@ download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts
 
 ### Raw counts matrix
 
-In R studio, open your project workbook and read in the raw counts data. Then check the dimensions of the matrix to confirm we have the expected number of samples and transcript IDs.
+In R studio, open your project workbook and read the raw counts data. Then check the dimensions of the matrix to confirm we have the expected number of samples and transcript IDs.
 
 
 ```r

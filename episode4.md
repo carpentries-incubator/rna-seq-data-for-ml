@@ -164,7 +164,9 @@ sprintf("The unique IDs that match the counts matrix are in column: %s", colname
 
 
 ```r
-suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
+# suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
+# suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
+# suppressPackageStartupMessages(library(tibble, quietly = TRUE))
 ```
 
 
@@ -238,9 +240,13 @@ unique(c(samp.info.ibd.sel$sex, samp.info.ibd.sel$condition))
 
 * Both `sex` and `condition` are consistently encoded over all samples. We should however remove the spaces in the values for `sampleID` and for the `condition` value ulcerative colitis. Note: since we are changing our unique identifier, we'll need to make the same update later in the counts matrix.
 
+Before we do this, since we'll be using the pipe operator from the tidyverse libraries, we will to define the pipe operator from the magrittr package in the environment.
+
 
 
 ```r
+`%>%` <- magrittr::`%>%`
+
 samp.info.ibd.sel <- samp.info.ibd.sel %>%
                         dplyr::mutate(sampleID = gsub(" ", "_", sampleID),
                                       condition = gsub(" ", "_", condition))
@@ -258,7 +264,7 @@ samp.info.ibd.sel <- samp.info.ibd.sel %>%
 
 ```r
 samp.info.ibd.sel <- samp.info.ibd.sel %>%
-                        dplyr::mutate(class = if_else(condition == 'normal', -1, 1))
+                        dplyr::mutate(class = dplyr::if_else(condition == 'normal', -1, 1))
 ```
 
 
@@ -288,7 +294,7 @@ The two classes are approximately equally represented, so let's check everything
 
 
 ```r
-glimpse(samp.info.ibd.sel)
+dplyr::glimpse(samp.info.ibd.sel)
 ```
 
 ```{.output}
@@ -367,7 +373,7 @@ counts.mat.ibd <- raw.counts.ibd[-1,-1]
 
 rownames(counts.mat.ibd) <- NULL
 
-counts.mat.ibd <-  counts.mat.ibd %>% column_to_rownames('read')
+counts.mat.ibd <-  counts.mat.ibd %>% tibble::column_to_rownames('read')
 
 counts.mat.ibd[1:10,1:6]
 ```
@@ -526,10 +532,11 @@ It is crucial that you document your data reformatting so that it is reproducibl
 
 Take a look at [The Tuburculosis (TB) Dataset - E-MTAB-6845](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-6845). You can download the sdrf file from zenodo and save it to your `data` directory by running the following code.
 
-
 ```r
+
 download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-6845.sdrf.txt",
               destfile = "data/E-MTAB-6845.sdrf.txt")
+
 ```
 
 Read the sdrf file into R and take a look at the data. Make a list of the potential issues with this data based on the checklist above? What steps would need to be taken to get them ready to train a machine learning classifier?
@@ -588,7 +595,7 @@ dplyr::mutate(prog_status = factor(prog_status, levels = c("non_progressor","tb_
 dplyr::mutate(prog_status = dplyr::recode(prog_status,                                
               "non-progressor" = "non_progressor",
               "TB progressor" = "tb_progressor"), 
-              class = if_else(prog_status == 'non_progressor', -1, 1)                 
+              class = dplyr::if_else(prog_status == 'non_progressor', -1, 1)                 
               ) %>% 
 
 dplyr::distinct() %>%
@@ -621,7 +628,7 @@ samp.info.tb %>%
       dplyr::mutate(prog_status = dplyr::recode(prog_status,                                 # recode target variable
                     "non-progressor" = "non_progressor",
                     "TB progressor" = "tb_progressor"), 
-                    class = if_else(prog_status == 'non_progressor', -1, 1)                 # create numerical class
+                    class = dplyr::if_else(prog_status == 'non_progressor', -1, 1)                 # create numerical class
                     ) %>% 
 
        dplyr::mutate(prog_status = factor(prog_status, levels = c("non_progressor","tb_progressor")), 

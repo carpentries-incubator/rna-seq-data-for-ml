@@ -40,7 +40,9 @@ And now read the files into R...
 
 
 ```r
-suppressPackageStartupMessages(library(tidyverse, quietly = TRUE))
+# suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
+# suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
+# suppressPackageStartupMessages(library(tibble, quietly = TRUE))
 ```
 
 
@@ -60,13 +62,15 @@ counts.mat.ibd.ol.filtered %>%
   tibble::rownames_to_column("geneID")  %>%      
   reshape2::melt(id.vars = 'geneID', value.name='count', variable.name=c('sampleID')) %>% 
   .[sample(nrow(.), size = 5000, replace = FALSE),] %>% 
-  ggplot(aes(x = count)) + 
-    geom_histogram(bins = 200) + 
-    xlab("Raw Counts") + 
-    ylab("Frequency")
+  ggplot2::ggplot(ggplot2::aes(x = count)) + 
+    ggplot2::geom_histogram(bins = 200) + 
+    ggplot2::xlab("Raw Counts") + 
+    ggplot2::ylab("Frequency")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+```{.error}
+Error in counts.mat.ibd.ol.filtered %>% tibble::rownames_to_column("geneID") %>% : could not find function "%>%"
+```
 
 A plot of the mean count against the variance of the counts for a random sample of 5,000 genes (to reduce compute time) illustrates the clear mean variance relationship in the data. The variance is increasing as the mean count increases.
 
@@ -77,13 +81,15 @@ counts.mat.ibd.ol.filtered %>%
   data.frame(row.mean = apply(., 1, mean),
            row.var = apply(., 1, var)) %>%
   dplyr::filter(row.var < 5000) %>% 
-  ggplot(aes(x=row.mean, y=(row.var))) +
-    geom_point(alpha=0.1) +
-    xlab("Mean Count") +
-    ylab("Variance")
+  ggplot2::ggplot(ggplot2::aes(x=row.mean, y=(row.var))) +
+    ggplot2::geom_point(alpha=0.1) +
+    ggplot2::xlab("Mean Count") +
+    ggplot2::ylab("Variance")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+```{.error}
+Error in counts.mat.ibd.ol.filtered %>% .[sample(nrow(.), size = 5000, : could not find function "%>%"
+```
 
 ## Variance Stabilising and rlog Transformation
 
@@ -114,6 +120,10 @@ counts.mat.ibd.vst <- DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol,
   SummarizedExperiment::assay()
 ```
 
+```{.error}
+Error in DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol, blind = FALSE) %>% : could not find function "%>%"
+```
+
 Plotting the data again, we can see the difference in the distribution of the data following transformation. Although there is still a large number of count values equal to zero, the distribution of vst transformed counts is far less heavily skewed than the original. The dependence of the variance on the mean has essentially been eliminated.
 
 
@@ -125,13 +135,15 @@ counts.mat.ibd.vst %>%
   tibble::rownames_to_column("geneID")  %>%      
   reshape2::melt(id.vars = 'geneID', value.name='count', variable.name=c('sampleID')) %>% 
   .[sample(nrow(.), size = 5000, replace = FALSE),] %>% 
-  ggplot(aes(x = count)) + 
-    geom_histogram(bins = 200) + 
-    xlab("Raw Counts") + 
-    ylab("Frequency")
+  ggplot2::ggplot(ggplot2::aes(x = count)) + 
+    ggplot2::geom_histogram(bins = 200) + 
+    ggplot2::xlab("Raw Counts") + 
+    ggplot2::ylab("Frequency")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+```{.error}
+Error in counts.mat.ibd.vst %>% as.data.frame() %>% tibble::rownames_to_column("geneID") %>% : could not find function "%>%"
+```
 
 
 ```r
@@ -141,13 +153,15 @@ counts.mat.ibd.vst %>%
   data.frame(row.mean = apply(., 1, mean),
            row.var = apply(., 1, var)) %>%
   dplyr::filter(row.var < 2.5) %>% 
-  ggplot(aes(x=row.mean, y=(row.var))) +
-    geom_point(alpha=0.1) +
-    xlab("Mean Count") +
-    ylab("Variance")
+  ggplot2::ggplot(ggplot2::aes(x=row.mean, y=(row.var))) +
+    ggplot2::geom_point(alpha=0.1) +
+    ggplot2::xlab("Mean Count") +
+    ggplot2::ylab("Variance")
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+```{.error}
+Error in counts.mat.ibd.vst %>% as.data.frame() %>% .[sample(nrow(.), : could not find function "%>%"
+```
 
 
 ## Rescaling transformed counts data: standardisation and Min-Max Scaling
@@ -162,14 +176,16 @@ counts.mat.ibd.vst %>%
   tibble::rownames_to_column("geneID")  %>%  
   .[sample(nrow(.), size = 50, replace = FALSE),] %>% head(50) %>% 
   reshape2::melt(id.vars = 'geneID', value.name='count', variable.name=c('sampleID')) %>% 
-  ggplot(aes(x = reorder(geneID, count, median), y = count)) + 
-    geom_boxplot() + 
-    xlab("Gene") + 
-    ylab("VST Counts") +
-  theme(axis.text.x = element_blank())
+  ggplot2::ggplot(ggplot2::aes(x = reorder(geneID, count, median), y = count)) + 
+    ggplot2::geom_boxplot() + 
+    ggplot2::xlab("Gene") + 
+    ggplot2::ylab("VST Counts") +
+  ggplot2::theme(axis.text.x = ggplot2::element_blank())
 ```
 
-<img src="fig/episode6-rendered-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+```{.error}
+Error in counts.mat.ibd.vst %>% as.data.frame() %>% tibble::rownames_to_column("geneID") %>% : could not find function "%>%"
+```
 
 In some cases, further scaling of variables will be necessary to put each gene on a similar scale before inputting into a machine learning algorithm. The table below outlines the scenarios where variable scaling will improve the performance of downstream machine learning analysis.
 
@@ -184,6 +200,7 @@ On the other hand, there are algorithms that are insensitive to scale where scal
 <br>
 
 Two widely used rescaling approaches are standardisation (also known as z-scoring), where the distribution of values in every variable is centred around a mean of zero with unit standard deviation, and min-max scaling (confusingly, also known as normalisation) where the values are rescaled to be within the range [0, 1]. In many cases either may be appropriate. The table below gives a few guidelines on when one may be more appropriate than the other.
+
 
 Scaling Method | Formula | When more appropriate
 --- | -- | -----------
