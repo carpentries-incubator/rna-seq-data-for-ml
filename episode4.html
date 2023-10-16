@@ -8,7 +8,7 @@
         extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
       },
       tex2jax: {
-        inlineMath: [ ['$','$'], ['\\(', '\\)']],
+        inlineMath: [['\\(', '\\)']],
         displayMath: [ ['$$','$$'], ['\\[', '\\]'] ],
         processEscapes: true
       }
@@ -28,7 +28,7 @@
         
       </div>
     </div>
-    <div class="selector-container ">
+    <div class="selector-container">
       
       
       <div class="dropdown">
@@ -96,9 +96,11 @@
 </aside><div class="container">
       <div class="row">
         <!-- START: inst/pkgdown/templates/navbar.html -->
-  <div id="sidebar-col" class="col-lg-4">
-    <div id="sidebar" class="sidebar">
-      <nav aria-labelledby="flush-headingEleven"><button role="button" aria-label="close menu" alt="close menu" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle"><i class="search-icon" data-feather="x" role="img"></i></button>
+<div id="sidebar-col" class="col-lg-4">
+  <div id="sidebar" class="sidebar">
+      <nav aria-labelledby="flush-headingEleven"><button role="button" aria-label="close menu" alt="close menu" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle">
+          <i class="search-icon" data-feather="x" role="img"></i>
+        </button>
         <div class="sidebar-inner">
           <div class="row mobile-row">
             <div class="col">
@@ -238,6 +240,7 @@
               </div>
             </div>
             <hr class="half-width resources"><a href="aio.html">See all in one page</a>
+            
 
             <hr class="d-none d-sm-block d-md-none"><div class="d-grid gap-1">
             
@@ -256,12 +259,18 @@
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="episode3.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Data Collection: GEO</a>
-        <a class="chapter-link float-end" href="episode5.html" rel="next">Next: Data Readiness:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link" href="episode3.html" rel="prev">
+          <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
+          Previous: Data Collection: GEO
+        </a>
+        <a class="chapter-link float-end" href="episode5.html" rel="next">
+          Next: Data Readiness:... 
+          <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
+        </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Data Readiness: Data Format and Integrity</h1>
-        <p> Last updated on 2023-07-20 | 
+        <p> Last updated on 2023-10-16 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode4.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -546,7 +555,9 @@ collection of packages throughout this episode.</li>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">suppressPackageStartupMessages</span><span class="op">(</span><span class="kw">library</span><span class="op">(</span><span class="va">tidyverse</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># suppressPackageStartupMessages(library(dplyr, quietly = TRUE))</span></span>
+<span><span class="co"># suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))</span></span>
+<span><span class="co"># suppressPackageStartupMessages(library(tibble, quietly = TRUE))</span></span></code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -644,11 +655,16 @@ values for <code>sampleID</code> and for the <code>condition</code>
 value ulcerative colitis. Note: since we are changing our unique
 identifier, we’ll need to make the same update later in the counts
 matrix.</li>
-</ul><div class="codewrapper sourceCode" id="cb14">
+</ul><p>Before we do this, since we’ll be using the pipe operator from the
+tidyverse libraries, we will to define the pipe operator from the
+magrittr package in the environment.</p>
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">samp.info.ibd.sel</span> <span class="op">&lt;-</span> <span class="va">samp.info.ibd.sel</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">`%&gt;%`</span> <span class="op">&lt;-</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="va">`%&gt;%`</span></span>
+<span></span>
+<span><span class="va">samp.info.ibd.sel</span> <span class="op">&lt;-</span> <span class="va">samp.info.ibd.sel</span> <span class="op">%&gt;%</span></span>
 <span>                        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>sampleID <span class="op">=</span> <span class="fu">gsub</span><span class="op">(</span><span class="st">" "</span>, <span class="st">"_"</span>, <span class="va">sampleID</span><span class="op">)</span>,</span>
 <span>                                      condition <span class="op">=</span> <span class="fu">gsub</span><span class="op">(</span><span class="st">" "</span>, <span class="st">"_"</span>, <span class="va">condition</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
@@ -671,7 +687,7 @@ normalisation such as DESeq2.</li>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">samp.info.ibd.sel</span> <span class="op">&lt;-</span> <span class="va">samp.info.ibd.sel</span> <span class="op">%&gt;%</span></span>
-<span>                        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>class <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">condition</span> <span class="op">==</span> <span class="st">'normal'</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre>
+<span>                        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">if_else</span><span class="op">(</span><span class="va">condition</span> <span class="op">==</span> <span class="st">'normal'</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -702,7 +718,7 @@ everything one last time.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">samp.info.ibd.sel</span><span class="op">)</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu">glimpse</span><span class="op">(</span><span class="va">samp.info.ibd.sel</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -822,7 +838,7 @@ transcript IDs to the row names</li>
 <span></span>
 <span><span class="fu">rownames</span><span class="op">(</span><span class="va">counts.mat.ibd</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span></span>
-<span><span class="va">counts.mat.ibd</span> <span class="op">&lt;-</span>  <span class="va">counts.mat.ibd</span> <span class="op">%&gt;%</span> <span class="fu">column_to_rownames</span><span class="op">(</span><span class="st">'read'</span><span class="op">)</span></span>
+<span><span class="va">counts.mat.ibd</span> <span class="op">&lt;-</span>  <span class="va">counts.mat.ibd</span> <span class="op">%&gt;%</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu">column_to_rownames</span><span class="op">(</span><span class="st">'read'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">counts.mat.ibd</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span></code></pre>
 </div>
@@ -1033,7 +1049,8 @@ running the following code.</p>
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">download.file</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://zenodo.org/record/8125141/files/E-MTAB-6845.sdrf.txt"</span>,</span>
+<code class="sourceCode R"><span></span>
+<span><span class="fu">download.file</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://zenodo.org/record/8125141/files/E-MTAB-6845.sdrf.txt"</span>,</span>
 <span>              destfile <span class="op">=</span> <span class="st">"data/E-MTAB-6845.sdrf.txt"</span><span class="op">)</span></span></code></pre>
 </div>
 <p>Read the sdrf file into R and take a look at the data. Make a list of
@@ -1085,7 +1102,7 @@ as the target variable.</p>
 <span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>prog_status <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">recode</span><span class="op">(</span><span class="va">prog_status</span>,                                </span>
 <span>              <span class="st">"non-progressor"</span> <span class="op">=</span> <span class="st">"non_progressor"</span>,</span>
 <span>              <span class="st">"TB progressor"</span> <span class="op">=</span> <span class="st">"tb_progressor"</span><span class="op">)</span>, </span>
-<span>              class <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">prog_status</span> <span class="op">==</span> <span class="st">'non_progressor'</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>                 </span>
+<span>              class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">if_else</span><span class="op">(</span><span class="va">prog_status</span> <span class="op">==</span> <span class="st">'non_progressor'</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>                 </span>
 <span>              <span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span></span>
 <span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu">distinct</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -1125,7 +1142,7 @@ as the target variable.</p>
 <span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>prog_status <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">recode</span><span class="op">(</span><span class="va">prog_status</span>,                                 <span class="co"># recode target variable</span></span>
 <span>                    <span class="st">"non-progressor"</span> <span class="op">=</span> <span class="st">"non_progressor"</span>,</span>
 <span>                    <span class="st">"TB progressor"</span> <span class="op">=</span> <span class="st">"tb_progressor"</span><span class="op">)</span>, </span>
-<span>                    class <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">prog_status</span> <span class="op">==</span> <span class="st">'non_progressor'</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>                 <span class="co"># create numerical class</span></span>
+<span>                    class <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">if_else</span><span class="op">(</span><span class="va">prog_status</span> <span class="op">==</span> <span class="st">'non_progressor'</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>                 <span class="co"># create numerical class</span></span>
 <span>                    <span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span></span>
 <span>       <span class="fu">dplyr</span><span class="fu">::</span><span class="fu">mutate</span><span class="op">(</span>prog_status <span class="op">=</span> <span class="fu">factor</span><span class="op">(</span><span class="va">prog_status</span>, levels <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"non_progressor"</span>,<span class="st">"tb_progressor"</span><span class="op">)</span><span class="op">)</span>, </span>
@@ -1181,8 +1198,14 @@ any links that you are not going to use.
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="episode3.html" rel="prev"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous: Data Collection: GEO</a>
-        <a class="chapter-link float-end" href="episode5.html" rel="next">Next: Data Readiness:... <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link" href="episode3.html" rel="prev">
+          <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
+          Previous: Data Collection: GEO
+        </a>
+        <a class="chapter-link float-end" href="episode5.html" rel="next">
+          Next: Data Readiness:... 
+          <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
+        </a>
       </div>
     </nav></div> <!-- / div.primary-content.col-xs-12 -->
 <!-- END:   inst/pkgdown/templates/content-instructor.html-->
@@ -1204,9 +1227,9 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.5)</a>,
-        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
-      and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.14.0" class="external-link">sandpaper (0.14.0)</a>,
+        <a href="https://github.com/carpentries/pegboard/tree/0.7.1" class="external-link">pegboard (0.7.1)</a>,
+      and <a href="https://github.com/carpentries/varnish/tree/0.3.1" class="external-link">varnish (0.3.1)</a>.</p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1227,8 +1250,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode4.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode4.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-07-20",
-  "datePublished": "2023-08-08"
+  "dateModified": "2023-10-16",
+  "datePublished": "2023-10-16"
 }
 
   </script><script>

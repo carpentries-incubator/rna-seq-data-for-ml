@@ -8,7 +8,7 @@
         extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
       },
       tex2jax: {
-        inlineMath: [ ['$','$'], ['\\(', '\\)']],
+        inlineMath: [['\\(', '\\)']],
         displayMath: [ ['$$','$$'], ['\\[', '\\]'] ],
         processEscapes: true
       }
@@ -28,7 +28,7 @@
         
       </div>
     </div>
-    <div class="selector-container ">
+    <div class="selector-container">
       
       
       <div class="dropdown">
@@ -96,9 +96,11 @@
 </aside><div class="container">
       <div class="row">
         <!-- START: inst/pkgdown/templates/navbar.html -->
-  <div id="sidebar-col" class="col-lg-4">
-    <div id="sidebar" class="sidebar">
-      <nav aria-labelledby="flush-headingEleven"><button role="button" aria-label="close menu" alt="close menu" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle"><i class="search-icon" data-feather="x" role="img"></i></button>
+<div id="sidebar-col" class="col-lg-4">
+  <div id="sidebar" class="sidebar">
+      <nav aria-labelledby="flush-headingEleven"><button role="button" aria-label="close menu" alt="close menu" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle">
+          <i class="search-icon" data-feather="x" role="img"></i>
+        </button>
         <div class="sidebar-inner">
           <div class="row mobile-row">
             <div class="col">
@@ -136,65 +138,79 @@
                   <div class="accordion accordion-flush" id="accordionFlush1">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading1">
-        <a href="index.html">Summary and Setup</a>
-    </div><!--/div.accordion-header-->
+        <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/index.html" class="external-link">Summary and Setup</a>
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
         <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode1.html" class="external-link">1. Introduction: Machine Learning Ready RNA-Seq Data</a>
-    </div><!--/div.accordion-header-->
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
         <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode2.html" class="external-link">2. Data Collection: ArrayExpress</a>
-    </div><!--/div.accordion-header-->
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
         <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode3.html" class="external-link">3. Data Collection: GEO</a>
-    </div><!--/div.accordion-header-->
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
 <div class="accordion accordion-flush" id="accordionFlush5">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading5">
         <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode4.html" class="external-link">4. Data Readiness: Data Format and Integrity</a>
-    </div><!--/div.accordion-header-->
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
         <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode5.html" class="external-link">5. Data Readiness: Technical Noise</a>
-    </div><!--/div.accordion-header-->
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
         <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/episode6.html" class="external-link">6. Data Readiness: Distribution and Scale</a>
-    </div><!--/div.accordion-header-->
+    </div>
+<!--/div.accordion-header-->
         
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
+  </div>
+<!--/div.accordion-item-->
+</div>
 
                 </div>
               </div>
@@ -224,6 +240,7 @@
               </div>
             </div>
             <hr class="half-width resources"><a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/aio.html" class="external-link">See all in one page</a>
+            
 
             <hr class="d-none d-sm-block d-md-none"><div class="d-grid gap-1">
             
@@ -279,9 +296,9 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/LICENSE.html" class="external-link">CC-BY 4.0</a> by the authors</p>
         
         <p><a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">Template licensed under CC-BY 4.0</a> by <a href="https://carpentries.org" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper" class="external-link">sandpaper (0.12.5)</a>,
-        <a href="https://github.com/carpentries/pegboard" class="external-link">pegboard (0.5.3)</a>,
-      and <a href="https://github.com/carpentries/varnish/tree/0.2.17" class="external-link">varnish (0.2.17)</a>.</p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.14.0" class="external-link">sandpaper (0.14.0)</a>,
+        <a href="https://github.com/carpentries/pegboard/tree/0.7.1" class="external-link">pegboard (0.7.1)</a>,
+      and <a href="https://github.com/carpentries/varnish/tree/0.3.1" class="external-link">varnish (0.3.1)</a>.</p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -302,8 +319,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/404.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/404.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-08-08",
-  "datePublished": "2023-08-08"
+  "dateModified": "2023-10-16",
+  "datePublished": "2023-10-16"
 }
 
   </script><script>
