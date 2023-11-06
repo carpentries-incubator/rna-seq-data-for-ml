@@ -269,7 +269,7 @@ Scaling</a></li>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Data Readiness: Distribution and Scale</h1>
-        <p> Last updated on 2023-10-31 | 
+        <p> Last updated on 2023-11-06 | 
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode6.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
         
@@ -363,6 +363,8 @@ counts to illustrate the point.</p>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">set.seed</span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">`%&gt;%`</span> <span class="op">&lt;-</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="va">`%&gt;%`</span></span>
 <span> </span>
 <span><span class="va">counts.mat.ibd.ol.filtered</span> <span class="op">%&gt;%</span>               </span>
 <span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu">rownames_to_column</span><span class="op">(</span><span class="st">"geneID"</span><span class="op">)</span>  <span class="op">%&gt;%</span>      </span>
@@ -373,16 +375,11 @@ counts to illustrate the point.</p>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">xlab</span><span class="op">(</span><span class="st">"Raw Counts"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ylab</span><span class="op">(</span><span class="st">"Frequency"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in counts.mat.ibd.ol.filtered %&gt;% tibble::rownames_to_column("geneID") %&gt;% : could not find function "%&gt;%"</code></pre>
-</div>
-<p>A plot of the mean count against the variance of the counts for a
+<figure><img src="../fig/episode6-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>A plot of the mean count against the variance of the counts for a
 random sample of 5,000 genes (to reduce compute time) illustrates the
 clear mean variance relationship in the data. The variance is increasing
 as the mean count increases.</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -396,12 +393,7 @@ as the mean count increases.</p>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">xlab</span><span class="op">(</span><span class="st">"Mean Count"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ylab</span><span class="op">(</span><span class="st">"Variance"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in counts.mat.ibd.ol.filtered %&gt;% .[sample(nrow(.), size = 5000, : could not find function "%&gt;%"</code></pre>
-</div>
-</section><section id="variance-stabilising-and-rlog-transformation"><h2 class="section-heading">Variance Stabilising and rlog Transformation<a class="anchor" aria-label="anchor" href="#variance-stabilising-and-rlog-transformation"></a>
+<figure><img src="../fig/episode6-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></section><section id="variance-stabilising-and-rlog-transformation"><h2 class="section-heading">Variance Stabilising and rlog Transformation<a class="anchor" aria-label="anchor" href="#variance-stabilising-and-rlog-transformation"></a>
 </h2>
 <hr class="half-width"><p>A number of standard transformations exist to change the distribution
 of RNA-Seq counts to reduce the mean variance relationship, and make the
@@ -414,7 +406,7 @@ the normalisation step before the transformation.</p>
 suitable for datasets with a large sample size. Let’s conduct the
 <code>vst</code> transformation on our filtered counts data. This may
 take a few minutes to run on our dataset.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -433,7 +425,7 @@ take a few minutes to run on our dataset.</p>
 <pre class="warning" tabindex="0"><code>Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -441,18 +433,13 @@ take a few minutes to run on our dataset.</p>
 <span><span class="va">counts.mat.ibd.vst</span> <span class="op">&lt;-</span> <span class="fu">DESeq2</span><span class="fu">::</span><span class="fu">varianceStabilizingTransformation</span><span class="op">(</span><span class="va">dds.ibd.filt.ol</span>, blind<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">SummarizedExperiment</span><span class="fu">::</span><span class="fu">assay</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol, blind = FALSE) %&gt;% : could not find function "%&gt;%"</code></pre>
-</div>
 <p>Plotting the data again, we can see the difference in the
 distribution of the data following transformation. Although there is
 still a large number of count values equal to zero, the distribution of
 vst transformed counts is far less heavily skewed than the original. The
 dependence of the variance on the mean has essentially been
 eliminated.</p>
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -468,12 +455,7 @@ eliminated.</p>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">xlab</span><span class="op">(</span><span class="st">"Raw Counts"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ylab</span><span class="op">(</span><span class="st">"Frequency"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in counts.mat.ibd.vst %&gt;% as.data.frame() %&gt;% tibble::rownames_to_column("geneID") %&gt;% : could not find function "%&gt;%"</code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb14">
+<figure><img src="../fig/episode6-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -488,12 +470,7 @@ eliminated.</p>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">xlab</span><span class="op">(</span><span class="st">"Mean Count"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ylab</span><span class="op">(</span><span class="st">"Variance"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in counts.mat.ibd.vst %&gt;% as.data.frame() %&gt;% .[sample(nrow(.), : could not find function "%&gt;%"</code></pre>
-</div>
-</section><section id="rescaling-transformed-counts-data-standardisation-and-min-max-scaling"><h2 class="section-heading">Rescaling transformed counts data: standardisation and Min-Max
+<figure><img src="../fig/episode6-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure></section><section id="rescaling-transformed-counts-data-standardisation-and-min-max-scaling"><h2 class="section-heading">Rescaling transformed counts data: standardisation and Min-Max
 Scaling<a class="anchor" aria-label="anchor" href="#rescaling-transformed-counts-data-standardisation-and-min-max-scaling"></a>
 </h2>
 <hr class="half-width"><p>Many machine learning algorithms are sensitive to the scale of the
@@ -505,7 +482,7 @@ genes (variables) will still be on very different scales. The box plot
 below illustrates this for a small sample of 50 genes from our dataset,
 with median vst counts ranging from close to zero, to greater than
 10.</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
@@ -520,12 +497,7 @@ with median vst counts ranging from close to zero, to greater than
 <span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">ylab</span><span class="op">(</span><span class="st">"VST Counts"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="error" tabindex="0"><code>Error in counts.mat.ibd.vst %&gt;% as.data.frame() %&gt;% tibble::rownames_to_column("geneID") %&gt;% : could not find function "%&gt;%"</code></pre>
-</div>
-<p>In some cases, further scaling of variables will be necessary to put
+<figure><img src="../fig/episode6-rendered-unnamed-chunk-8-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><p>In some cases, further scaling of variables will be necessary to put
 each gene on a similar scale before inputting into a machine learning
 algorithm. The table below outlines the scenarios where variable scaling
 will improve the performance of downstream machine learning
@@ -623,7 +595,7 @@ unscaled?</p>
   Show me the solution
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <table class="table"><colgroup><col width="18%"><col width="7%"><col width="7%"><col width="7%"><col width="59%"></colgroup><thead><tr class="header"><th>Model</th>
 <th>Standardise</th>
@@ -785,8 +757,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/episode6.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/instructor/episode6.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2023-10-31",
-  "datePublished": "2023-10-31"
+  "dateModified": "2023-11-06",
+  "datePublished": "2023-11-06"
 }
 
   </script><script>
