@@ -59,6 +59,8 @@ A simple histogram of the raw counts data illustrates the skewed nature of the d
 ```{r}
 
 set.seed(seed = 30)
+
+`%>%` <- magrittr::`%>%`
  
 counts.mat.ibd.ol.filtered %>%               
   tibble::rownames_to_column("geneID")  %>%      
