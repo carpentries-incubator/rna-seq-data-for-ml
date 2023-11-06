@@ -57,6 +57,8 @@ A simple histogram of the raw counts data illustrates the skewed nature of the d
 
 ```r
 set.seed(seed = 30)
+
+`%>%` <- magrittr::`%>%`
  
 counts.mat.ibd.ol.filtered %>%               
   tibble::rownames_to_column("geneID")  %>%      
@@ -68,9 +70,7 @@ counts.mat.ibd.ol.filtered %>%
     ggplot2::ylab("Frequency")
 ```
 
-```{.error}
-Error in counts.mat.ibd.ol.filtered %>% tibble::rownames_to_column("geneID") %>% : could not find function "%>%"
-```
+<img src="fig/episode6-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
 
 A plot of the mean count against the variance of the counts for a random sample of 5,000 genes (to reduce compute time) illustrates the clear mean variance relationship in the data. The variance is increasing as the mean count increases.
 
@@ -87,9 +87,7 @@ counts.mat.ibd.ol.filtered %>%
     ggplot2::ylab("Variance")
 ```
 
-```{.error}
-Error in counts.mat.ibd.ol.filtered %>% .[sample(nrow(.), size = 5000, : could not find function "%>%"
-```
+<img src="fig/episode6-rendered-unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
 ## Variance Stabilising and rlog Transformation
 
@@ -120,10 +118,6 @@ counts.mat.ibd.vst <- DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol,
   SummarizedExperiment::assay()
 ```
 
-```{.error}
-Error in DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol, blind = FALSE) %>% : could not find function "%>%"
-```
-
 Plotting the data again, we can see the difference in the distribution of the data following transformation. Although there is still a large number of count values equal to zero, the distribution of vst transformed counts is far less heavily skewed than the original. The dependence of the variance on the mean has essentially been eliminated.
 
 
@@ -141,9 +135,7 @@ counts.mat.ibd.vst %>%
     ggplot2::ylab("Frequency")
 ```
 
-```{.error}
-Error in counts.mat.ibd.vst %>% as.data.frame() %>% tibble::rownames_to_column("geneID") %>% : could not find function "%>%"
-```
+<img src="fig/episode6-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -159,9 +151,7 @@ counts.mat.ibd.vst %>%
     ggplot2::ylab("Variance")
 ```
 
-```{.error}
-Error in counts.mat.ibd.vst %>% as.data.frame() %>% .[sample(nrow(.), : could not find function "%>%"
-```
+<img src="fig/episode6-rendered-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 
 ## Rescaling transformed counts data: standardisation and Min-Max Scaling
@@ -183,9 +173,7 @@ counts.mat.ibd.vst %>%
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 ```
 
-```{.error}
-Error in counts.mat.ibd.vst %>% as.data.frame() %>% tibble::rownames_to_column("geneID") %>% : could not find function "%>%"
-```
+<img src="fig/episode6-rendered-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 In some cases, further scaling of variables will be necessary to put each gene on a similar scale before inputting into a machine learning algorithm. The table below outlines the scenarios where variable scaling will improve the performance of downstream machine learning analysis.
 
