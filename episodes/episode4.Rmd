@@ -124,14 +124,6 @@ sprintf("The unique IDs that match the counts matrix are in column: %s", colname
 
 2. We next extract this unique identifier along with the condition of interest, (in this case the `disease`), and any other variables that may be potential predictor variables or used to assess confounding factors in the subsequent analysis of the data (in this case patient `sex` and `age`). We will use functions from the `dplyr` package, part of the `tidyverse` collection of packages throughout this episode.
 
-```{r}
-
-# suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
-# suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
-# suppressPackageStartupMessages(library(tibble, quietly = TRUE))
-
-```
-
 
 ```{r}
 
