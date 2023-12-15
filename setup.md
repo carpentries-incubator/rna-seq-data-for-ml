@@ -8,6 +8,10 @@ This lesson provides a practical guide to sourcing and pre-processing a bulk RNA
 
 The lesson is written in the context of a supervised machine learning classification modelling task, where the goal is to construct a model that is able to differentiate two different disease states (e.g. disease vs. healthy control) based on the gene expression profile.
 
+This work was funded by the ELIXIR-UK: FAIR Data Stewardship training UKRI award (MR/V038966/1)
+
+![Elixir-UK](fig/ELIXIR-UK_logo.png){alt='Elixir-UK'}
+
 :::::::::::::::::::::::::::::::::::::: prereq 
 
 This lesson assumes a working knowledge of programming in R. For learners who aren't familiar with R or feel they need a refresher, the [Programming with R](https://swcarpentry.github.io/r-novice-inflammation/index.html) provides a good introduction to both R and working with R studio.
