@@ -306,7 +306,7 @@
         
 <section id="aio-episode1"><p>Content from <a href="episode1.html">Introduction: Machine Learning Ready RNA-Seq Data</a></p>
 <hr>
-<p>Last updated on 2024-02-27 |
+<p>Last updated on 2024-03-05 |
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode1.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -404,13 +404,12 @@ Format</a> and for information on the processing of raw fastq to gene
 abundance data, see <a href="https://www.youtube.com/watch?v=3Pe9xcGF_Wo" class="external-link">RDMbites | RNAseq
 expression data</a>.</p>
 <p><br></p>
-<div id="callout1" class="callout callout">
+<div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div class="callout-inner">
-<h3 class="callout-title">Callout<a class="anchor" aria-label="anchor" href="#callout1"></a>
-</h3>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title">Callout</h3>
 <div class="callout-content">
 <p>The description “processed” means different things in different
 studies. Things to be aware of:</p>
@@ -441,7 +440,8 @@ the gene level</p></li>
 <li><p>The data may be given as a matrix of features of interest for all
 samples, or alternatively as a separate file for each sample.</p></li>
 </ol>
-<figure><img src="fig/samples_matrix.jpg" alt="Illustration of sample data formats" class="figure mx-auto d-block"><figcaption>Dataset Formats</figcaption></figure><p><strong>It is important to carefully read the protocols to understand
+<figure><img src="fig/samples_matrix.jpg" alt="Illustration of sample data formats" class="figure mx-auto d-block"><div class="figcaption">Dataset Formats</div>
+</figure><p><strong>It is important to carefully read the protocols to understand
 determine how the data has been processed and if is appropriate for your
 task.</strong></p>
 </div>
@@ -465,7 +465,7 @@ repository as input to a machine learning modelling analysis?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The starting point for a machine learning model is processed RNA-Seq
 data, in the form of count data. This could be raw count data, or TPM or
@@ -575,7 +575,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-episode2"><p>Content from <a href="episode2.html">Data Collection: ArrayExpress</a></p>
 <hr>
-<p>Last updated on 2024-02-27 |
+<p>Last updated on 2024-03-05 |
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode2.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -678,7 +678,8 @@ a datasets with a relatively large number of samples.</p>
 <p>Let’s begin on the <a href="https://www.ebi.ac.uk/biostudies/arrayexpress/studies" class="external-link">ArrayExpress
 home page</a>.</p>
 <p><br></p>
-<figure><img src="fig/biostudies_home_page.jpg" alt="Screen Shot of Array Express Collection Tab" class="figure mx-auto d-block"><figcaption>ArrayExpress Home Page</figcaption></figure><p><br></p>
+<figure><img src="fig/biostudies_home_page.jpg" alt="Screen Shot of Array Express Collection Tab" class="figure mx-auto d-block"><div class="figcaption">ArrayExpress Home Page</div>
+</figure><p><br></p>
 <p>We’ll apply the following filters to refine the results set, leaving
 all other filters as the default with no selection:</p>
 <p><br></p>
@@ -715,7 +716,8 @@ all other filters as the default with no selection:</p>
 by “Samples”, in descending order. The results should look similar to
 this:</p>
 <p><br></p>
-<figure><img src="fig/biostudies_home_filtered.jpg" alt="Screen Shot of Array Express Collection Tab Filtered Results" class="figure mx-auto d-block"><figcaption>ArrayExpress Filtered Results</figcaption></figure></section><section id="illustrative-dataset-ibd-dataset"><h2 class="section-heading">Illustrative Dataset: IBD Dataset<a class="anchor" aria-label="anchor" href="#illustrative-dataset-ibd-dataset"></a>
+<figure><img src="fig/biostudies_home_filtered.jpg" alt="Screen Shot of Array Express Collection Tab Filtered Results" class="figure mx-auto d-block"><div class="figcaption">ArrayExpress Filtered Results</div>
+</figure></section><section id="illustrative-dataset-ibd-dataset"><h2 class="section-heading">Illustrative Dataset: IBD Dataset<a class="anchor" aria-label="anchor" href="#illustrative-dataset-ibd-dataset"></a>
 </h2>
 <hr class="half-width">
 <p>In the search results displayed above, the top-ranked dataset is
@@ -838,7 +840,7 @@ IDs are formatted.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -969,7 +971,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-episode3"><p>Content from <a href="episode3.html">Data Collection: GEO</a></p>
 <hr>
-<p>Last updated on 2024-02-27 |
+<p>Last updated on 2024-03-05 |
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode3.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1106,7 +1108,8 @@ by the number of samples in descending order:</p>
 <p><code>rna-seq[All Fields] AND "Homo sapiens"[Organism] AND (("gse"[Filter] OR "gds"[Filter]) AND ("100"[n_samples] : "1000"[n_samples]))</code></p>
 <p><br></p>
 <p>The filtered results page should looks like this:</p>
-<figure><img src="fig/geo_home_filtered.jpg" alt="Screen Shot of GEO DataSets Search Results Tab Filtered" class="figure mx-auto d-block"><figcaption>GEO Filtered Results</figcaption></figure></section><section id="illustrative-dataset-covid-19-dataset"><h2 class="section-heading">Illustrative Dataset: Covid-19 Dataset<a class="anchor" aria-label="anchor" href="#illustrative-dataset-covid-19-dataset"></a>
+<figure><img src="fig/geo_home_filtered.jpg" alt="Screen Shot of GEO DataSets Search Results Tab Filtered" class="figure mx-auto d-block"><div class="figcaption">GEO Filtered Results</div>
+</figure></section><section id="illustrative-dataset-covid-19-dataset"><h2 class="section-heading">Illustrative Dataset: Covid-19 Dataset<a class="anchor" aria-label="anchor" href="#illustrative-dataset-covid-19-dataset"></a>
 </h2>
 <hr class="half-width">
 <p>The data set GSE212041 relates to the case-control study of
@@ -1215,7 +1218,7 @@ us the total expected number of 781 samples.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1362,7 +1365,7 @@ correspond to the expected number of samples.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1417,7 +1420,7 @@ dataset of 760 TB patients.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3">Show me the solution</h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1472,7 +1475,7 @@ dataset of 760 TB patients.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1">Give me a hint</h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>Hint: you’ll need to refer back to the GEO website to understand how
 the data has been processed.</p>
@@ -1485,7 +1488,7 @@ the data has been processed.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4">Show me the solution</h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>The counts data have been normalised and transformed using a variance
 stabilising transformation using the <code>DESeq2</code> R library.</p>
@@ -1523,7 +1526,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-episode4"><p>Content from <a href="episode4.html">Data Readiness: Data Format and Integrity</a></p>
 <hr>
-<p>Last updated on 2024-02-27 |
+<p>Last updated on 2024-03-05 |
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode4.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1780,7 +1783,7 @@ an issue in the sample information for this dataset?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>All of the checklist items apply in this case. Let’s go through
 them…</p>
@@ -1903,7 +1906,7 @@ the code to address these issues?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <ul>
 <li>There is clearly an issue with the coding of the
@@ -2125,7 +2128,7 @@ the counts matrix right away?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3">Show me the solution</h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <ul>
 <li>Remove the first row, which is in this case totals of counts for
@@ -2226,7 +2229,7 @@ file.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4">Show me the solution</h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <p>We renamed the samples in the sample information to remove spaces, so
 we need to do the same here.</p>
@@ -2314,12 +2317,12 @@ ERCC-00019        0        0        0        0        0        0</code></pre>
 <code class="sourceCode R"><span></span>
 <span><span class="fu">write.table</span><span class="op">(</span><span class="va">counts.mat.ibd</span>, file<span class="op">=</span><span class="st">"./data/counts.mat.ibd.txt"</span>, sep <span class="op">=</span> <span class="st">'\t'</span>, quote <span class="op">=</span> <span class="cn">FALSE</span>, row.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 </div>
-<div id="document-your-reformatting-steps" class="callout callout">
+<div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="document-your-reformatting-steps" class="callout-inner">
-<h3 class="callout-title">Document your reformatting steps<a class="anchor" aria-label="anchor" href="#document-your-reformatting-steps"></a>
+<div class="section level3 callout-title callout-inner">
+<h3 class="callout-title" id="document-your-reformatting-steps">Document your reformatting steps<a class="anchor" aria-label="anchor" href="#document-your-reformatting-steps"></a>
 </h3>
 <div class="callout-content">
 <p>It is crucial that you document your data reformatting so that it is
@@ -2430,7 +2433,7 @@ as the target variable.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5">Example code to clean up the sample information</h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb44">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2504,7 +2507,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-episode5"><p>Content from <a href="episode5.html">Data Readiness: Technical Noise</a></p>
 <hr>
-<p>Last updated on 2024-02-27 |
+<p>Last updated on 2024-03-05 |
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode5.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3062,7 +3065,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-episode6"><p>Content from <a href="episode6.html">Data Readiness: Distribution and Scale</a></p>
 <hr>
-<p>Last updated on 2024-02-27 |
+<p>Last updated on 2024-03-05 |
         
         <a href="https://github.com/carpentries-incubator/rna-seq-data-for-ml.git/edit/main/episodes/episode6.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3418,7 +3421,7 @@ unscaled?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <table class="table">
 <colgroup>
@@ -3606,8 +3609,8 @@ any links that you are not going to use.
   "url": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/aio.html",
   "identifier": "https://carpentries-incubator.github.io/rna-seq-data-for-ml.git/aio.html",
   "dateCreated": "2023-05-23",
-  "dateModified": "2024-02-27",
-  "datePublished": "2024-02-27"
+  "dateModified": "2024-03-05",
+  "datePublished": "2024-03-05"
 }
 
   </script><script>
