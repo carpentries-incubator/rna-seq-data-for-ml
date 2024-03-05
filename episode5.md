@@ -80,11 +80,13 @@ data.frame(max_count = apply(counts.mat.ibd, 1, max, na.rm=TRUE)) %>%
 ```
 
 ```{.warning}
-Warning: Transformation introduced infinite values in continuous x-axis
+Warning in ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma): log-10
+transformation introduced infinite values.
 ```
 
 ```{.warning}
-Warning: Removed 10 rows containing non-finite values (`stat_bin()`).
+Warning: Removed 10 rows containing non-finite outside the scale range
+(`stat_bin()`).
 ```
 
 <img src="fig/episode5-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
@@ -182,6 +184,11 @@ ggplot2::ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
             ggplot2::geom_point(ggplot2::aes(x=which.max(ms.jac), y=max(ms.jac)), col="red", cex=6, pch=1) +
             ggplot2::xlab("Low Count Threshold") + 
             ggplot2::ylab("Multiset Jaccard Index")
+```
+
+```{.warning}
+Warning in ggplot2::geom_point(ggplot2::aes(x = which.max(ms.jac), y = max(ms.jac)), : All aesthetics have length 1, but the data has 25 rows.
+ℹ Did you mean to use `annotate()`?
 ```
 
 <img src="fig/episode5-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
