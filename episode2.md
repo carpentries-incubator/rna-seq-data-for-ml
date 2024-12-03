@@ -111,7 +111,7 @@ download.file(url = "https://zenodo.org/record/8125141/files/E-MTAB-11349.counts
 In R studio, open your project workbook and read the raw counts data. Then check the dimensions of the matrix to confirm we have the expected number of samples and transcript IDs.
 
 
-```r
+``` r
 raw.counts.ibd <- read.table(file="data/E-MTAB-11349.counts.matrix.csv",
                              sep=",",
                              header=T,
@@ -121,7 +121,7 @@ raw.counts.ibd <- read.table(file="data/E-MTAB-11349.counts.matrix.csv",
 writeLines(sprintf("%i %s", c(dim(raw.counts.ibd)[1], dim(raw.counts.ibd)[2]), c("rows corresponding to transcript IDs", "columns corresponding to samples")))
 ```
 
-```{.output}
+``` output
 22751 rows corresponding to transcript IDs
 592 columns corresponding to samples
 ```
@@ -136,11 +136,11 @@ View a small subset of the data, (e.g. first ten rows and 8 columns) to see how 
 :::::::::::::::::::::::: solution 
 
 
-```r
+``` r
 raw.counts.ibd[1:10,1:8]
 ```
 
-```{.output}
+``` output
             read Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6
 1   1          *    13961    16595    20722    17696    25703    20848
 2   2 ERCC-00002        0        0        0        0        0        0
@@ -163,7 +163,7 @@ raw.counts.ibd[1:10,1:8]
 Now let's read the sdrf file (a plain text file) into R and check the dimensions of the file.
 
 
-```r
+``` r
 # read in the sdrf file
 
 samp.info.ibd <- read.table(file="data/E-MTAB-11349.sdrf.txt", sep="\t", header=T, fill=T, check.names=F)
@@ -171,26 +171,26 @@ samp.info.ibd <- read.table(file="data/E-MTAB-11349.sdrf.txt", sep="\t", header=
 sprintf("There are %i rows, corresponding to the samples", dim(samp.info.ibd)[1])
 ```
 
-```{.output}
+``` output
 [1] "There are 590 rows, corresponding to the samples"
 ```
 
-```r
+``` r
 sprintf("There are %i columns, corresponding to the available variables for each sample", dim(samp.info.ibd)[2])
 ```
 
-```{.output}
+``` output
 [1] "There are 32 columns, corresponding to the available variables for each sample"
 ```
 
 If we view the column names, we can see that the file does indeed contain a set of variables describing both phenotypical and experimental protocol information relating to each sample.
 
 
-```r
+``` r
 colnames(samp.info.ibd)
 ```
 
-```{.output}
+``` output
  [1] "Source Name"                            
  [2] "Characteristics[organism]"              
  [3] "Characteristics[age]"                   

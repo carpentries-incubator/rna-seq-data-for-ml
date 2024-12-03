@@ -50,14 +50,14 @@ download.file(url = "https://zenodo.org/record/8125141/files/counts.mat.ibd.txt"
 And now read the files into R...
 
 
-```r
+``` r
 # suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
 # suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
 # suppressPackageStartupMessages(library(tibble, quietly = TRUE))
 ```
 
 
-```r
+``` r
 samp.info.ibd.sel <- read.table(file="./data/ibd.sample.info.txt", sep="\t", header=T, fill=T, check.names=F)
 
 counts.mat.ibd <- read.table(file="./data/counts.mat.ibd.txt", sep='\t', header=T, fill=T, check.names=F)
@@ -68,7 +68,7 @@ Run the following code to view the histogram giving the frequency of the maximum
 A simple filtering approach is to remove all genes where the maximum read count for that gene over all samples is below a given threshold. The next step is to determine what this threshold should be.
 
 
-```r
+``` r
 `%>%` <- magrittr::`%>%`
 
 data.frame(max_count = apply(counts.mat.ibd, 1, max, na.rm=TRUE)) %>% 
@@ -79,12 +79,14 @@ data.frame(max_count = apply(counts.mat.ibd, 1, max, na.rm=TRUE)) %>%
     ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma)
 ```
 
-```{.warning}
-Warning: Transformation introduced infinite values in continuous x-axis
+``` warning
+Warning in ggplot2::scale_x_log10(n.breaks = 6, labels = scales::comma): log-10
+transformation introduced infinite values.
 ```
 
-```{.warning}
-Warning: Removed 10 rows containing non-finite values (`stat_bin()`).
+``` warning
+Warning: Removed 10 rows containing non-finite outside the scale range
+(`stat_bin()`).
 ```
 
 <img src="fig/episode5-rendered-unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
@@ -111,7 +113,7 @@ There is no right answer. However, looking at the histogram, you can see an appr
 In order to be able to compare read counts between samples, we must first adjust ('normalise') the counts to control for differences in sequence depth and sample composition between samples. To achieve this, we run the following code that will normalise the counts matrix using the median-of-ratios method implemented in the R package `DESeq2`. For more information on the rationale for scaling RNA-Seq counts and a comparison of the different metrics used see [RDMBites | RNAseq expression data](https://www.youtube.com/watch?v=tO2H3zuBouw).
 
 
-```r
+``` r
 # convert the condition variable to a factor as required by DESeq2
 samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
 
@@ -122,12 +124,12 @@ dds.ibd <- DESeq2::DESeqDataSetFromMatrix(
     design = ~ condition)
 ```
 
-```{.warning}
+``` warning
 Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
-```r
+``` r
 # calculate the normalised count values using the median-of-ratios method
 dds.ibd <- dds.ibd %>% DESeq2::estimateSizeFactors()
 
@@ -142,7 +144,7 @@ There are a number of methodologies to calculate the appropriate threshold. One 
 Calculating the Jaccard index between all pairs of samples in a dataset does not however scale well with the dimensionality of the data. Here we use an alternative approach that achieves a very similar result using the Multiset Jaccard index, which is faster to compute. Don't worry too much about the code, the main point is that we find a filter threshold, and filter out all the genes where the max count value is below the threshold, on the basis that these are likely technical noise. Run the code to plot the Multiset Jaccard Index for a series of values for the filter threshold.
 
 
-```r
+``` r
 # For the purpose of illustration, and to shorten the run time, we sample 5,000 genes from the counts matrix.
 
 set.seed(10)
@@ -184,6 +186,12 @@ ggplot2::ggplot(data=data.frame(t = t.seq, jacc = ms.jac)) +
             ggplot2::ylab("Multiset Jaccard Index")
 ```
 
+``` warning
+Warning in ggplot2::geom_point(ggplot2::aes(x = which.max(ms.jac), y = max(ms.jac)), : All aesthetics have length 1, but the data has 25 rows.
+ℹ Please consider using `annotate()` or provide this layer with data containing
+  a single row.
+```
+
 <img src="fig/episode5-rendered-unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -197,11 +205,11 @@ What value should we use for the low counts threshold?
 The threshold value is given by the following code, which should return a value close to 10 for this dataset.
 
 
-```r
+``` r
 (t.hold <- which.max(ms.jac))
 ```
 
-```{.output}
+``` output
 [1] 11
 ```
 
@@ -215,13 +223,13 @@ The threshold value is given by the following code, which should return a value 
 Having determined a threshold, we then filter the raw counts matrix on the rows (genes) that meet the threshold criterion based on the normalised counts. As you can see, around 4,000 genes are removed from the dataset, which is approximately 20% of the genes. These genes are unlikely to contain biologically meaningful information but they might easily bias a machine learning classifier.
 
 
-```r
+``` r
 counts.mat.ibd.filtered <- counts.mat.ibd[which(apply(counts.ibd.norm, 1, function(x){sum(x > t.hold) >= 1})),]
 
 sprintf("Genes filtered: %s; Genes remaining: %s", nrow(counts.mat.ibd)-nrow(counts.mat.ibd.filtered), nrow(counts.mat.ibd.filtered))
 ```
 
-```{.output}
+``` output
 [1] "Genes filtered: 3712; Genes remaining: 19038"
 ```
 
@@ -235,20 +243,20 @@ of the general population and a result of biological heterogeneity and technical
 Run the following code to view the top 10 values of read counts in the raw counts matrix. Compare this with the histogram above, and the mean read count. The largest read count values range from 2MM to over 3MM counts for a gene in a particular sample. These require investigation!
 
 
-```r
+``` r
 tail(sort(as.matrix(counts.mat.ibd)),10)
 ```
 
-```{.output}
+``` output
  [1] 2037946 2038514 2043983 2133125 2238093 2269033 2341479 2683585 3188911
 [10] 3191428
 ```
 
-```r
+``` r
 sprintf("The mean read count value: %f", mean(as.matrix(counts.mat.ibd)))
 ```
 
-```{.output}
+``` output
 [1] "The mean read count value: 506.731355"
 ```
 
@@ -259,7 +267,7 @@ As with low counts, multiple methods exist to identify influential outlier read 
 Run the following code to create DESeq Data Set object from the filtered raw counts matrix, with condition as the experimental factor of interest.
 
 
-```r
+``` r
 dds.ibd.filt <- DESeq2::DESeqDataSetFromMatrix(
     countData = as.matrix(counts.mat.ibd.filtered),
     colData = data.frame(samp.info.ibd.sel, row.names = 'sampleID'),
@@ -269,56 +277,56 @@ dds.ibd.filt <- DESeq2::DESeqDataSetFromMatrix(
 Run `DESeq2` differential expression analysis, which automatically calculates the Cook's distances for every read count. This may take a few minutes to run.
 
 
-```r
+``` r
 deseq.ibd <-  DESeq2::DESeq(dds.ibd.filt)
 ```
 
-```{.output}
+``` output
 estimating size factors
 ```
 
-```{.output}
+``` output
 estimating dispersions
 ```
 
-```{.output}
+``` output
 gene-wise dispersion estimates
 ```
 
-```{.output}
+``` output
 mean-dispersion relationship
 ```
 
-```{.output}
+``` output
 final dispersion estimates
 ```
 
-```{.output}
+``` output
 fitting model and testing
 ```
 
-```{.output}
+``` output
 -- replacing outliers and refitting for 1559 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
 ```
 
-```{.output}
+``` output
 estimating dispersions
 ```
 
-```{.output}
+``` output
 fitting model and testing
 ```
 
-```r
+``` r
 cooks.mat <- SummarizedExperiment::assays(deseq.ibd)[["cooks"]]
 ```
 
 We now calculate the cooks outlier threshold by computing the expected F-distribution for the number of samples in the dataset.
 
 
-```r
+``` r
 cooks.quantile <- 0.95
 m <- ncol(deseq.ibd)     # number of samples
 p <- 3                   # number of model parameters (in the three condition case)
@@ -329,13 +337,13 @@ h.threshold <- stats::qf(cooks.quantile, p, m - p)
 Filter the counts matrix to eliminate all genes where the cooks distance is over the outlier threshold. Here you can see that a further ~1,800 genes are filtered out based on having outlier read count values for at least one sample.
 
 
-```r
+``` r
 counts.mat.ibd.ol.filtered <-  counts.mat.ibd.filtered[which(apply(cooks.mat, 1, function(x){(max(x) < h.threshold) >= 1})),]
 
 sprintf("Genes filtered: %s; Genes remaining: %s", nrow(counts.mat.ibd.filtered)-nrow(counts.mat.ibd.ol.filtered), nrow(counts.mat.ibd.ol.filtered))
 ```
 
-```{.output}
+``` output
 [1] "Genes filtered: 1776; Genes remaining: 17262"
 ```
 
@@ -343,7 +351,7 @@ sprintf("Genes filtered: %s; Genes remaining: %s", nrow(counts.mat.ibd.filtered)
 Run the same plot as above, and we can see that the genes with very low maximum counts over all samples have been removed. Note that here we are looking at the raw unnormalised counts, so not all maximum counts are below 11, as the filter was applied to the normailsed counts.
 
 
-```r
+``` r
 data.frame(max_count = apply(counts.mat.ibd.ol.filtered, 1, max, na.rm=TRUE)) %>% 
   ggplot2::ggplot(ggplot2::aes(x = max_count)) + 
     ggplot2::geom_histogram(bins = 200) + 

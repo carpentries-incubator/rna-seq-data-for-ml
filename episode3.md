@@ -112,36 +112,41 @@ The function `getGEO()` from the `GEOquery` library provides a convenient way to
 If there is more than one SOFT file for a GEO Series, `getGEO()` will return a list of datasets. Let's download GSE212041.
 
 
-```r
+``` r
 gse212041 <- GEOquery::getGEO("GSE212041")
 ```
 
-```{.output}
+``` warning
+Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+```
+
+``` output
 Setting options('download.file.method.GEOquery'='auto')
 ```
 
-```{.output}
+``` output
 Setting options('GEOquery.inmemory.gpl'=FALSE)
 ```
 
-```{.output}
+``` output
 Found 2 file(s)
 ```
 
-```{.output}
+``` output
 GSE212041-GPL18573_series_matrix.txt.gz
 ```
 
-```{.output}
+``` output
 GSE212041-GPL24676_series_matrix.txt.gz
 ```
 
 
-```r
+``` r
 sprintf("Number of files downloaded: %i", length(gse212041))
 ```
 
-```{.output}
+``` output
 [1] "Number of files downloaded: 2"
 ```
 
@@ -154,11 +159,11 @@ Write the code to check that the number of samples in each file gives us the tot
 :::::::::::::::::::::::: solution 
  
 
-```r
+``` r
 writeLines(sprintf("file %i: %i samples", 1:2, c(dim(gse212041[[1]])[2], dim(gse212041[[2]])[2])))
 ```
 
-```{.output}
+``` output
 file 1: 16 samples
 file 2: 765 samples
 ```
@@ -175,13 +180,13 @@ file 2: 765 samples
 We'll extract the metadata for the larger dataset (765 samples) and examine the column names to verify that the file contains the expected metadata about the experiment.
 
 
-```r
+``` r
 samp.info.cov19 <- Biobase::pData(gse212041[[2]])
 
 colnames(samp.info.cov19)
 ```
 
-```{.output}
+``` output
  [1] "title"                   "geo_accession"          
  [3] "status"                  "submission_date"        
  [5] "last_update_date"        "type"                   
@@ -215,11 +220,11 @@ colnames(samp.info.cov19)
 If we use the `exprs()` function to extract the counts data from the expression slot of the downloaded dataset, we'll see that in this data series, the counts matrix is not there. The expression set only contains a list of the accession numbers of the samples included in the expression set, but not the actual count data. (The code below attempts to view a sample of the data).
 
 
-```r
+``` r
 Biobase::exprs(gse212041[[2]])[,1:10]
 ```
 
-```{.output}
+``` output
      GSM6507615 GSM6507616 GSM6507617 GSM6507618 GSM6507619 GSM6507620
      GSM6507621 GSM6507622 GSM6507623 GSM6507624
 ```
@@ -228,11 +233,11 @@ Biobase::exprs(gse212041[[2]])[,1:10]
 We can verify this by looking at the dimensions of the object in the exprs slot.
 
 
-```r
+``` r
 dim(Biobase::exprs(gse212041[[2]]))
 ```
 
-```{.output}
+``` output
 [1]   0 765
 ```
 

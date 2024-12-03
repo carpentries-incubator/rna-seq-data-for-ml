@@ -39,14 +39,14 @@ download.file(url = "https://zenodo.org/record/8125141/files/counts.mat.ibd.ol.f
 And now read the files into R...
 
 
-```r
+``` r
 # suppressPackageStartupMessages(library(dplyr, quietly = TRUE))
 # suppressPackageStartupMessages(library(ggplot2, quietly = TRUE))
 # suppressPackageStartupMessages(library(tibble, quietly = TRUE))
 ```
 
 
-```r
+``` r
 samp.info.ibd.sel <- read.table(file="./data/ibd.sample.info.txt", sep="\t", header=T, fill=T, check.names=F)
 
 counts.mat.ibd.ol.filtered <- read.table(file="./data/counts.mat.ibd.ol.filtered.txt", sep='\t', header=T, fill=T, check.names=F)
@@ -55,7 +55,7 @@ counts.mat.ibd.ol.filtered <- read.table(file="./data/counts.mat.ibd.ol.filtered
 A simple histogram of the raw counts data illustrates the skewed nature of the distribution. Here we plot a random sample of just 5,000 counts to illustrate the point.
 
 
-```r
+``` r
 set.seed(seed = 30)
 
 `%>%` <- magrittr::`%>%`
@@ -75,7 +75,7 @@ counts.mat.ibd.ol.filtered %>%
 A plot of the mean count against the variance of the counts for a random sample of 5,000 genes (to reduce compute time) illustrates the clear mean variance relationship in the data. The variance is increasing as the mean count increases.
 
 
-```r
+``` r
 counts.mat.ibd.ol.filtered %>%               
   .[sample(nrow(.), size = 5000, replace = FALSE),] %>% 
   data.frame(row.mean = apply(., 1, mean),
@@ -96,7 +96,7 @@ A number of standard transformations exist to change the distribution of RNA-Seq
 The `vst` transformation is faster to run and more suitable for datasets with a large sample size. Let's conduct the `vst` transformation on our filtered counts data. This may take a few minutes to run on our dataset.
 
 
-```r
+``` r
 # convert the condition variable to a factor as required by DESeq2
 samp.info.ibd.sel[c('condition')] <- lapply(samp.info.ibd.sel[c('condition')], factor)
 
@@ -107,12 +107,12 @@ dds.ibd.filt.ol <- DESeq2::DESeqDataSetFromMatrix(
   design = ~ condition)                    
 ```
 
-```{.warning}
+``` warning
 Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 ```
 
-```r
+``` r
 # calculate the vst count values and extract the counts matrix using the assay() function
 counts.mat.ibd.vst <- DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol, blind=FALSE) %>% 
   SummarizedExperiment::assay()
@@ -121,7 +121,7 @@ counts.mat.ibd.vst <- DESeq2::varianceStabilizingTransformation(dds.ibd.filt.ol,
 Plotting the data again, we can see the difference in the distribution of the data following transformation. Although there is still a large number of count values equal to zero, the distribution of vst transformed counts is far less heavily skewed than the original. The dependence of the variance on the mean has essentially been eliminated.
 
 
-```r
+``` r
 set.seed(seed = 30)
  
 counts.mat.ibd.vst %>% 
@@ -138,7 +138,7 @@ counts.mat.ibd.vst %>%
 <img src="fig/episode6-rendered-unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
 
 
-```r
+``` r
 counts.mat.ibd.vst %>% 
   as.data.frame() %>%               
   .[sample(nrow(.), size = 5000, replace = FALSE),] %>% 
@@ -160,7 +160,7 @@ Many machine learning algorithms are sensitive to the scale of the data. Even af
 
 
 
-```r
+``` r
 counts.mat.ibd.vst %>% 
   as.data.frame() %>% 
   tibble::rownames_to_column("geneID")  %>%  

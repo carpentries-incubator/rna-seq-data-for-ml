@@ -49,7 +49,7 @@ We'll start by reading in the dataset from our `data` subfolder.
 
 
 
-```r
+``` r
 samp.info.ibd <- read.table(file="./data/E-MTAB-11349.sdrf.txt", sep="\t", header=T, fill=T, check.names=F)
 
 raw.counts.ibd <- read.table(file="./data/E-MTAB-11349.counts.matrix.csv", sep="," , header=T, fill=T, check.names=F)
@@ -82,11 +82,11 @@ Item  | Check For... | Rationale
 We'll now apply these steps sequentially to the sample information for the IBD dataset, contained in our variable `samp.info.ibd`. First let's take a look at the data:
 
 
-```r
+``` r
 dplyr::glimpse(samp.info.ibd)
 ```
 
-```{.output}
+``` output
 Rows: 590
 Columns: 32
 $ `Source Name`                             <chr> "Sample 1", "Sample 2", "Sam…
@@ -142,7 +142,7 @@ All of the checklist items apply in this case. Let's go through them...
 1. Let's verify that there is a unique identifier that matches between the sample information and counts matrix, and identify the name of the column in the sample information. We manually find the names of the samples in `raw.counts.ibd` (the counts matrix), and set to a new variable `ibd.samp.names`. We then write a `for loop` that evaluates which columns in the sample information match the sample names. There is one match, the column named `Source Name`. Note that there are other columns such as `Assay Name` in this dataset that contain identifiers for some but not all samples. This is a good illustration of why it is important to check carefully to ensure you have a complete set of unique identifiers.
 
 
-```r
+``` r
 ibd.samp.names <- colnames(raw.counts.ibd)[3:ncol(raw.counts.ibd)]
 
 lst.colnames <- c()
@@ -153,7 +153,7 @@ for(i in seq_along(1:ncol(samp.info.ibd))){
 sprintf("The unique IDs that match the counts matrix are in column: %s", colnames(samp.info.ibd)[which(lst.colnames)])
 ```
 
-```{.output}
+``` output
 [1] "The unique IDs that match the counts matrix are in column: Source Name"
 ```
 
@@ -164,7 +164,7 @@ sprintf("The unique IDs that match the counts matrix are in column: %s", colname
 
 
 
-```r
+``` r
 samp.info.ibd.sel <- dplyr::select(samp.info.ibd,
                               'Source Name',
                               'Characteristics[age]',
@@ -178,7 +178,7 @@ samp.info.ibd.sel <- dplyr::select(samp.info.ibd,
 3. Let's then rename the variables to something more easy to interpret for humans, avoiding spaces and special characters. We'll save these selected columns to a new variable name `samp.info.ibd.sel`.
 
 
-```r
+``` r
 samp.info.ibd.sel <- dplyr::rename(samp.info.ibd.sel,
                           'sampleID' = 'Source Name',
                           'age' = 'Characteristics[age]',
@@ -192,11 +192,11 @@ samp.info.ibd.sel <- dplyr::rename(samp.info.ibd.sel,
 4. Now check how each of the variables are encoded in our reduced sample information data to identify any errors, data gaps and inconsistent coding of categorical variables. Firstly let's take a look at the data.
 
 
-```r
+``` r
 dplyr::glimpse(samp.info.ibd.sel)
 ```
 
-```{.output}
+``` output
 Rows: 590
 Columns: 4
 $ sampleID  <chr> "Sample 1", "Sample 2", "Sample 3", "Sample 4", "Sample 5", …
@@ -219,13 +219,13 @@ What steps do we need to take to ensure that these four data columns are consist
 * There is clearly an issue with the coding of the `condition` Crohn's disease. We'll fix that first, and then check the consistency of the coding of categorical variables `sex` and `condition`.
 
 
-```r
+``` r
 samp.info.ibd.sel$condition[agrep("Crohns", samp.info.ibd.sel$condition)] <- "crohns_disease"
 
 unique(c(samp.info.ibd.sel$sex, samp.info.ibd.sel$condition))
 ```
 
-```{.output}
+``` output
 [1] "male"               "female"             "crohns_disease"    
 [4] "normal"             "ulcerative colitis"
 ```
@@ -237,7 +237,7 @@ Before we do this, since we'll be using the pipe operator from the tidyverse lib
 
 
 
-```r
+``` r
 `%>%` <- magrittr::`%>%`
 
 samp.info.ibd.sel <- samp.info.ibd.sel %>%
@@ -255,14 +255,14 @@ samp.info.ibd.sel <- samp.info.ibd.sel %>%
 
 
 
-```r
+``` r
 samp.info.ibd.sel <- samp.info.ibd.sel %>%
                         dplyr::mutate(class = dplyr::if_else(condition == 'normal', -1, 1))
 ```
 
 
 
-```r
+``` r
 samp.info.ibd.sel[c('sex', 'condition', 'class')] <- lapply(samp.info.ibd.sel[c('sex', 'condition', 'class')], factor)
 ```
 
@@ -271,11 +271,11 @@ samp.info.ibd.sel[c('sex', 'condition', 'class')] <- lapply(samp.info.ibd.sel[c(
 6. Finally, let's check the distribution of the classes by creating a `table` from the `class` column.
 
 
-```r
+``` r
 table(samp.info.ibd.sel$class)
 ```
 
-```{.output}
+``` output
 
  -1   1 
 267 323 
@@ -286,11 +286,11 @@ table(samp.info.ibd.sel$class)
 The two classes are approximately equally represented, so let's check everything one last time.
 
 
-```r
+``` r
 dplyr::glimpse(samp.info.ibd.sel)
 ```
 
-```{.output}
+``` output
 Rows: 590
 Columns: 5
 $ sampleID  <chr> "Sample_1", "Sample_2", "Sample_3", "Sample_4", "Sample_5", …
@@ -330,11 +330,11 @@ Item  | Check For... | Rationale
 1. Take a look at a sample of columns and rows to see what the downloaded file looks like
 
 
-```r
+``` r
 raw.counts.ibd[1:10,1:8]
 ```
 
-```{.output}
+``` output
             read Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6
 1   1          *    13961    16595    20722    17696    25703    20848
 2   2 ERCC-00002        0        0        0        0        0        0
@@ -361,7 +361,7 @@ Can you see the irrelevant information that we need to remove from the counts ma
 * Move the column named `read` that contains to the transcript IDs to the row names
 
 
-```r
+``` r
 counts.mat.ibd <- raw.counts.ibd[-1,-1]
 
 rownames(counts.mat.ibd) <- NULL
@@ -371,7 +371,7 @@ counts.mat.ibd <-  counts.mat.ibd %>% tibble::column_to_rownames('read')
 counts.mat.ibd[1:10,1:6]
 ```
 
-```{.output}
+``` output
            Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6
 ERCC-00002        0        0        0        0        0        0
 ERCC-00003        0        0        0        0        0        0
@@ -394,19 +394,19 @@ ERCC-00019        0        0        0        0        0        0
 2. Let's check for duplicate sampleIDs and transcript IDs. Provided there are no duplicate row or column names, the following should return `interger(0)`.
 
 
-```r
+``` r
 which(duplicated(rownames(counts.mat.ibd)))
 ```
 
-```{.output}
+``` output
 integer(0)
 ```
 
-```r
+``` r
 which(duplicated(colnames(counts.mat.ibd)))
 ```
 
-```{.output}
+``` output
 integer(0)
 ```
 
@@ -415,12 +415,12 @@ integer(0)
 3. We'll double check the sampleIDs match the sample information file.
 
 
-```r
+``` r
 if(!identical(colnames(counts.mat.ibd), samp.info.ibd.sel$sampleID)){stop()}
 ```
 
-```{.error}
-Error in eval(expr, envir, enclos): 
+``` error
+Error: 
 ```
 
 ::::::::::::::::::::::::::::::::::::: challenge 
@@ -434,7 +434,7 @@ Why did we get an error here?
 We renamed the samples in the sample information to remove spaces, so we need to do the same here.
 
 
-```r
+``` r
 colnames(counts.mat.ibd) <- gsub(x = colnames(counts.mat.ibd), pattern = "\ ", replacement = "_")
 ```
 
@@ -447,13 +447,13 @@ colnames(counts.mat.ibd) <- gsub(x = colnames(counts.mat.ibd), pattern = "\ ", r
 
 
 
-```r
+``` r
 allMissValues <- function(x){all(is.na(x) | x == "")}
 
 allMissValues(counts.mat.ibd)
 ```
 
-```{.output}
+``` output
 [1] FALSE
 ```
 
@@ -462,11 +462,11 @@ allMissValues(counts.mat.ibd)
 Take a final look at the cleaned up matrix.
 
 
-```r
+``` r
 counts.mat.ibd[1:10,1:6]
 ```
 
-```{.output}
+``` output
            Sample_1 Sample_2 Sample_3 Sample_4 Sample_5 Sample_6
 ERCC-00002        0        0        0        0        0        0
 ERCC-00003        0        0        0        0        0        0
@@ -480,19 +480,19 @@ ERCC-00017        2        0        0        0        1        0
 ERCC-00019        0        0        0        0        0        0
 ```
 
-```r
+``` r
 sprintf("There are %i rows, corresponding to the transcript IDs", dim(counts.mat.ibd)[1])
 ```
 
-```{.output}
+``` output
 [1] "There are 22750 rows, corresponding to the transcript IDs"
 ```
 
-```r
+``` r
 sprintf("There are %i columns, corresponding to the samples", dim(counts.mat.ibd)[2])
 ```
 
-```{.output}
+``` output
 [1] "There are 590 columns, corresponding to the samples"
 ```
 
@@ -537,7 +537,7 @@ Read the sdrf file into R and take a look at the data. Make a list of the potent
 As a help, the code to read the file in from your data directory is:
 
 
-```r
+``` r
 samp.info.tb <- read.table(file="./data/E-MTAB-6845.sdrf.txt", sep="\t", header=T, fill=T, check.names=F)
 ```
 
@@ -605,7 +605,7 @@ dplyr::glimpse()
 
 
 
-```r
+``` r
 samp.info.tb %>% 
   
       dplyr::select(
@@ -630,7 +630,7 @@ samp.info.tb %>%
        dplyr::glimpse()                                                                     # view output
 ```
 
-```{.output}
+``` output
 Rows: 360
 Columns: 3
 $ sampleID    <chr> "PR123_S19", "PR096_S13", "PR146_S14", "PR158_S12", "PR095…
